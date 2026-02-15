@@ -1,0 +1,5 @@
+name: base
+channels:
+dependencies:
+
+prefix: "/home/bogeun-jeong/micromamba"
