@@ -1,0 +1,97 @@
+plan_id: sample-1axis-hybrid-flow
+objective: 1axis_problem 예제를 하이브리드 에이전트 흐름으로 분석하고 개선 작업을 준비한다
+focus_area: 1axis example structure
+created_at: 2026-03-06T00:00:00Z
+created_by: hybrid-researcher
+status: completed
+
+tldr: |
+  - 예제는 solver, test, ground_station 하위 구조로 나뉜다.
+  - solver와 test는 직접 연결될 가능성이 높다.
+  - gui는 별도 지상 인터페이스 역할일 가능성이 있어 연결 여부 확인이 중요하다.
+
+research_metadata:
+  methodology: hybrid retrieval
+  scope: examples/1axis_problem 하위 구조의 초기 조사
+  confidence: medium
+  coverage: 80
+
+files_analyzed:
+  - file: solver.py
+    path: examples/1axis_problem/solver.py
+    purpose: 1축 문제 계산 로직을 제공할 가능성이 높은 핵심 파일
+    key_elements:
+      - element: solve
+        type: function
+        location: examples/1axis_problem/solver.py:1
+        description: 대표 solver 진입점일 가능성이 있는 함수
+    language: Python
+    lines: 0
+  - file: test_solver.py
+    path: examples/1axis_problem/test_solver.py
+    purpose: solver 계약과 기대 동작을 검증하는 테스트 파일
+    key_elements:
+      - element: solver test
+        type: pattern
+        location: examples/1axis_problem/test_solver.py:1
+        description: 입력/출력 기대값을 검증하는 테스트 집합
+    language: Python
+    lines: 0
+  - file: gui.py
+    path: examples/1axis_problem/ground_station/gui.py
+    purpose: 지상 UI 또는 시각화 진입점
+    key_elements:
+      - element: gui entry
+        type: pattern
+        location: examples/1axis_problem/ground_station/gui.py:1
+        description: 입력 수집 또는 결과 표시 경로
+    language: Python
+    lines: 0
+
+patterns_found:
+  - category: structure
+    pattern: example-local organization
+    description: 예제 디렉터리 내부에 solver, test, ground station 코드가 함께 존재한다.
+    examples:
+      - file: 1axis_problem
+        location: examples/1axis_problem
+        snippet: solver.py / test_solver.py / ground_station/gui.py
+    prevalence: common
+
+related_architecture:
+  components_relevant_to_domain:
+    - component: solver core
+      responsibility: 계산 로직 제공
+      location: examples/1axis_problem/solver.py
+      relationship_to_domain: domain depends on this
+    - component: ground station gui
+      responsibility: 사용자 상호작용 또는 결과 표시
+      location: examples/1axis_problem/ground_station/gui.py
+      relationship_to_domain: this uses domain outputs
+  interfaces_used_by_domain: []
+  data_flow_involving_domain: 사용자 입력 또는 테스트 입력이 solver로 들어가고, 결과가 테스트 또는 GUI로 소비될 가능성이 높다.
+  key_relationships_to_domain:
+    - from: test_solver.py
+      to: solver.py
+      relationship: imports or validates
+    - from: gui.py
+      to: solver.py
+      relationship: may call or visualize
+
+related_dependencies:
+  internal:
+    - component: solver.py
+      relationship_to_domain: core dependency
+      direction: outbound
+  external: []
+
+evidence_for_symbols: []
+
+open_questions:
+  - question: gui가 실제로 solver를 호출하는지 아니면 독립 시각화 도구인지 확인이 필요한가?
+    context: 구현 범위를 과도하게 넓히지 않기 위해 필요하다
+
+gaps:
+  - area: exact symbol inventory
+    description: 실제 함수/클래스 시그니처는 아직 세부 확인 전이다
+    impact: 구현 전 추가 읽기가 필요할 수 있다

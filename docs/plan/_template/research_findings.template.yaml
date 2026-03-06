@@ -1,0 +1,63 @@
+plan_id: <string>
+objective: <string>
+focus_area: <string>
+created_at: <ISO-8601 timestamp>
+created_by: hybrid-researcher
+status: completed
+
+tldr: |
+  - 핵심 구조 요약
+  - 관련 파일 요약
+  - 미확인 포인트
+
+research_metadata:
+  methodology: hybrid retrieval
+  scope: <what was covered>
+  confidence: medium
+  coverage: 70
+
+files_analyzed:
+  - file: <filename>
+    path: <path>
+    purpose: <what it does>
+    key_elements:
+      - element: <symbol>
+        type: function
+        location: <file:line>
+        description: <summary>
+    language: <language>
+    lines: 0
+
+patterns_found:
+  - category: architecture
+    pattern: <pattern name>
+    description: <summary>
+    examples:
+      - file: <filename>
+        location: <file:line>
+        snippet: <short snippet>
+    prevalence: common
+
+related_architecture:
+  components_relevant_to_domain: []
+  interfaces_used_by_domain: []
+  data_flow_involving_domain: <summary>
+  key_relationships_to_domain: []
+
+related_dependencies:
+  internal: []
+  external: []
+
+evidence_for_symbols:
+  - symbol: <symbol>
+    source: <reference file path>
+    status: confirmed
+
+open_questions:
+  - question: <question>
+    context: <why it matters>
+
+gaps:
+  - area: <area>
+    description: <what is missing>
+    impact: <impact>

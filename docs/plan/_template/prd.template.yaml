@@ -1,0 +1,20 @@
+prd_id: <string>
+version: 0.1.0
+status: draft
+
+features:
+  - name: <feature name>
+    overview: <overview>
+    status: planned
+
+state_machines: []
+
+errors: []
+
+decisions:
+  - decision: <architecture decision>
+    rationale: <why>
+
+changes:
+  - version: 0.1.0
+    change: <initial draft>

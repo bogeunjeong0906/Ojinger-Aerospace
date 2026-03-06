@@ -1,4 +1,7 @@
 {
     "python-envs.defaultEnvManager": "ms-python.python:conda",
-    "python-envs.defaultPackageManager": "ms-python.python:conda"
+    "python-envs.defaultPackageManager": "ms-python.python:conda",
+    "github.copilot.enable": true,
+    "github.copilot.chat.enabled": true,
+    "github.copilot.advanced.experimental.subagents": true
 }
