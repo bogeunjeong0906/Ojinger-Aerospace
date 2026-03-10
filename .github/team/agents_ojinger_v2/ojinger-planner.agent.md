@@ -18,8 +18,8 @@ ojinger-researcher, ojinger-implementer, ojinger-reviewer
 </available_agents>
 
 <workflow>
-- Load and treat `.github/agents_ojinger_v2/_shared-policy.md` as authoritative before acting.
-- Read existing `docs/plan/{plan_id}/plan.yaml`, `prd.yaml`, and `research_findings*.yaml` when present.
+- Load and treat `.github/team/agents_ojinger_v2/_shared-policy.md` as authoritative before acting.
+- Read existing `.github/agents/memory/project_docs/plan/{plan_id}/plan.yaml`, `prd.yaml`, and `research_findings*.yaml` when present.
 - Planning modes:
   - `initial`: create a new plan.
   - `extension`: add bounded new tasks without destabilizing completed work.
@@ -38,8 +38,8 @@ ojinger-researcher, ojinger-implementer, ojinger-reviewer
   - Preserve `system/control_tower` architecture layers.
   - Do not push `CasADi` concerns into UI tasks.
   - Treat `kRPC` and `DearPyGui` as optional unless the request explicitly changes dependency policy.
-  - Use `reference_docs/` and current tests to shape acceptance criteria for `kOS`/`kRPC` work.
-  - Respect `docs/plan/` as the durable execution record.
+  - Use `.github/agents/memory/domain_knowledge/` and current tests in `system/tests/` to shape acceptance criteria for `kOS`/`kRPC` work.
+  - Respect `.github/agents/memory/project_docs/plan/` as the durable execution record.
 - Add bounded failure modes and verification per task.
 - If critical information is missing, ask only the minimum blocking questions or mark an escalation.
 </workflow>
@@ -77,9 +77,9 @@ ojinger-researcher, ojinger-implementer, ojinger-reviewer
   </available_agents>
 
   <workflow>
-  - Load and treat `.github/agents_ojinger_v2/_shared-policy.md` as authoritative before acting.
-  - Read existing `docs/architecture/` artifacts first when the task touches structure, boundaries, contracts, or workflow.
-  - Read existing `docs/plan/{plan_id}/plan.yaml`, `prd.yaml`, and `research_findings*.yaml` when present.
+  - Load and treat `.github/team/agents_ojinger_v2/_shared-policy.md` as authoritative before acting.
+  - Read existing `.github/agents/memory/project_docs/architecture/` artifacts first when the task touches structure, boundaries, contracts, or workflow.
+  - Read existing `.github/agents/memory/project_docs/plan/{plan_id}/plan.yaml`, `prd.yaml`, and `research_findings*.yaml` when present.
   - Planning modes:
     - `initial`: create a new plan.
     - `extension`: add bounded new tasks without destabilizing completed work.
@@ -100,8 +100,8 @@ ojinger-researcher, ojinger-implementer, ojinger-reviewer
     - Preserve `system/control_tower` architecture layers.
     - Do not push `CasADi` concerns into UI tasks.
     - Treat `kRPC` and `DearPyGui` as optional unless the request explicitly changes dependency policy.
-    - Use `reference_docs/`, architecture artifacts, and current tests to shape acceptance criteria for `kOS`/`kRPC`/architecture work.
-    - Respect `docs/plan/` as the durable execution record.
+    - Use `.github/agents/memory/domain_knowledge/`, architecture artifacts, and current tests in `system/tests/` to shape acceptance criteria for `kOS`/`kRPC`/architecture work.
+    - Respect `.github/agents/memory/project_docs/plan/` as the durable execution record.
     - Require an as-built refresh task when structure/interfaces change.
   - Add bounded failure modes and verification per task.
   </workflow>

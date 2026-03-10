@@ -11,7 +11,7 @@ This team is optimized for GPT-4.1 reliability first. Agents must prefer narrow 
   1. repeated failure after 2 verification/retry loops,
   2. cross-domain ambiguity spans `kOS`, `kRPC`, `CasADi`, `DearPyGui`, contracts/PRD, and architecture artifacts without local resolution,
   3. the task requires non-trivial architectural synthesis that changes contracts, state machines, mission workflow semantics, or subsystem decomposition,
-  4. live-environment behavior is critical and cannot be inferred safely from workspace code plus `reference_docs/` and current architecture artifacts.
+  4. live-environment behavior is critical and cannot be inferred safely from workspace code plus `.github/agents/memory/domain_knowledge/` and current architecture artifacts.
 - Escalation output must state:
   - why GPT-4.1 is insufficient,
   - blocking uncertainty,
@@ -19,7 +19,7 @@ This team is optimized for GPT-4.1 reliability first. Agents must prefer narrow 
 
 ## Reliability rules
 
-- Every directly invocable agent must load and treat `.github/agents_ojinger_v2/_shared-policy.md` as authoritative before acting.
+- Every directly invocable agent must load and treat `.github/agents/_shared-policy.md` as authoritative before acting.
 - Work from the current task only. Do not widen scope without explicit plan support.
 - Restate the objective internally before action.
 - Prefer deterministic workspace evidence over assumptions.
@@ -29,13 +29,27 @@ This team is optimized for GPT-4.1 reliability first. Agents must prefer narrow 
   - `orchestration_report`,
   - `allocation_report`.
 
+## Environment Policy
+
+- 모든 에이전트팀 작업(연구, 계획, 구현, 리뷰, 아키텍처 갱신 등)은 반드시 루트경로 ./.venv(miniconda) 환경을 활성화한 상태에서 진행해야 함.
+- 모든 커맨드/스크립트/파이썬 실행 전 conda activate ./.venv 를 먼저 실행하고, 환경 활성화 상태를 확인해야 함.
+- 환경 활성화 체크는 $CONDA_DEFAULT_ENV, python sys.prefix, 또는 conda info --envs | grep '/.venv' 등으로 검증.
+- 환경 미활성화 상태에서는 작업을 시작하지 않음.
+
+## Memory layout rules
+
+- `.github/agents/` stores the active team definition, team README, team-bound rules, and `.github/agents/memory/`.
+- `.github/agents/memory/project_docs/` stores durable project docs, including architecture and plan records.
+- `.github/agents/memory/domain_knowledge/` stores durable domain references such as `kOS`/`kRPC` documentation.
+- `system/tests/` is the canonical automated test location.
+
 ## Source-of-truth priority
 
-1. `reference_docs/` for `kOS`/`kRPC` behavior and command semantics.
-2. `docs/architecture/` artifacts for system structure, boundaries, flows, and as-built evidence.
-3. `docs/plan/{plan_id}/plan.yaml`, `prd.yaml`, `research_findings*.yaml`, `runbook.md` for current intent and execution state.
-4. Existing production code and tests under `system/` and `tests/`.
-5. Templates under `docs/plan/_template/` and `docs/architecture/_template/`.
+1. `.github/agents/memory/domain_knowledge/` for `kOS`/`kRPC` behavior and command semantics.
+2. `.github/agents/memory/project_docs/architecture/` artifacts for system structure, boundaries, flows, and as-built evidence.
+3. `.github/agents/memory/project_docs/plan/{plan_id}/plan.yaml`, `prd.yaml`, `research_findings*.yaml`, `runbook.md` for current intent and execution state.
+4. Existing production code under `system/` and automated tests under `system/tests/`.
+5. Templates under `.github/agents/memory/project_docs/plan/_template/` and `.github/agents/memory/project_docs/architecture/_template/`.
 6. External web sources only if local sources are insufficient.
 
 ## Architecture rules

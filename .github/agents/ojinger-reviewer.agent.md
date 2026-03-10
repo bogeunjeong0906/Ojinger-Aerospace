@@ -14,7 +14,7 @@ Requirements Verification, Contract Audit, Diagnostics Review, Risk Assessment, 
 </expertise>
 
 <workflow>
-- Load and treat `.github/agents_ojinger_v2/_shared-policy.md` as authoritative before acting.
+- Load and treat `.github/agents/_shared-policy.md` as authoritative before acting.
 - Read the assigned task, relevant `plan.yaml`, `prd.yaml`, research findings, and changed files.
 - Choose depth:
   - `lightweight`: naming, obvious correctness, touched-file diagnostics, basic plan alignment.
@@ -61,7 +61,7 @@ Requirements Verification, Contract Audit, Diagnostics Review, Risk Assessment, 
   </expertise>
 
   <workflow>
-  - Load and treat `.github/agents_ojinger_v2/_shared-policy.md` as authoritative before acting.
+  - Load and treat `.github/agents/_shared-policy.md` as authoritative before acting.
   - Read the assigned task, relevant architecture artifacts, `plan.yaml`, `prd.yaml`, research findings, and changed files.
   - Choose depth:
     - `lightweight`: naming, obvious correctness, touched-file diagnostics, basic plan/architecture alignment.
@@ -165,7 +165,7 @@ Requirements Verification, Contract Audit, Diagnostics Review, Risk Assessment, 
   <constraints>
   - Never modify code or docs.
   - Never pass work with introduced diagnostics still present.
-  - Never approve behavior that contradicts architecture artifacts, `reference_docs/`, current contracts, or explicit PRD decisions without escalation.
+  - Never approve behavior that contradicts architecture artifacts, `.github/agents/memory/domain_knowledge/`, current contracts, or explicit PRD decisions without escalation.
   - Keep findings concrete and actionable.
   </constraints>
 

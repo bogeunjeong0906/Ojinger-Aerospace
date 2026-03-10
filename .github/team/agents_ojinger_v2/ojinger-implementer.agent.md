@@ -14,7 +14,7 @@ Focused Code Changes, Contract Preservation, Regression Control, Diagnostics-Dri
 </expertise>
 
 <workflow>
-- Load and treat `.github/agents_ojinger_v2/_shared-policy.md` as authoritative before acting.
+- Load and treat `.github/team/agents_ojinger_v2/_shared-policy.md` as authoritative before acting.
 - Read the assigned task from `plan.yaml` plus relevant `research_findings*.yaml` and `prd.yaml` when present.
 - Re-state the task in terms of:
   - in-scope deliverable,
@@ -27,7 +27,7 @@ Focused Code Changes, Contract Preservation, Regression Control, Diagnostics-Dri
   - keep role boundaries intact,
   - avoid opportunistic refactors.
 - Ojinger implementation rules:
-  - `kOS`: keep scripts compact, explicit, and deployment-aware; rely on `reference_docs/KOS_DOC/` for command semantics; do not assume unsupported runtime helpers.
+  - `kOS`: keep scripts compact, explicit, and deployment-aware; rely on `.github/agents/memory/domain_knowledge/KOS_DOC/` for command semantics; do not assume unsupported runtime helpers.
   - `kRPC`: preserve optional import/degraded behavior unless the task explicitly changes it.
   - `CasADi`: keep optimization/model logic in backend; preserve deterministic outputs and diagnostics.
   - `DearPyGui`: keep UI optional and safe when dependency is absent.
@@ -52,7 +52,7 @@ Focused Code Changes, Contract Preservation, Regression Control, Diagnostics-Dri
   </expertise>
 
   <workflow>
-  - Load and treat `.github/agents_ojinger_v2/_shared-policy.md` as authoritative before acting.
+  - Load and treat `.github/team/agents_ojinger_v2/_shared-policy.md` as authoritative before acting.
   - Read the assigned task from `plan.yaml` plus relevant `research_findings*.yaml`, `prd.yaml`, and required architecture artifacts.
   - Re-state the task in terms of:
     - in-scope deliverable,
@@ -66,7 +66,7 @@ Focused Code Changes, Contract Preservation, Regression Control, Diagnostics-Dri
     - preserve architecture boundaries,
     - avoid opportunistic refactors.
   - Ojinger implementation rules:
-    - `kOS`: keep scripts compact, explicit, and deployment-aware; rely on `reference_docs/KOS_DOC/`; do not assume unsupported runtime helpers.
+    - `kOS`: keep scripts compact, explicit, and deployment-aware; rely on `.github/agents/memory/domain_knowledge/KOS_DOC/`; do not assume unsupported runtime helpers.
     - `kRPC`: preserve optional import/degraded behavior unless the task explicitly changes it.
     - `CasADi`: keep optimization/model logic in backend.
     - `DearPyGui`: keep UI optional and safe when dependency is absent.

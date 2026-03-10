@@ -2,13 +2,19 @@
 
 Production-ready project agent team for Ojinger-Aerospace.
 
+
 ## Core design goals
 
 - Optimize for GPT-4.1 reliability first.
 - Preserve gem-team strengths: phase detection, research-first grounding, DAG/wave planning, contracts, verification, review gates, and bounded escalation.
-- Preserve Ojinger specialization: `kOS`, `kRPC`, `CasADi`, `DearPyGui`, `system/control_tower`, `system/vessle`, `docs/plan`, `docs/architecture`, and `reference_docs`.
+- Preserve Ojinger specialization: `kOS`, `kRPC`, `CasADi`, `DearPyGui`, `system/control_tower`, `system/vessle`, `.github/agents/memory/project_docs/plan`, `.github/agents/memory/project_docs/architecture`, and `.github/agents/memory/domain_knowledge`.
 - Treat architecture as a first-class required artifact, not optional documentation.
 - Require every answer to include an explicit orchestration report and task-allocation report.
+- Treat `.github/agents/memory/` as the durable project-development memory root; keep team-bound rules and the team README under `.github/agents/`, not in memory.
+- 모든 에이전트팀 작업(연구, 계획, 구현, 리뷰, 아키텍처 갱신 등)은 반드시 루트경로 ./.venv(miniconda) 환경을 활성화한 상태에서 진행해야 합니다.
+- 모든 커맨드/스크립트/파이썬 실행 전 conda activate ./.venv 를 먼저 실행하고, 환경 활성화 상태를 확인해야 합니다.
+- 환경 활성화 체크는 $CONDA_DEFAULT_ENV, python sys.prefix, 또는 conda info --envs | grep '/.venv' 등으로 검증합니다.
+- 환경 미활성화 상태에서는 작업을 시작하지 않습니다.
 
 ## Core agents
 
@@ -69,7 +75,7 @@ Architecture artifacts are mandatory references for future work because they pro
    - Final summary follows review unless the user explicitly declines review.
 
 2. **Research**
-   - Use local `reference_docs/`, `docs/architecture/`, `docs/plan/`, code, and tests.
+   - Use local `.github/agents/memory/domain_knowledge/`, `.github/agents/memory/project_docs/architecture/`, `.github/agents/memory/project_docs/plan/`, code, and `system/tests/`.
 
 3. **Architecture**
    - Build/update intent architecture from requirements.
@@ -107,9 +113,9 @@ This requirement exists so orchestration quality and parallel execution remain a
 
 - `system/vessle/` is the onboard runtime domain; keep scripts compact and deployment-aware.
 - `system/control_tower/` is the host-side control stack.
-- `reference_docs/KOS_DOC/` and `reference_docs/KRPC_DOC/` are the first place to resolve runtime and command questions.
-- `docs/plan/{plan_id}/` is the persistent execution record.
-- `docs/architecture/` is the persistent architecture record and must be consulted for structure-sensitive work.
+- `.github/agents/memory/domain_knowledge/KOS_DOC/` and `.github/agents/memory/domain_knowledge/KRPC_DOC/` are the first place to resolve runtime and command questions.
+- `.github/agents/memory/project_docs/plan/{plan_id}/` is the persistent execution record.
+- `.github/agents/memory/project_docs/architecture/` is the persistent architecture record and must be consulted for structure-sensitive work.
 
 ## Conditional non-core agents
 

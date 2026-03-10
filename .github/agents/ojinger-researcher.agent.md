@@ -14,12 +14,12 @@ Workspace Discovery, Domain Evidence Gathering, Dependency Mapping, Contract/Arc
 </expertise>
 
 <workflow>
-- Load and treat `.github/agents_ojinger_v2/_shared-policy.md` as authoritative before acting.
+- Load and treat `.github/agents/_shared-policy.md` as authoritative before acting.
 - Start with GPT-4.1-reliable behavior: narrow the scope, list the questions, gather evidence, synthesize facts only.
 - Source order:
-  1. `reference_docs/KOS_DOC/` and `reference_docs/KRPC_DOC/` for domain semantics.
-  2. `docs/plan/{plan_id}/` artifacts.
-  3. `system/` and `tests/` implementation evidence.
+  1. `.github/agents/memory/domain_knowledge/KOS_DOC/` and `.github/agents/memory/domain_knowledge/KRPC_DOC/` for domain semantics.
+  2. `.github/agents/memory/project_docs/plan/{plan_id}/` artifacts.
+  3. `system/` and `system/tests/` implementation evidence.
 - Research passes:
   1. find relevant files,
   2. inspect exact patterns,
@@ -28,10 +28,10 @@ Workspace Discovery, Domain Evidence Gathering, Dependency Mapping, Contract/Arc
   5. identify open questions and confidence.
 - Ojinger focus rules:
   - For `kOS` topics, inspect `system/vessle/` and kOS reference pages before inferring behavior.
-  - For `kRPC` topics, inspect telemetry/runtime paths plus `reference_docs/KRPC_DOC/`.
+  - For `kRPC` topics, inspect telemetry/runtime paths plus `.github/agents/memory/domain_knowledge/KRPC_DOC/`.
   - For `CasADi`, inspect backend optimizer and related tests.
   - For `DearPyGui`, inspect `system/control_tower/ui/` and optional-dependency handling.
-  - For mission flow, inspect `system/control_tower/manager/`, `main.py`, and `docs/plan/` artifacts.
+  - For mission flow, inspect `system/control_tower/manager/`, `main.py`, and `.github/agents/memory/project_docs/plan/` artifacts.
 - Deliver only factual findings. No implementation suggestions.
 - Escalate when local sources conflict materially or when live-runtime uncertainty blocks a safe factual answer.
 </workflow>
@@ -96,13 +96,13 @@ files_analyzed:
       </expertise>
 
       <workflow>
-      - Load and treat `.github/agents_ojinger_v2/_shared-policy.md` as authoritative before acting.
+      - Load and treat `.github/agents/_shared-policy.md` as authoritative before acting.
       - Start with GPT-4.1-reliable behavior: narrow the scope, list the questions, gather evidence, synthesize facts only.
       - Source order:
-        1. `reference_docs/KOS_DOC/` and `reference_docs/KRPC_DOC/` for domain semantics.
-        2. relevant `docs/architecture/` artifacts for system structure and current boundaries.
-        3. `docs/plan/{plan_id}/` artifacts.
-        4. `system/` and `tests/` implementation evidence.
+        1. `.github/agents/memory/domain_knowledge/KOS_DOC/` and `.github/agents/memory/domain_knowledge/KRPC_DOC/` for domain semantics.
+        2. relevant `.github/agents/memory/project_docs/architecture/` artifacts for system structure and current boundaries.
+        3. `.github/agents/memory/project_docs/plan/{plan_id}/` artifacts.
+        4. `system/` and `system/tests/` implementation evidence.
       - Research passes:
         1. find relevant files,
         2. inspect exact patterns,
@@ -111,10 +111,10 @@ files_analyzed:
         5. identify open questions and confidence.
       - Ojinger focus rules:
         - For `kOS`, inspect `system/vessle/` and local `kOS` reference pages before inferring behavior.
-        - For `kRPC`, inspect telemetry/runtime paths plus `reference_docs/KRPC_DOC/`.
+        - For `kRPC`, inspect telemetry/runtime paths plus `.github/agents/memory/domain_knowledge/KRPC_DOC/`.
         - For `CasADi`, inspect backend optimizer and related tests.
         - For `DearPyGui`, inspect `system/control_tower/ui/` and optional-dependency handling.
-        - For mission flow, inspect `system/control_tower/manager/`, `main.py`, `docs/plan/`, and architecture artifacts.
+        - For mission flow, inspect `system/control_tower/manager/`, `main.py`, `.github/agents/memory/project_docs/plan/`, and architecture artifacts.
         - For structure-sensitive questions, read the current intent and as-built architecture before summarizing.
       - Deliver only factual findings. No implementation suggestions.
       - Escalate when local sources conflict materially or live-runtime uncertainty blocks a safe factual answer.

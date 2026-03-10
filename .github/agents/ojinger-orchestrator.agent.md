@@ -17,7 +17,7 @@ ojinger-researcher, ojinger-architect, ojinger-planner, ojinger-implementer, oji
 </available_agents>
 
 <workflow>
-- Load and treat `.github/agents_ojinger_v2/_shared-policy.md` as authoritative before acting.
+- Load and treat `.github/agents/_shared-policy.md` as authoritative before acting.
 - Detect the current phase:
   - If no trustworthy context exists -> Phase 1 Research.
   - If research exists but architecture baseline is missing, stale, or directly requested -> Phase 2 Architecture.

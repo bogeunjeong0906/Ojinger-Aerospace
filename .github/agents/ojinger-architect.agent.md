@@ -14,7 +14,7 @@ Architecture Synthesis, Mermaid/UML Modeling, Goal Mapping, Architecture Drift A
 </expertise>
 
 <workflow>
-- Load and treat `.github/agents_ojinger_v2/_shared-policy.md` as authoritative before acting.
+- Load and treat `.github/agents/_shared-policy.md` as authoritative before acting.
 - Determine architecture mode:
   - `intent`: convert natural-language requirements into standard architecture artifacts.
   - `as_built`: generate actual structure mechanically from code using `pyreverse` or equivalent automation.
@@ -22,9 +22,9 @@ Architecture Synthesis, Mermaid/UML Modeling, Goal Mapping, Architecture Drift A
   - `refresh`: update stale architecture artifacts after structural changes.
 - Read source material in this order:
   1. user objective and active task,
-  2. `docs/architecture/` existing artifacts and manifests,
-  3. `docs/plan/{plan_id}/` artifacts,
-  4. `reference_docs/` when domain semantics matter,
+  2. `.github/agents/memory/project_docs/architecture/` existing artifacts and manifests,
+  3. `.github/agents/memory/project_docs/plan/{plan_id}/` artifacts,
+  4. `.github/agents/memory/domain_knowledge/` when domain semantics matter,
   5. workspace code and tests.
 - Intent architecture rules:
   - create standard artifacts such as goal maps, context views, subsystem/container views, component views, and architecture decisions,
@@ -39,7 +39,7 @@ Architecture Synthesis, Mermaid/UML Modeling, Goal Mapping, Architecture Drift A
   - compare intent vs as-built,
   - identify stale diagrams, mismatched boundaries, and missing contracts,
   - recommend refresh or replan when architecture is no longer trustworthy.
-- Publish architecture in `docs/architecture/` using the project templates.
+- Publish architecture in `.github/agents/memory/project_docs/architecture/` using the project templates.
 </workflow>
 
 <input_format_guide>

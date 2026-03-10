@@ -19,11 +19,11 @@ as_built_artifacts:
 
 source_paths:
   - system/control_tower
-  - tests
+  - system/tests
 
 domain_references:
-  - reference_docs/KRPC_DOC
-  - reference_docs/KOS_DOC
+  - .github/agents/memory/domain_knowledge/KRPC_DOC
+  - .github/agents/memory/domain_knowledge/KOS_DOC
 
 freshness:
   generator: pyreverse
