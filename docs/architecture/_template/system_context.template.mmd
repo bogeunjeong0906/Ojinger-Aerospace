@@ -1,0 +1,10 @@
+flowchart LR
+    user[User]
+    tower[Control Tower]
+    vessel[Vessel / kOS Runtime]
+    docs[Reference Docs]
+
+    user --> tower
+    tower --> vessel
+    docs -. guides .-> tower
+    docs -. guides .-> vessel

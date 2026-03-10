@@ -1,0 +1,65 @@
+prd_id: ksp-1axis-20260310-01
+version: 0.1.0
+status: draft
+
+features:
+  - name: Parameter export from onboard vessel
+    overview: kOS script exports rocket mass, fuel, thrust, and environment data as JSON for tower-side optimization.
+    status: planned
+  - name: Tower-side 1-axis optimizer
+    overview: Python/CasADi backend computes a feasible ascent profile and emits a flight plan JSON.
+    status: planned
+  - name: Onboard real-time controller
+    overview: kOS long-running controller reads the flight plan, arms safely, and applies LOCK THROTTLE/STEERING with PID support.
+    status: planned
+  - name: Supervisory telemetry and monitoring
+    overview: kRPC-based telemetry stream normalizes snapshots for monitoring, status transitions, and abort handling.
+    status: planned
+  - name: Optional operator UI
+    overview: DearPyGui shell invokes mission-manager actions without becoming a hard runtime dependency.
+    status: planned
+
+state_machines:
+  - name: mission_supervisor
+    states:
+      - draft
+      - params_exported
+      - optimized
+      - armed
+      - active
+      - completed
+      - aborted
+    transitions:
+      - draft -> params_exported
+      - params_exported -> optimized
+      - optimized -> armed
+      - armed -> active
+      - active -> completed
+      - active -> aborted
+      - armed -> aborted
+
+errors:
+  - code: DEP_MISSING_UI
+    description: dearpygui is not installed; run in headless mode
+  - code: DEP_MISSING_KRPC
+    description: krpc is not installed; use mock telemetry mode
+  - code: PLAN_SCHEMA_INVALID
+    description: generated flight plan does not satisfy required contract
+  - code: CONTROLLER_NOT_ARMED
+    description: onboard controller is not active or waiting for manual arm
+  - code: OPTIMIZER_INFEASIBLE
+    description: optimizer could not produce a feasible 1-axis ascent profile
+
+decisions:
+  - decision: Use hybrid architecture with tower-side optimization/monitoring and onboard kOS real-time execution
+    rationale: Matches runtime constraints, allows heavier host-side computation, and keeps actuation close to the vessel
+  - decision: Use JSON file contracts between tower and onboard scripts
+    rationale: Aligns with problem statement and decouples Python and kOS implementations
+  - decision: Treat DearPyGui and kRPC as optional/late-bound dependencies initially
+    rationale: They are not currently installed, so backend/headless progress should not block
+  - decision: Avoid assuming verified host-side arbitrary kOS execution
+    rationale: A persistent or manually armed onboard process is more defensible given current evidence
+
+changes:
+  - version: 0.1.0
+    change: Initial PRD for KSP 1-axis auto-control/optimization system created from problem statement, blueprint, and workspace inspection

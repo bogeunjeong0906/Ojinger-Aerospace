@@ -1,0 +1,18 @@
+flowchart TB
+    subgraph ControlTower
+        main[main.py]
+        manager[manager]
+        backend[backend]
+        ui[ui]
+    end
+
+    subgraph Vessel
+        exporter[export_prams.ks]
+        controller[controler_1axis.ks]
+    end
+
+    main --> manager
+    manager --> backend
+    manager --> ui
+    manager --> exporter
+    manager --> controller

@@ -1,0 +1,355 @@
+plan_id: ksp-1axis-20260310-01
+objective: KSP 1축 로켓 자동 제어/최적화 시스템의 T2-T6 구현 상태와 남은 통합 공백을 future handoff 기준으로 정리한다
+focus_area: completed contracts/scaffold/backend work versus pending onboard/integration work
+created_at: 2026-03-10T00:00:00Z
+created_by: gem-planner
+status: completed
+
+tldr: |
+  - T2-T6 범위는 실제 코드와 테스트로 확인된다: contracts package + fixtures, headless scaffold, exporter, optimizer, telemetry/supervisor가 구현되어 있다.
+  - 로컬 offline/headless 검증은 충분히 진전되었고, 2026-03-10 기준 테스트는 13 passed다.
+  - 가장 큰 잔여 리스크는 onboard controller 미구현, mission orchestration 미완성, live KSP/kRPC/kOS 환경 미검증이다.
+
+research_metadata:
+  methodology: workspace code inspection + test verification
+  scope: T2-T6 implementation artifacts, fixtures, scaffold/runtime layers, exporter, optimizer, telemetry/supervisor, current dependency posture
+  confidence: high
+  coverage: 95
+
+verification_evidence:
+  - command: /home/wjdqhrms/Ojinger-Aerospace/.venv/bin/python -m pytest tests -q
+    result: 13 passed
+    date: 2026-03-10
+
+files_analyzed:
+  - file: definitions.py
+    path: system/control_tower/backend/contracts/definitions.py
+    purpose: parameter_export/optimization_request/flight_plan/telemetry_snapshot 계약 정의, fixture loader, validator
+    key_elements:
+      - element: CONTRACTS
+        type: contract_registry
+        location: system/control_tower/backend/contracts/definitions.py:238
+        description: 4개 계약의 required/optional field와 extra validator를 고정한다
+      - element: load_golden_fixture
+        type: fixture_loader
+        location: system/control_tower/backend/contracts/definitions.py:431
+        description: golden sample을 읽어 tower/onboard contract 기준선으로 재사용한다
+      - element: validate_contract_payload
+        type: validator
+        location: system/control_tower/backend/contracts/definitions.py:441
+        description: scaffold, optimizer, telemetry, tests가 공통으로 사용하는 계약 검증 진입점이다
+    language: Python
+    lines: 455
+  - file: main.py
+    path: system/control_tower/main.py
+    purpose: headless/ui/auto bootstrap CLI
+    key_elements:
+      - element: run
+        type: entrypoint
+        location: system/control_tower/main.py:34
+        description: RuntimeConfig를 로드하고 ApplicationReport를 JSON으로 출력한다
+    language: Python
+    lines: 76
+  - file: services.py
+    path: system/control_tower/backend/services.py
+    purpose: optional dependency probe, telemetry selection, supervisor/optimizer wiring
+    key_elements:
+      - element: build_service_container
+        type: composition_root
+        location: system/control_tower/backend/services.py:71
+        description: mock/live telemetry와 CasADi optimizer를 묶은 headless-safe container를 만든다
+    language: Python
+    lines: 122
+  - file: application.py
+    path: system/control_tower/manager/application.py
+    purpose: headless/ui boot policy와 operator-facing report 구성
+    key_elements:
+      - element: ControlTowerApplication.boot
+        type: application_service
+        location: system/control_tower/manager/application.py:27
+        description: auto mode degrade 경로와 headless report 경로를 제공한다
+    language: Python
+    lines: 80
+  - file: export_prams.ks
+    path: system/vessle/export_prams.ks
+    purpose: kOS WRITEJSON 기반 parameter_export 1.0.0 emitter
+    key_elements:
+      - element: BUILD_PAYLOAD
+        type: exporter
+        location: system/vessle/export_prams.ks:68
+        description: 질량, 추력, ISP, 환경값, resource/engine summary를 flat JSON으로 투영한다
+    language: kOS
+    lines: 171
+  - file: optimizer.py
+    path: system/control_tower/backend/optimizer.py
+    purpose: exporter payload를 optimizer request로 변환하고 CasADi 1축 ascent plan을 생성
+    key_elements:
+      - element: build_optimization_request_from_parameter_export
+        type: adapter
+        location: system/control_tower/backend/optimizer.py:14
+        description: exporter payload를 optimization_request 1.0.0으로 정규화한다
+      - element: Casadi1AxisOptimizer.solve
+        type: optimizer
+        location: system/control_tower/backend/optimizer.py:95
+        description: feasibility 체크, CasADi solve, diagnostics, checksum 포함 flight_plan 생성까지 담당한다
+    language: Python
+    lines: 370
+  - file: telemetry.py
+    path: system/control_tower/backend/telemetry.py
+    purpose: telemetry snapshot 모델, mock/live adapter, alias normalization
+    key_elements:
+      - element: TelemetrySnapshot
+        type: data_model
+        location: system/control_tower/backend/telemetry.py:28
+        description: telemetry_snapshot 계약을 typed object로 표현한다
+      - element: MockTelemetryAdapter
+        type: adapter
+        location: system/control_tower/backend/telemetry.py:109
+        description: live dependency 없이 supervisor 테스트와 headless 부팅을 지탱한다
+      - element: KrpcTelemetryAdapter
+        type: adapter
+        location: system/control_tower/backend/telemetry.py:201
+        description: krpc가 있으면 live payload를 읽고 contract-valid snapshot으로 정규화한다
+    language: Python
+    lines: 508
+  - file: supervisor.py
+    path: system/control_tower/backend/supervisor.py
+    purpose: mission state machine과 abort/complete 판단
+    key_elements:
+      - element: MissionSupervisor
+        type: state_machine
+        location: system/control_tower/backend/supervisor.py:51
+        description: draft -> armed -> active -> completed|aborted 전이를 telemetry 기반으로 관리한다
+    language: Python
+    lines: 200
+  - file: controler_1axis.ks
+    path: system/vessle/controler_1axis.ks
+    purpose: onboard flight_plan consumer 예정 위치
+    key_elements: []
+    language: kOS
+    lines: 0
+  - file: environment.yml
+    path: environment.yml
+    purpose: local Python dependencies posture 확인
+    key_elements:
+      - element: casadi
+        type: dependency
+        location: environment.yml:1
+        description: 설치되어 optimizer tests가 통과한다
+      - element: pytest
+        type: dependency
+        location: environment.yml:1
+        description: contracts/scaffold/backend tests 실행 가능
+      - element: dearpygui
+        type: dependency
+        location: environment.yml:1
+        description: 명시되지 않아 UI는 soft-gated scaffold 상태다
+      - element: krpc
+        type: dependency
+        location: environment.yml:1
+        description: 명시되지 않아 live adapter는 optional/unavailable 경로를 유지한다
+    language: YAML
+    lines: 52
+  - file: test_contract_fixtures.py
+    path: tests/test_contract_fixtures.py
+    purpose: manifest, fixture parse, required/optional field behavior 검증
+    key_elements:
+      - element: test_golden_fixtures_parse_and_validate
+        type: test
+        location: tests/test_contract_fixtures.py:24
+        description: 모든 golden fixture가 schema version과 validator를 통과함을 보장한다
+    language: Python
+    lines: 103
+  - file: test_control_tower_scaffold.py
+    path: tests/test_control_tower_scaffold.py
+    purpose: headless scaffold import/boot/degraded auto mode 검증
+    key_elements:
+      - element: test_headless_cli_boot_emits_json_report
+        type: test
+        location: tests/test_control_tower_scaffold.py:25
+        description: CLI headless boot가 JSON report를 출력함을 검증한다
+    language: Python
+    lines: 52
+  - file: test_optimizer_service.py
+    path: tests/test_optimizer_service.py
+    purpose: optimizer success/infeasible diagnostics/export adapter 경로 검증
+    key_elements:
+      - element: test_optimizer_solves_sample_request_into_valid_flight_plan
+        type: test
+        location: tests/test_optimizer_service.py:15
+        description: sample request가 contract-valid flight_plan으로 풀리는지 확인한다
+    language: Python
+    lines: 71
+  - file: test_telemetry_supervisor.py
+    path: tests/test_telemetry_supervisor.py
+    purpose: alias normalization, supervisor abort path, live-adapter unavailable fallback 검증
+    key_elements:
+      - element: test_supervisor_loop_tracks_active_then_aborted_state
+        type: test
+        location: tests/test_telemetry_supervisor.py:46
+        description: dynamic pressure abort 상태 전이를 로컬 mock stream으로 재현한다
+    language: Python
+    lines: 134
+
+patterns_found:
+  - category: contracts
+    pattern: contract-first backend boundary with golden fixtures
+    description: tower-side Python modules와 tests가 단일 contract registry와 fixture set를 공유하여 schema drift를 억제한다.
+    examples:
+      - file: definitions.py
+        location: system/control_tower/backend/contracts/definitions.py:238
+        snippet: CONTRACTS registry + fixture_name + field specs + validators
+      - file: test_contract_fixtures.py
+        location: tests/test_contract_fixtures.py:24
+        snippet: 모든 golden fixture를 로드하고 validate_contract_payload로 검증
+    prevalence: dominant
+  - category: runtime
+    pattern: headless-first scaffold with optional dependency gates
+    description: dearpygui와 krpc가 없어도 boot가 깨지지 않도록 mock telemetry와 degraded auto/ui 경로가 준비되어 있다.
+    examples:
+      - file: services.py
+        location: system/control_tower/backend/services.py:71
+        snippet: live 실패 시 mock telemetry fallback
+      - file: application.py
+        location: system/control_tower/manager/application.py:27
+        snippet: auto mode에서 UI unavailable이면 degraded headless report 반환
+    prevalence: dominant
+  - category: optimization
+    pattern: offline-solvable 1D ascent planning
+    description: exporter payload를 request로 바꾸고 CasADi로 flight_plan을 생성하는 offline path가 구현되어 있다.
+    examples:
+      - file: optimizer.py
+        location: system/control_tower/backend/optimizer.py:14
+        snippet: parameter_export -> optimization_request adapter
+      - file: optimizer.py
+        location: system/control_tower/backend/optimizer.py:95
+        snippet: feasibility + solve + diagnostics + checksum
+    prevalence: dominant
+  - category: integration
+    pattern: exporter-complete but controller-missing asymmetry
+    description: onboard side는 parameter export 생산자는 구현됐지만 flight_plan 소비자는 아직 비어 있어 tower-to-vessel loop가 닫히지 않았다.
+    examples:
+      - file: export_prams.ks
+        location: system/vessle/export_prams.ks:68
+        snippet: BUILD_PAYLOAD + WRITEJSON exporter 구현
+      - file: controler_1axis.ks
+        location: system/vessle/controler_1axis.ks:1
+        snippet: empty file
+    prevalence: dominant
+
+related_architecture:
+  components_relevant_to_domain:
+    - component: contracts package
+      responsibility: stable JSON boundary and golden fixture source
+      location: system/control_tower/backend/contracts/
+      relationship_to_domain: tower/onboard/shared schema baseline
+    - component: runtime + service container
+      responsibility: configuration load, dependency probing, telemetry/optimizer/supervisor assembly
+      location: system/control_tower/backend/runtime.py and system/control_tower/backend/services.py
+      relationship_to_domain: headless-safe bootstrap and dependency posture
+    - component: manager application
+      responsibility: headless/ui boot policy and operator-facing report
+      location: system/control_tower/manager/application.py
+      relationship_to_domain: current operator entry surface, but not full mission orchestration yet
+    - component: optimizer
+      responsibility: 1-axis request adaptation and plan solve
+      location: system/control_tower/backend/optimizer.py
+      relationship_to_domain: flight_plan producer
+    - component: telemetry adapter
+      responsibility: mock/live snapshot normalization
+      location: system/control_tower/backend/telemetry.py
+      relationship_to_domain: supervisory observation source
+    - component: supervisor
+      responsibility: lifecycle state machine and abort logic
+      location: system/control_tower/backend/supervisor.py
+      relationship_to_domain: safety monitoring core
+    - component: export_prams.ks
+      responsibility: parameter export
+      location: system/vessle/export_prams.ks
+      relationship_to_domain: optimizer input producer
+    - component: controler_1axis.ks
+      responsibility: planned flight plan consumer and actuator loop
+      location: system/vessle/controler_1axis.ks
+      relationship_to_domain: largest remaining onboard gap
+  interfaces_used_by_domain:
+    - contract_manifest() / load_golden_fixture() / validate_contract_payload()
+    - RuntimeConfig.load() and ControlTowerApplication.boot()
+    - build_optimization_request_from_parameter_export() -> Casadi1AxisOptimizer.solve()
+    - TelemetrySnapshot.from_mapping() and MissionSupervisor.run_steps()
+    - kOS WRITEJSON exporter contract handoff
+  data_flow_involving_domain: export_prams.ks emits parameter_export JSON, tower normalizes it into optimization_request, CasADi generates flight_plan, telemetry/supervisor can monitor draft-to-abort/complete flows locally, but controler_1axis.ks does not yet consume the plan in runtime.
+  key_relationships_to_domain:
+    - from: system/vessle/export_prams.ks
+      to: system/control_tower/backend/optimizer.py
+      relationship: parameter export producer -> optimization request adapter input
+    - from: system/control_tower/backend/contracts/
+      to: tests/
+      relationship: shared contract source -> regression guard
+    - from: system/control_tower/backend/telemetry.py
+      to: system/control_tower/backend/supervisor.py
+      relationship: snapshot producer -> mission state machine consumer
+    - from: system/control_tower/backend/optimizer.py
+      to: system/vessle/controler_1axis.ks
+      relationship: flight_plan producer -> pending onboard consumer
+
+related_dependencies:
+  internal:
+    - component: tests/
+      relationship_to_domain: current regression evidence for T2-T6 scope
+      direction: inbound
+  external:
+    - dependency: CasADi
+      relationship_to_domain: optimizer engine, confirmed available locally
+    - dependency: pytest
+      relationship_to_domain: local verification runner, confirmed available locally
+    - dependency: kRPC
+      relationship_to_domain: optional telemetry/supervisory bridge, not pinned in environment.yml
+    - dependency: DearPyGui
+      relationship_to_domain: optional operator UI, not pinned in environment.yml
+    - dependency: kOS runtime
+      relationship_to_domain: exporter/controller execution target, local workspace에서 직접 검증 불가
+
+evidence_for_symbols:
+  - symbol: CONTRACTS
+    source: system/control_tower/backend/contracts/definitions.py
+    status: confirmed_implemented
+  - symbol: build_optimization_request_from_parameter_export
+    source: system/control_tower/backend/optimizer.py
+    status: confirmed_implemented
+  - symbol: Casadi1AxisOptimizer
+    source: system/control_tower/backend/optimizer.py
+    status: confirmed_implemented
+  - symbol: TelemetrySnapshot
+    source: system/control_tower/backend/telemetry.py
+    status: confirmed_implemented
+  - symbol: MissionSupervisor
+    source: system/control_tower/backend/supervisor.py
+    status: confirmed_implemented
+  - symbol: export_prams.ks
+    source: system/vessle/export_prams.ks
+    status: confirmed_implemented
+  - symbol: controler_1axis.ks
+    source: system/vessle/controler_1axis.ks
+    status: confirmed_empty
+
+open_questions:
+  - question: 실제 kOS 런타임에서 controller가 `READJSON`과 persistent polling/arming loop를 어떤 제약으로 수행하는가?
+    context: T7 구현과 safety model에 직접 영향
+  - question: host의 `flight_plan.json`을 kOS volume/files로 배포하는 표준 절차는 무엇인가?
+    context: T8 orchestration이 dispatch까지 닫히려면 파일 handoff 정의가 필요
+  - question: live kRPC 세션에서 altitude/speed/thrust field alias가 mock 가정과 완전히 일치하는가?
+    context: supervisor abort/complete 판단 정확도에 영향
+
+gaps:
+  - area: onboard controller
+    description: controler_1axis.ks가 비어 있어 flight_plan 소비, PID loop, safe idle/abort logic가 아직 없다
+    impact: tower가 생성한 plan을 실제 비행 제어로 연결할 수 없다
+  - area: mission orchestration
+    description: manager는 boot/report까지 구현됐지만 export -> optimize -> dispatch -> monitor end-to-end flow는 없다
+    impact: operator workflow와 integration test가 아직 성립하지 않는다
+  - area: live runtime verification
+    description: kRPC live connection, kOS volume exchange, 실제 KSP flight session이 로컬 workspace에서 검증되지 않았다
+    impact: mock/offline assumptions가 실제 게임 런타임과 어긋날 수 있다
+  - area: optional dependency enablement
+    description: dearpygui와 krpc가 environment.yml에 고정되지 않아 live/UI setup은 수동 준비가 필요하다
+    impact: future agents는 headless 기본값을 유지하고 설치/runbook 작업을 별도로 처리해야 한다
