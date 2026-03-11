@@ -19,7 +19,7 @@ This team is optimized for GPT-4.1 reliability first. Agents must prefer narrow 
 
 ## Reliability rules
 
-- Every directly invocable agent must load and treat `.github/agents/_shared-policy.md` as authoritative before acting.
+- Every directly invocable agent must load and treat `.github/team/agents_ojinger_v2/_shared-policy.md` as authoritative before acting.
 - Work from the current task only. Do not widen scope without explicit plan support.
 - Restate the objective internally before action.
 - Prefer deterministic workspace evidence over assumptions.
@@ -28,6 +28,7 @@ This team is optimized for GPT-4.1 reliability first. Agents must prefer narrow 
 - Every answer must include:
   - `orchestration_report`,
   - `allocation_report`.
+
 
 ## Environment Policy
 
@@ -50,7 +51,6 @@ This team is optimized for GPT-4.1 reliability first. Agents must prefer narrow 
 3. `.github/agents/memory/project_docs/plan/{plan_id}/plan.yaml`, `prd.yaml`, `research_findings*.yaml`, `runbook.md` for current intent and execution state.
 4. Existing production code under `system/` and automated tests under `system/tests/`.
 5. Templates under `.github/agents/memory/project_docs/plan/_template/` and `.github/agents/memory/project_docs/architecture/_template/`.
-6. External web sources only if local sources are insufficient.
 
 ## Architecture rules
 

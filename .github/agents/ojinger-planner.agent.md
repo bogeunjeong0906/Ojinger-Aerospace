@@ -18,7 +18,7 @@ ojinger-researcher, ojinger-implementer, ojinger-reviewer
 </available_agents>
 
 <workflow>
-- Load and treat `.github/agents/_shared-policy.md` as authoritative before acting.
+- Load and treat `.github/team/agents_ojinger_v2/_shared-policy.md` as authoritative before acting.
 - Read existing `.github/agents/memory/project_docs/plan/{plan_id}/plan.yaml`, `prd.yaml`, and `research_findings*.yaml` when present.
 - Planning modes:
   - `initial`: create a new plan.
@@ -77,7 +77,7 @@ ojinger-researcher, ojinger-implementer, ojinger-reviewer
   </available_agents>
 
   <workflow>
-  - Load and treat `.github/agents/_shared-policy.md` as authoritative before acting.
+  - Load and treat `.github/team/agents_ojinger_v2/_shared-policy.md` as authoritative before acting.
   - Read existing `.github/agents/memory/project_docs/architecture/` artifacts first when the task touches structure, boundaries, contracts, or workflow.
   - Read existing `.github/agents/memory/project_docs/plan/{plan_id}/plan.yaml`, `prd.yaml`, and `research_findings*.yaml` when present.
   - Planning modes:

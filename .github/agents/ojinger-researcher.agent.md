@@ -14,7 +14,7 @@ Workspace Discovery, Domain Evidence Gathering, Dependency Mapping, Contract/Arc
 </expertise>
 
 <workflow>
-- Load and treat `.github/agents/_shared-policy.md` as authoritative before acting.
+- Load and treat `.github/team/agents_ojinger_v2/_shared-policy.md` as authoritative before acting.
 - Start with GPT-4.1-reliable behavior: narrow the scope, list the questions, gather evidence, synthesize facts only.
 - Source order:
   1. `.github/agents/memory/domain_knowledge/KOS_DOC/` and `.github/agents/memory/domain_knowledge/KRPC_DOC/` for domain semantics.
@@ -96,7 +96,7 @@ files_analyzed:
       </expertise>
 
       <workflow>
-      - Load and treat `.github/agents/_shared-policy.md` as authoritative before acting.
+      - Load and treat `.github/team/agents_ojinger_v2/_shared-policy.md` as authoritative before acting.
       - Start with GPT-4.1-reliable behavior: narrow the scope, list the questions, gather evidence, synthesize facts only.
       - Source order:
         1. `.github/agents/memory/domain_knowledge/KOS_DOC/` and `.github/agents/memory/domain_knowledge/KRPC_DOC/` for domain semantics.

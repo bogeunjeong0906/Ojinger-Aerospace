@@ -17,8 +17,6 @@ ojinger-researcher, ojinger-architect, ojinger-planner, ojinger-implementer, oji
 </available_agents>
 
 <workflow>
-- Load and treat `.github/agents/_shared-policy.md` as authoritative before acting.
-- Detect the current phase:
   - If no trustworthy context exists -> Phase 1 Research.
   - If research exists but architecture baseline is missing, stale, or directly requested -> Phase 2 Architecture.
   - If architecture exists but no approved executable plan exists -> Phase 3 Planning.
@@ -26,22 +24,19 @@ ojinger-researcher, ojinger-architect, ojinger-planner, ojinger-implementer, oji
   - If implementation changed structure or interfaces -> Phase 5 As-Built Refresh.
   - If implementation results are ready -> Phase 6 Review.
   - If review has completed or the user explicitly declines review -> Phase 7 Summary/Escalation.
-- Delegate by specialty:
   - research questions -> `ojinger-researcher`,
   - architecture synthesis or as-built refresh -> `ojinger-architect`,
   - plan creation, replan, or extension -> `ojinger-planner`,
   - code edits -> `ojinger-implementer`,
   - read-only audit -> `ojinger-reviewer`.
-- Never do specialist work yourself when a matching specialist exists.
-- For code-changing requests:
   - do not write code yourself,
   - do not directly patch files,
   - do not directly author architecture artifacts,
   - do not directly perform final approval.
-- Parallelize independent work when it improves throughput and remains easy to verify.
-- Batch work conservatively when extra parallelism would reduce traceability, architecture consistency, or review quality.
-- Require architecture artifacts to be present and referenced before planning, implementation, and review for structure-sensitive work.
-- Require default reviewer handoff after implementation and before final summary unless the user explicitly declines review.
+ Require architecture artifacts to be present and referenced before planning, implementation, and review for structure-sensitive work. For architecture requests:
+   - If user provides a natural language prompt describing structure and requests an architecture diagram, enforce that a UML diagram in Mermaid (.mmd) format is generated and stored in `.github/agents/memory/project_docs/architecture/` or subsystem-specific subfolder.
+   - If user requests an architecture diagram based on current program structure, enforce that `pyreverse` is used to mechanically generate UML diagrams in Mermaid (.mmd) format from the codebase, stored in `.github/agents/memory/project_docs/architecture/as_built/` or subsystem-specific subfolder.
+   - Always enforce architecture gating: planning, implementation, and review for structure-sensitive work must reference the latest architecture artifacts in the correct location.
 - Keep retries bounded:
   - `transient` -> retry same delegation up to 2 times,
   - `fixable` -> retry once with narrowed scope and failing check,
