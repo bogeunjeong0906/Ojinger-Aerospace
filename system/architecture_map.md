@@ -13,16 +13,33 @@ graph TD
     end
 
     User[User] -->|Input| ui
-    manager -->|Command to Execute Script| vessle
-    vessle -->|Generate params.json| export.ks
+    manager -->|Command to Execute Script| vessel
+    vessel -->|Generate params.json| export.ks
     export.ks -->|Create| params.json
     params.json -->|Read| manager
 
-    subgraph vessle [vessle]
+    subgraph vessel [vessel]
         direction TB
         control.ks[control.ks - Real-time Control Script]
         export.ks[export.ks - Export Script: Save Rocket Parameters]
     end
 
     engine -->|Optimal Path Calculation| manager
+```
+
+### export.ks 상세 아키텍처
+아래 다이어그램은 `export.ks` 스크립트 내부 흐름을 나타냅니다.
+
+```mermaid
+graph TD
+    subgraph export_ks [export.ks]
+        direction TB
+        shipAPI["SHIP & VESSEL APIs"] --> collect[Collect telemetry]
+        collect --> build[Build JSON object]
+        build --> fileWrite[Write JSON to file]
+    end
+
+    collect -->|iterate parts/engines| parts["PARTS/ENGINES lists"]
+    build -->|use LEXICON/LIST| structures["kOS data structures"]
+    fileWrite -->|WRITEJSON| filesystem["kOS filesystem (vessel/export.json)"]
 ```

@@ -1,6 +1,6 @@
 // export.ks
 // This script collects telemetry about the active vessel and
-// writes the information out as JSON to "vessle/export.json".
+// writes the information out as JSON to "vessel/export.json".
 //
 // The output structure looks roughly like:
 // {
@@ -91,11 +91,11 @@ UNTIL idx > currentStageNum {
 data:ADD("stages", stages).
 
 // ensure the output directory exists
-IF NOT EXISTS("vessle") {
-    CREATEDIR("vessle").
+IF NOT EXISTS("vessel") {
+    CREATEDIR("vessel").
 }
 
 // write the JSON file
-WRITEJSON(data, "vessle/export.json").
+WRITEJSON(data, "vessel/export.json").
 
-PRINT "export.ks: telemetry written to vessle/export.json".
+PRINT "export.ks: telemetry written to vessel/export.json".
