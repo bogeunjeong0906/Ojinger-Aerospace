@@ -18,26 +18,32 @@ ojinger-researcher, ojinger-implementer, ojinger-reviewer
 </available_agents>
 
 <workflow>
-- Load and treat `.github/team/agents_ojinger_v2/_shared-policy.md` as authoritative before acting.
-- Read existing `.github/agents/memory/project_docs/plan/{plan_id}/plan.yaml`, `prd.yaml`, and `research_findings*.yaml` when present.
-- Planning modes:
-  - `initial`: create a new plan.
-  - `extension`: add bounded new tasks without destabilizing completed work.
-  - `replan`: rebuild affected branches after failure or changed requirements.
-- Build a DAG with waves:
-  - wave 1 tasks have no dependencies,
-  - later waves depend only on prior waves,
-  - every non-trivial dependency gets a contract when data/behavior crosses task boundaries.
-- Preserve strong role boundaries:
-  - research for discovery,
-  - implementer for edits,
-  - reviewer for read-only audit.
-- Include a reviewer-owned handoff/checkpoint after implementation by default before final summary or closure, unless the user explicitly declines review.
-- Ojinger planning rules:
-  - Prefer contract-first tasks for tower/onboard handoff.
-  - Preserve `system/control_tower` architecture layers.
-  - Do not push `CasADi` concerns into UI tasks.
-  - Treat `kRPC` and `DearPyGui` as optional unless the request explicitly changes dependency policy.
+  - Load and treat `.github/team/agents_ojinger_v2/_shared-policy.md` as authoritative before acting.
+  - Read existing `system/project_docs/architecture/` artifacts first when the task touches structure, boundaries, contracts, or workflow.
+  - Read existing `system/project_docs/plan/{plan_id}/plan.yaml`, `prd.yaml`, and `research_findings*.yaml` when present.
+  - Planning modes:
+    - `initial`: create a new plan.
+    - `extension`: add bounded new tasks without destabilizing completed work.
+    - `replan`: rebuild affected branches after failure or changed requirements.
+  - Build a DAG with waves:
+    - wave 1 tasks have no dependencies,
+    - later waves depend only on prior waves,
+    - every non-trivial dependency gets a contract,
+    - every structure-sensitive task gets architecture references and architecture gates.
+  - Preserve strong role boundaries:
+    - research for discovery,
+    - architect for architecture artifacts,
+    - implementer for edits,
+    - reviewer for read-only audit.
+  - Include reviewer-owned handoff/checkpoint after implementation by default before final summary or closure, unless the user explicitly declines review.
+  Ojinger planning rules:
+    - Prefer contract-first tasks for tower/onboard handoff.
+    - Preserve `system/control_tower` architecture layers.
+    - Do not push `CasADi` concerns into UI tasks.
+    - Treat `kRPC` and `DearPyGui` as optional unless the request explicitly changes dependency policy.
+    - Use `.github/agents/memory/domain_knowledge/`, architecture artifacts, and current tests in `system/tests/` to shape acceptance criteria for `kOS`/`kRPC`/architecture work.
+    - Respect `system/project_docs/plan/` as the durable execution record.
+    - Require an as-built refresh task when structure/interfaces change.
   - Use `.github/agents/memory/domain_knowledge/` and current tests in `system/tests/` to shape acceptance criteria for `kOS`/`kRPC` work.
   - Respect `.github/agents/memory/project_docs/plan/` as the durable execution record.
 - Add bounded failure modes and verification per task.

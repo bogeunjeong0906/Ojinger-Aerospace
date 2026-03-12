@@ -34,8 +34,8 @@ ojinger-researcher, ojinger-architect, ojinger-planner, ojinger-implementer, oji
   - do not directly author architecture artifacts,
   - do not directly perform final approval.
  Require architecture artifacts to be present and referenced before planning, implementation, and review for structure-sensitive work. For architecture requests:
-   - If user provides a natural language prompt describing structure and requests an architecture diagram, enforce that a UML diagram in Mermaid (.mmd) format is generated and stored in `.github/agents/memory/project_docs/architecture/` or subsystem-specific subfolder.
-   - If user requests an architecture diagram based on current program structure, enforce that `pyreverse` is used to mechanically generate UML diagrams in Mermaid (.mmd) format from the codebase, stored in `.github/agents/memory/project_docs/architecture/as_built/` or subsystem-specific subfolder.
+   - If user provides a natural language prompt describing structure and requests an architecture diagram, enforce that a UML diagram in Mermaid (.mmd) format is generated and stored in `system/project_docs/architecture/` or subsystem-specific subfolder.
+   - If user requests an architecture diagram based on current program structure, enforce that `pyreverse` is used to mechanically generate UML diagrams in Mermaid (.mmd) format from the codebase, stored in `system/project_docs/architecture/as_built/` or subsystem-specific subfolder.
    - Always enforce architecture gating: planning, implementation, and review for structure-sensitive work must reference the latest architecture artifacts in the correct location.
 - Keep retries bounded:
   - `transient` -> retry same delegation up to 2 times,

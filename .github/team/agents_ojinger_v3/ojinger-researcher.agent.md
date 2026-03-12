@@ -16,22 +16,24 @@ Workspace Discovery, Domain Evidence Gathering, Dependency Mapping, Contract/Arc
 <workflow>
 - Load and treat `.github/team/agents_ojinger_v2/_shared-policy.md` as authoritative before acting.
 - Start with GPT-4.1-reliable behavior: narrow the scope, list the questions, gather evidence, synthesize facts only.
-- Source order:
-  1. `.github/agents/memory/domain_knowledge/KOS_DOC/` and `.github/agents/memory/domain_knowledge/KRPC_DOC/` for domain semantics.
-  2. `.github/agents/memory/project_docs/plan/{plan_id}/` artifacts.
-  3. `system/` and `system/tests/` implementation evidence.
+  - Source order:
+    1. `.github/agents/memory/domain_knowledge/KOS_DOC/` and `.github/agents/memory/domain_knowledge/KRPC_DOC/` for domain semantics.
+    2. relevant `system/project_docs/architecture/` artifacts for system structure and current boundaries.
+    3. `system/project_docs/plan/{plan_id}/` artifacts.
+    4. `system/` and `system/tests/` implementation evidence.
 - Research passes:
   1. find relevant files,
   2. inspect exact patterns,
   3. read key files,
   4. map relationships,
   5. identify open questions and confidence.
-- Ojinger focus rules:
-  - For `kOS` topics, inspect `system/vessle/` and kOS reference pages before inferring behavior.
-  - For `kRPC` topics, inspect telemetry/runtime paths plus `.github/agents/memory/domain_knowledge/KRPC_DOC/`.
-  - For `CasADi`, inspect backend optimizer and related tests.
-  - For `DearPyGui`, inspect `system/control_tower/ui/` and optional-dependency handling.
-  - For mission flow, inspect `system/control_tower/manager/`, `main.py`, and `.github/agents/memory/project_docs/plan/` artifacts.
+  - Ojinger focus rules:
+    - For `kOS` topics, inspect `system/vessle/` and kOS reference pages before inferring behavior.
+    - For `kRPC` topics, inspect telemetry/runtime paths plus `.github/agents/memory/domain_knowledge/KRPC_DOC/`.
+    - For `CasADi`, inspect backend optimizer and related tests.
+    - For `DearPyGui`, inspect `system/control_tower/ui/` and optional-dependency handling.
+    - For mission flow, inspect `system/control_tower/manager/`, `main.py`, `system/project_docs/plan/`, and architecture artifacts.
+    - For structure-sensitive questions, read the current intent and as-built architecture before summarizing.
 - Deliver only factual findings. No implementation suggestions.
 - Escalate when local sources conflict materially or when live-runtime uncertainty blocks a safe factual answer.
 </workflow>

@@ -14,14 +14,14 @@ Architecture Synthesis, Mermaid/UML Modeling, Goal Mapping, Architecture Drift A
 </expertise>
 
 <workflow>
-   - `intent`: If user provides a natural language prompt describing structure and requests an architecture diagram, generate a UML diagram in Mermaid (.mmd) format from the prompt and save it to `.github/agents/memory/project_docs/architecture/` or a subsystem-specific subfolder.
-   - `as_built`: If user requests an architecture diagram based on current program structure, use `pyreverse` to mechanically generate UML diagrams in Mermaid (.mmd) format from the codebase, and save them to `.github/agents/memory/project_docs/architecture/as_built/` or subsystem-specific subfolder. Record generator, scope, timestamp, and exclusions in an architecture manifest.
-   - Always enforce architecture gating: planning, implementation, and review for structure-sensitive work must reference the latest architecture artifacts in the correct location.
-   - `drift_review`: compare intent and as-built artifacts.
-   - `refresh`: update stale architecture artifacts after structural changes.
+  - `intent`: If user provides a natural language prompt describing structure and requests an architecture diagram, generate a UML diagram in Mermaid (.mmd) format from the prompt and save it to `system/project_docs/architecture/` or a subsystem-specific subfolder.
+  - `as_built`: If user requests an architecture diagram based on current program structure, use `pyreverse` to mechanically generate UML diagrams in Mermaid (.mmd) format from the codebase, and save them to `system/project_docs/architecture/as_built/` or subsystem-specific subfolder. Record generator, scope, timestamp, and exclusions in an architecture manifest.
+  - Always enforce architecture gating: planning, implementation, and review for structure-sensitive work must reference the latest architecture artifacts in the correct location.
+  - `drift_review`: compare intent and as-built artifacts.
+  - `refresh`: update stale architecture artifacts after structural changes.
   1. user objective and active task,
-  2. `.github/agents/memory/project_docs/architecture/` existing artifacts and manifests,
-  3. `.github/agents/memory/project_docs/plan/{plan_id}/` artifacts,
+  2. `system/project_docs/architecture/` existing artifacts and manifests,
+  3. `system/project_docs/plan/{plan_id}/` artifacts,
   4. `.github/agents/memory/domain_knowledge/` when domain semantics matter,
   5. workspace code and tests.
   - create standard artifacts such as goal maps, context views, subsystem/container views, component views, and architecture decisions,

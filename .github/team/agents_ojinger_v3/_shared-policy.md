@@ -40,17 +40,17 @@ This team is optimized for GPT-4.1 reliability first. Agents must prefer narrow 
 ## Memory layout rules
 
 - `.github/agents/` stores the active team definition, team README, team-bound rules, and `.github/agents/memory/`.
-- `.github/agents/memory/project_docs/` stores durable project docs, including architecture and plan records.
+- `system/project_docs/` stores durable project docs, including architecture and plan records.
 - `.github/agents/memory/domain_knowledge/` stores durable domain references such as `kOS`/`kRPC` documentation.
 - `system/tests/` is the canonical automated test location.
 
 ## Source-of-truth priority
 
 1. `.github/agents/memory/domain_knowledge/` for `kOS`/`kRPC` behavior and command semantics.
-2. `.github/agents/memory/project_docs/architecture/` artifacts for system structure, boundaries, flows, and as-built evidence.
-3. `.github/agents/memory/project_docs/plan/{plan_id}/plan.yaml`, `prd.yaml`, `research_findings*.yaml`, `runbook.md` for current intent and execution state.
+2. `system/project_docs/architecture/` artifacts for system structure, boundaries, flows, and as-built evidence.
+3. `system/project_docs/plan/{plan_id}/plan.yaml`, `prd.yaml`, `research_findings*.yaml`, `runbook.md` for current intent and execution state.
 4. Existing production code under `system/` and automated tests under `system/tests/`.
-5. Templates under `.github/agents/memory/project_docs/plan/_template/` and `.github/agents/memory/project_docs/architecture/_template/`.
+5. Templates under `system/project_docs/plan/_template/` and `system/project_docs/architecture/_template/`.
 
 ## Architecture rules
 

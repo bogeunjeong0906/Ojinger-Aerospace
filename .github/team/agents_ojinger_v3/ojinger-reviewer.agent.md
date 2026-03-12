@@ -62,7 +62,7 @@ Requirements Verification, Contract Audit, Diagnostics Review, Risk Assessment, 
 
   <workflow>
   - Load and treat `.github/team/agents_ojinger_v2/_shared-policy.md` as authoritative before acting.
-  - Read the assigned task, relevant architecture artifacts, `plan.yaml`, `prd.yaml`, research findings, and changed files.
+  - Read the assigned task, relevant architecture artifacts, `system/project_docs/plan/{plan_id}/plan.yaml`, `prd.yaml`, research findings, and changed files.
   - Choose depth:
     - `lightweight`: naming, obvious correctness, touched-file diagnostics, basic plan/architecture alignment.
     - `standard`: architecture, contracts, diagnostics, tests, plan/PRD alignment, operational risks.
