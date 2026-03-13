@@ -1,0 +1,46 @@
+tldr: >-
+  The Copilot instructions file is present but contains nested/incorrect fenced
+  code blocks (leading "```instructions" and an inner "```markdown"), which
+  will cause rendering issues. The Request Types section and the Korean
+  clarifying question are present. Missing: explicit `mermaid` example blocks
+  and proper fenced `bash` code blocks for the provided shell example.
+
+files_analyzed:
+  - path: .github/copilot-instructions.md
+    lines: 1-142
+
+patterns_found:
+  - description: File begins with a fenced code block using info-string
+    details: "```instructions" on line 1; contains another literal "```markdown"
+      inside, creating nested-fence rendering problems.
+  - description: Duplicate/overlapping content formats
+    details: The file mixes custom XML-like section tags (e.g. <Overview>) and
+      later Markdown headings (e.g. ## Overview).
+  - description: Request Types section present
+    details: The `RequestTypes` (`간편요청` / `일반요청`) section exists and
+      includes the required Korean clarifying question: "이 요청은 '간편요청'입니까,
+      아니면 '일반요청'입니까?".
+  - description: No fenced `mermaid` example blocks
+    details: Architecture guidance requires mermaid code blocks, but none are
+      present as examples.
+  - description: No fenced `bash` code block
+    details: PythonExecutionGuidelines include a shell command inline, but no
+      fenced bash code block with language tag is present.
+
+open_questions:
+  - question: Should the outer "```instructions" wrapper be removed so the
+    file renders as normal Markdown?
+  - question: Should example `mermaid` diagram blocks and a fenced `bash`
+    snippet be added to match the guidance in the document?
+
+gaps:
+  - Missing explicit `mermaid` codeblock examples to illustrate ArchitectureDiagramStandards.
+  - The leading nested fenced blocks (lines 1-2 and closing at 91/142) produce
+    ambiguous rendering and should be flattened to plain Markdown.
+  - No fenced code block with language `bash` for the recommended `conda activate` example.
+
+research_metadata:
+  generator: gem-researcher
+  plan_id: plan_check_20260313T0000Z
+  confidence: high
+  timestamp: 2026-03-13T00:00:00Z

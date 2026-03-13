@@ -1,0 +1,306 @@
+plan_id: plan_agents_20260313T0000Z
+objective: Read and internalize agent definition files and Copilot instructions for agent-domain discovery
+focus_area: agents
+created_at: "2026-03-13T00:00:00Z"
+created_by: gem-researcher
+status: completed
+
+tldr: |
+  - The repository defines a structured multi-agent system with a central `gem-orchestrator` and seven specialized agents (researcher, planner, implementer, reviewer, documentation-writer, devops, browser-tester).
+  - Agents share repeated conventions: strict input/output JSON/YAML guides, "Output ONLY the requested deliverable", tool-usage constraints, and delegation/approval gates centered on the orchestrator.
+  - Key technologies referenced: Playwright/Chrome DevTools (browser tests), Docker/Kubernetes (devops), casadi & dearpygui (project standards), kOS/kRPC domain-knowledge; security review and PRD validation are baked into workflows.
+  - Open questions/gaps: where `runSubagent`/manage_todo_list implementations live, evidence/log schema and storage conventions, and operational enforcement of Copilot language/diagram rules.
+
+research_metadata:
+  methodology: "Hybrid retrieval: read_file of all listed agent files + copilot_instructions, cross-file pattern extraction, relationship mapping"
+  scope: "All agent definition files listed by the task plus Copilot instructions (domain-scoped: agents)">
+  confidence: high
+  coverage: 100
+
+files_analyzed:
+  - file: gem-browser-tester.agent.md
+    path: .github/agents/gem-browser-tester.agent.md
+    purpose: E2E browser test agent specification (workflows, input/output schema, directives)
+    key_elements:
+      - element: workflow
+        type: pattern
+        location: .github/agents/gem-browser-tester.agent.md:@@workflow
+        description: Multi-step browser scenario flow (initialize, navigate, snapshot, interact, verify, cleanup)
+      - element: output_format_guide
+        type: schema
+        location: .github/agents/gem-browser-tester.agent.md:@@output_format_guide
+        description: JSON schema for reporting test results and evidence
+    language: markdown
+    lines: ~200
+
+  - file: gem-devops.agent.md
+    path: .github/agents/gem-devops.agent.md
+    purpose: Deployment and infra agent (CI/CD, idempotent ops, approval gates)
+    key_elements:
+      - element: approval_gates
+        type: section
+        location: .github/agents/gem-devops.agent.md:@@approval_gates
+        description: Conditions and actions for security/deployment approvals
+      - element: constraints
+        type: repeated_pattern
+        location: .github/agents/gem-devops.agent.md:@@constraints
+        description: Tool usage and communication restrictions
+    language: markdown
+    lines: ~200
+
+  - file: gem-documentation-writer.agent.md
+    path: .github/agents/gem-documentation-writer.agent.md
+    purpose: Docs generator and maintainer
+    key_elements:
+      - element: workflow
+        type: pattern
+        location: .github/agents/gem-documentation-writer.agent.md:@@workflow
+        description: Doc creation/update flows and artifact paths
+      - element: output_format_guide
+        type: schema
+        location: .github/agents/gem-documentation-writer.agent.md:@@output_format_guide
+        description: JSON result schema for doc tasks
+    language: markdown
+    lines: ~200
+
+  - file: gem-implementer.agent.md
+    path: .github/agents/gem-implementer.agent.md
+    purpose: TDD code implementer; writes code and tests
+    key_elements:
+      - element: TDD approach (Red→Green)
+        type: pattern
+        location: .github/agents/gem-implementer.agent.md:@@workflow
+        description: Enforce tests-first, run get_errors/tests/lint
+      - element: restrictions
+        type: directive
+        location: .github/agents/gem-implementer.agent.md:@@constraints
+        description: No code review responsibility; must follow plan and research findings
+    language: markdown
+    lines: ~300
+
+  - file: gem-orchestrator.agent.md
+    path: .github/agents/gem-orchestrator.agent.md
+    purpose: Central coordinator and delegator; defines phases, delegation protocol, and energetic lead persona
+    key_elements:
+      - element: delegation_protocol
+        type: schema
+        location: .github/agents/gem-orchestrator.agent.md:@@delegation_protocol
+        description: Parameter structure for delegating tasks to each agent
+      - element: directives
+        type: constraint
+        location: .github/agents/gem-orchestrator.agent.md:@@directives
+        description: Must not execute delegated work; always run subagents, manage plan.yaml and retries
+    language: markdown
+    lines: ~600
+
+  - file: gem-planner.agent.md
+    path: .github/agents/gem-planner.agent.md
+    purpose: Create DAG-based plans from research findings and PRD validation
+    key_elements:
+      - element: plan_format_guide
+        type: schema
+        location: .github/agents/gem-planner.agent.md:@@plan_format_guide
+        description: Detailed YAML layout for plan.yaml and task entries
+      - element: verification_criteria
+        type: checklist
+        location: .github/agents/gem-planner.agent.md:@@verification_criteria
+        description: Plan validation rules (DAG, estimates, contract consistency)
+    language: markdown
+    lines: ~900
+
+  - file: gem-researcher.agent.md
+    path: .github/agents/gem-researcher.agent.md
+    purpose: Researcher specification (this agent): multi-pass retrieval, relationship discovery, save YAML findings
+    key_elements:
+      - element: research_format_guide
+        type: schema
+        location: .github/agents/gem-researcher.agent.md:@@research_format_guide
+        description: Required YAML fields and structure for research outputs
+      - element: sequential_thinking_criteria
+        type: directive
+        location: .github/agents/gem-researcher.agent.md:@@sequential_thinking_criteria
+        description: When to use multi-step reasoning
+    language: markdown
+    lines: ~900
+
+  - file: gem-reviewer.agent.md
+    path: .github/agents/gem-reviewer.agent.md
+    purpose: Security and PRD compliance reviewer
+    key_elements:
+      - element: OWASP/secret scanning
+        type: pattern
+        location: .github/agents/gem-reviewer.agent.md:@@workflow
+        description: Depth-based scanning and criticality mapping
+      - element: output_format_guide
+        type: schema
+        location: .github/agents/gem-reviewer.agent.md:@@output_format_guide
+        description: JSON schema for review results
+    language: markdown
+    lines: ~400
+
+  - file: copilot-instructions.md
+    path: .github/copilot-instructions.md
+    purpose: Project-wide Copilot/Copilot-agent operational rules and domain-knowledge references
+    key_elements:
+      - element: language_rules
+        type: directive
+        location: .github/copilot-instructions.md:@@1
+        description: Explanations in Korean; code and artifacts in English
+      - element: domain_knowledge_enforcement
+        type: directive
+        location: .github/copilot-instructions.md:@@3
+        description: `.github/domain_knowledge` is authoritative for kOS/kRPC/dearpygui; must not use internal pre-trained model for those tools
+    language: markdown
+    lines: ~400
+
+patterns_found:
+  - category: architecture
+    pattern: orchestrator-delegation
+    description: Central `gem-orchestrator` detects phases and always delegates to subagents via a `runSubagent` protocol; orchestrator must not perform delegated work itself.
+    examples:
+      - file: gem-orchestrator.agent.md
+        location: gem-orchestrator.agent.md:@@workflow
+        snippet: "Delegate to researcher via runSubagent (up to 4 concurrent)"
+    prevalence: common
+
+  - category: communication
+    pattern: strict_output_only
+    description: Agents repeatedly enforce: return only the requested deliverable in their specified output schema; no extra commentary or artifacts unless requested.
+    examples:
+      - file: gem-documentation-writer.agent.md
+        location: gem-documentation-writer.agent.md:@@constraints
+        snippet: "Output ONLY the requested deliverable. For code requests: code ONLY, zero explanation..."
+    prevalence: common
+
+  - category: tool_usage
+    pattern: prefer_built-in_tools
+    description: Prefer dedicated built-in tools (`read_file`, `create_file`, `grep_search`, etc.) over shell/terminal commands; batch independent operations where possible.
+    examples:
+      - file: gem-browser-tester.agent.md
+        location: gem-browser-tester.agent.md:@@constraints
+        snippet: "Use dedicated tools (read_file, create_file, etc.) over terminal commands"
+    prevalence: common
+
+  - category: verification
+    pattern: depth_based_workflows
+    description: Agents define verification steps and result schemas (output_format_guide) and often require writing logs on failure to docs/plan/{plan_id}/logs/.
+    examples:
+      - file: gem-devops.agent.md
+        location: gem-devops.agent.md:@@workflow
+        snippet: "Log Failure: If status=failed, write to docs/plan/{plan_id}/logs/...yaml"
+    prevalence: common
+
+related_architecture:
+  components_relevant_to_domain:
+    - component: gem-orchestrator
+      responsibility: Central phase detection, delegation, retries, synthesis
+      location: .github/agents/gem-orchestrator.agent.md
+      relationship_to_domain: "Coordinates all other agents; single point of orchestration"
+    - component: gem-researcher
+      responsibility: Produce domain-scoped YAML research findings used by planner and implementer
+      location: .github/agents/gem-researcher.agent.md
+      relationship_to_domain: "Feeds planner with findings and confidence"
+    - component: gem-planner
+      responsibility: Create DAG plans and plan.yaml; validate against PRD
+      location: .github/agents/gem-planner.agent.md
+      relationship_to_domain: "Transforms research → executable tasks/contract definitions"
+
+  interfaces_used_by_domain:
+    - interface: runSubagent / delegation_protocol
+      location: gem-orchestrator.agent.md:@@delegation_protocol
+      usage_pattern: orchestrator -> subagent RPC-style delegation with agent-specific params
+
+  data_flow_involving_domain: |
+    User request → orchestrator phase detection → orchestrator delegates research tasks to gem-researcher → researcher writes docs/plan/{plan_id}/research_findings_*.yaml → planner consumes research findings to create docs/plan/{plan_id}/plan.yaml → orchestrator delegates execution tasks to implementer/devops/browser-tester → reviewers/doc-writer produce audit/docs → orchestrator synthesizes and finalizes PRD/docs.
+
+  key_relationships_to_domain:
+    - from: gem-orchestrator
+      to: gem-researcher
+      relationship: delegates via runSubagent
+    - from: gem-planner
+      to: gem-implementer
+      relationship: provides plan.yaml (tasks) to implement
+
+related_technology_stack:
+  languages_used_in_domain:
+    - Markdown
+    - YAML
+    - JSON
+    - Python (referenced indirectly via casadi/dearpygui/kRPC examples)
+  frameworks_used_in_domain:
+    - name: Playwright / Chrome DevTools MCP
+      usage_in_domain: Browser E2E automation (gem-browser-tester)
+    - name: dearpygui
+      usage_in_domain: Project UI standards (copilot instructions mandating dearpygui examples)
+    - name: casadi
+      usage_in_domain: Numerical optimization (project standard)
+  libraries_used_in_domain:
+    - name: kRPC
+      purpose_in_domain: KSP interaction (domain knowledge referenced)
+    - name: kOS
+      purpose_in_domain: kOS scripts referenced in domain knowledge
+  external_apis_used_in_domain:
+    - name: Chrome DevTools Protocol
+      integration_point: Browser automation and snapshots (gem-browser-tester)
+
+related_conventions:
+  naming_patterns_in_domain: "Agent files named gem-<role>.agent.md; plan/task IDs use timestamp/hash conventions"
+  structure_of_domain: "Agents specify: role, expertise, workflow, input_format_guide, output_format_guide, constraints, directives"
+  error_handling_in_domain: "Retry policies (2-3 retries), failure types (transient|fixable|needs_replan|escalate), write logs on failure to docs/plan/{plan_id}/logs/"
+  testing_in_domain: "TDD for implementer; E2E via browser-tester; reviewer enforces security/testing depth"
+  documentation_in_domain: "Documentation-writer writes to docs/plan and PRD; documentation artifacts required for finalization"
+
+related_dependencies:
+  internal:
+    - component: gem-orchestrator
+      relationship_to_domain: central coordinator
+      direction: bidirectional
+    - component: gem-planner
+      relationship_to_domain: consumes research findings
+      direction: inbound
+  external:
+    - name: docker
+      purpose_for_domain: DevOps containerization and deployment
+    - name: kubectl
+      purpose_for_domain: Cluster operations (devops agent)
+
+domain_security_considerations:
+  sensitive_areas:
+    - area: deployment to production
+      location: gem-devops.agent.md:@@approval_gates
+      concern: requires explicit approval gates and plan_review prior to production changes
+    - area: secrets/PII detection
+      location: gem-reviewer.agent.md:@@workflow
+      concern: reviewer must scan for secrets and flag critical issues
+  authentication_patterns_in_domain: "Approval gates and plan_review used to gate sensitive operations"
+  authorization_patterns_in_domain: "Not defined at agent-level; assumed external enforcement (CI/CD credentials, RBAC)"
+  data_validation_in_domain: "Plan and contract schemas define verification; explicit data validation patterns are not deeply specified"
+
+testing_patterns:
+  framework: "E2E via Playwright/Chrome DevTools; TDD for implementation; reviewer depth-based audits"
+  coverage_areas:
+    - E2E UI flows
+    - Security/secret scanning
+    - Unit/integration tests driven by implementer
+  test_organization: "Agents prescribe where tests are run and require get_errors/test runs; no single test harness specified"
+  mock_patterns:
+    - "Not detailed in agent files; implementer expected to follow TDD and testing frameworks appropriate to tech stack"
+
+open_questions:
+  - question: Is `runSubagent` provided as an actual runtime API or is it a logical protocol to be implemented by the orchestrator runtime?
+    context: Multiple agent files (orchestrator) reference `runSubagent` but no implementation details or runtime bindings are present in agent files.
+  - question: Where are shared tools like `manage_todo_list` and `evidence` storage implemented and what are their exact schemas/paths?
+    context: Agents reference manage_todo_list and evidence paths but repo-level implementations were not found in analyzed agent files.
+  - question: How strictly should the Copilot instruction language rule (Korean explanations, English artefacts) be enforced across automated agent outputs and orchestrator syntheses?
+    context: Copilot-instructions enforces explanation language in Korean while agents demand "Output ONLY requested deliverable"; clarify operational enforcement.
+
+gaps:
+  - area: runtime delegation primitives
+    description: "Agent files depend on runSubagent and orchestration runtime features, but those primitives and their API contracts are not present in the analyzed files."
+    impact: "Blocks end-to-end automation until runtime bindings for delegation are available."
+  - area: evidence/log schema
+    description: "Agents instruct writing logs and evidence to docs/plan/{plan_id}/..., but exact file naming conventions/manifest schemas are underspecified."
+    impact: "Impedes automated collection/consumption of evidence by downstream agents."
+  - area: domain_knowledge enforcement artifacts
+    description: "Copilot instructions require `.github/domain_knowledge` as source-of-truth; those referenced files were not part of this analysis and must be consumed for tool-specific rules (kOS/kRPC/dearpygui)."
+    impact: "Research and implementer agents need those files to obey domain-specific constraints; absence reduces confidence for domain-specific code generation."

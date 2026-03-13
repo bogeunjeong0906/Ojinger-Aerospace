@@ -41,5 +41,5 @@ graph TD
 
     collect -->|iterate parts/engines| parts["PARTS/ENGINES lists"]
     build -->|use LEXICON/LIST| structures["kOS data structures"]
-    fileWrite -->|WRITEJSON| filesystem["kOS filesystem (vessel/export.json)"]
+    fileWrite -->|WRITEJSON| filesystem["kOS filesystem (vessel/params.json)"]
 ```

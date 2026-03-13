@@ -1,53 +1,50 @@
 # GitHub Copilot Instructions for Rocket Mission Project
 
-This project governs the automated space mission system, including trajectory optimization and real-time rocket control. All interactions with the user must strictly follow these instructions.
+<Overview>
+- **Name**: GitHub Copilot Instructions for Rocket Mission Project
+- **Purpose**: Manage automated space mission systems (trajectory optimization & rocket control).
+</Overview>
 
----
+<ResponseLanguage>
+- **Explanations**: Always provide descriptions and explanations in **Korean**.
+- **Artifacts**: All Code, Comments, Diagrams, and Documentation must be in **English**.
+- **Tone**: Professional and technical.
+</ResponseLanguage>
 
-## 1. Response Language Standards
-- **Explanations**: Always provide descriptions and explanations in **Korean** for the user's convenience.
-- **Artifacts**: All generated technical content, including **Code, Comments, Architecture Diagrams, and Documentation**, must be written entirely in **English**.
-- **Tone**: Maintain a professional and technical tone.
+<DomainKnowledgeAndTooling>
+- **Source of Truth**: Reference `.github/domain_knowledge/` directory.
+- **Target Tools**:
+    - **kOS**: Reference `KOS_DOC`.
+    - **kRPC**: Reference `KRPC_DOC`.
+    - **DearPyGui**: Reference `dearpygui_example.py`.
+- **Rule**: DO NOT use pre-trained internal knowledge for these tools. Strictly follow provided reference files.
+</DomainKnowledgeAndTooling>
 
-## 2. Architecture Diagram Standards
-- **Format**: Use **UML** or **Mermaid (mmd)** for any architecture generation or modification requests.
-- **Visualization**: Ensure diagrams are wrapped in `mermaid` code blocks for proper rendering.
-- **Consistency**: Reflect the separation between 'Control Tower' (Optimization/UI) and 'Vessel' (Real-time control).
+<StandardToolset>
+- **UI**: `dearpygui`
+- **Optimization**: `casadi` (Prioritize symbolic modeling)
+- **Environment**: Always activate `.venv` via `conda activate ./.venv`.
+</StandardToolset>
 
-## 3. Domain Knowledge & Tooling (Strict Enforcement)
-The `.github/domain_knowledge` directory contains the "Source of Truth" for specialized tools.
-- **Target Tools**: 
-    - **kOS (Kerbal Operating System)**: `.ks` scripting language.
-    - **kRPC**: Python package for KSP interaction.
-- **Instruction**: **DO NOT** use your pre-trained internal knowledge for these tools. You must strictly reference the syntax, functions, and tokens provided in the `.github/domain_knowledge` path. Quote and use them "exactly" as defined in the reference files.
+<AgentWorkflowPrerequisites>
+- **Model Policy**: Use `GPT-5 mini` (for context window). **Forbidden**: `gpt 4o`, `raptor mini`.
+- **Preload Step**: Attach agent files and explicitly "read and internalize" before delegation.
+- **Halt Condition**: If context is lost or files are missing, halt and request reattachment.
+</AgentWorkflowPrerequisites>
 
-## 4. Standard Toolset
-The following packages are the established standards for this project. Use them as the primary solution:
-- **UI Framework**: `dearpygui`
-- **Numerical Analysis & Optimization**: `casadi`
-- **Constraint**: If you need to suggest an external package not listed here, you **must ask for the user's permission** and request to add it to the Standard Toolset list first.
+<OrchestrationRules>
+- **Delegation**: Use `#runsubagent` for all tasks. Orchestrator must not work directly.
+- **Execution**: Wait for subagent completion and collect results before responding.
+- **No Premature Replies**: Do not say "Delegating..." without actually executing.
+</OrchestrationRules>
 
-## 5. Implementation Strategy
-- When providing Python code for optimization, prioritize `casadi` symbolic modeling.
-- When creating UI components, use `dearpygui`'s specific item-callback structure.
-- All code comments and variable names must be in **English**.
+<RequestTypes>
+- **간편요청 (Simple)**: Low-risk, single-step tasks. Partial workflow allowed.
+- **일반요청 (General)**: Complex tasks. **Must** follow full: Research → Planning → Execution → Review.
+- **Clarification**: If type is unspecified, ASK: "이 요청은 '간편요청'입니까, 아니면 '일반요청'입니까?"
+</RequestTypes>
 
-## 6. Python Script Execution Guidelines
-- Before running any Python script, ensure that the virtual environment `.venv` (miniconda) is activated by executing the command:
-  ```bash
-  conda activate ./.venv
-  ```
-- Alternatively, verify that the `.venv` virtual environment is currently active before proceeding.
-
-## 7. Agent Workflow Prerequisites
-The multi-agent system has specific requirements to function effectively on the free model tier. Experiments show the strongest performance and highest potential with the **raptor-mini(preview)** model due to its larger context window.
-
-However, agents will not operate correctly if the **gem-orchestrator** agent attempts to invoke them immediately after the agent files are added. Before the orchestrator can delegate any work, you must:
-
-1. Attach the agent definition files and accompanying instruction documents to the conversation.
-2. Explicitly instruct Copilot to **read and internalize** those files so they are loaded into the context window.
-
-If this preload step is skipped or if context is lost and the **gem-orchestrator** (or any subagent it activates) fails to grasp the agent files, instructions, or workflow, **the invoking agent must halt execution**. That agent should then prompt the user to reattach the agent files and request that they be read thoroughly.
-
-This ensures the orchestration layer always has full awareness of the agent specifications and avoids silent misbehavior or misinterpretation.
-
+<ChangeLog>
+- Added request-type (간편/일반) logic and clarifying question requirement.
+- Removed all redundant sections for context efficiency.
+</ChangeLog>
