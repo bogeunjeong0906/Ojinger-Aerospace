@@ -1,0 +1,32 @@
+plan_id: PLAN-0001
+objective: replace me
+tasks:
+  - id: T1
+    owner: researcher
+    goal: inspect relevant files
+    deps: []
+    status: pending
+    inputs:
+      - user request
+    outputs:
+      - docs/agent_docs/plan/PLAN-0001/results/T1.yaml
+    acceptance:
+      - list exact files
+      - list exact risks
+    constraints:
+      - no source edits
+  - id: T2
+    owner: implementer
+    goal: replace me
+    deps:
+      - T1
+    status: pending
+    inputs:
+      - docs/agent_docs/plan/PLAN-0001/results/T1.yaml
+    outputs:
+      - source files
+      - docs/agent_docs/plan/PLAN-0001/results/T2.yaml
+    acceptance:
+      - tests pass
+    constraints:
+      - minimal change

@@ -8,8 +8,8 @@
 graph TD
     subgraph control_tower/ [control_tower/]
         direction TB
-        ui[ui.py - Handles User Input] --> manager[manager.py - Hub]
-        manager --> engine[engine.py - Optimization Engine]
+        ui["src/control_tower/ui.py - Handles User Input (implemented)"] --> manager["src/control_tower/manager.py - Hub (NOT IMPLEMENTED)"]
+        manager --> engine["src/control_tower/engine.py - Optimization Engine (NOT IMPLEMENTED)"]
     end
 
     User[User] -->|Input| ui
@@ -21,7 +21,7 @@ graph TD
     subgraph vessel [vessel]
         direction TB
         control.ks[control.ks - Real-time Control Script]
-        export.ks[export.ks - Export Script: Save Rocket Parameters]
+        export.ks["src/vessel/export.ks - Export Script: Save Rocket Parameters (NOT IMPLEMENTED)"]
     end
 
     engine -->|Optimal Path Calculation| manager
@@ -43,3 +43,7 @@ graph TD
     build -->|use LEXICON/LIST| structures["kOS data structures"]
     fileWrite -->|WRITEJSON| filesystem["kOS filesystem (vessel/params.json)"]
 ```
+
+        ````
+
+        **Legend & Implementation Note:** `(implemented)` indicates the file exists in the repository at the path shown; `(NOT IMPLEMENTED)` indicates an intentional placeholder for functionality or scripts that are described in the architecture but not yet present in the codebase. These `(NOT IMPLEMENTED)` items are documented and tracked in `docs/architecture_alignment_report.md`.
