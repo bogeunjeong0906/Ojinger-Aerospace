@@ -28,6 +28,7 @@ LOCAL totalMass IS SHIP:MASS.
 LOCAL stageFuel IS LIST().        // total resource amount for each stage
 LOCAL stageThrust IS LIST().      // summed available thrust for each stage
 LOCAL stageDeltaV IS LIST().      // delta‑V (current) for each stage
+LOCAL stageIsp IS LIST().         // highest ISP found for engines in each stage
 
 // initialize the stage arrays with zeros
 LOCAL idx IS 0.
@@ -35,6 +36,7 @@ UNTIL idx > currentStageNum {
     stageFuel:PUSH(0).
     stageThrust:PUSH(0).
     stageDeltaV:PUSH(0).
+    stageIsp:PUSH(0).
     SET idx TO idx + 1.
 }
 
@@ -58,6 +60,10 @@ FOR e IN allEngines {
     SET s TO e:PART:STAGE.
     IF s >= 0 AND s <= currentStageNum {
         SET stageThrust[s] TO stageThrust[s] + e:AVAILABLETHRUST.
+        // record the highest ISP seen for this stage's engines
+        IF e:ISP > stageIsp[s] {
+            SET stageIsp[s] TO e:ISP.
+        }
     }
 }
 
@@ -74,6 +80,11 @@ data:ADD("id", name).
 data:ADD("total_stages", totalStages).
 data:ADD("current_stage", currentStageNum).
 data:ADD("mass", totalMass).
+// use kOS vessel telemetry for altitude and surface velocity
+// ALTITUDE: sea-level altitude in meters
+// VELOCITY:SURFACE:MAG: surface-relative speed magnitude in m/s
+data:ADD("altitude", SHIP:ALTITUDE).
+data:ADD("velocity", SHIP:VELOCITY:SURFACE:MAG).
 
 // create list of stage info lexicons
 LOCAL stages IS LIST().
@@ -84,11 +95,20 @@ UNTIL idx > currentStageNum {
     st:ADD("fuel", stageFuel[idx]).
     st:ADD("thrust", stageThrust[idx]).
     st:ADD("deltaV", stageDeltaV[idx]).
+    // ISP: use highest engine ISP in this stage if available, otherwise null
+    IF stageIsp[idx] > 0 {
+        st:ADD("isp", stageIsp[idx]).
+    } ELSE {
+        st:ADD("isp", "None").
+    }
     stages:PUSH(st).
     SET idx TO idx + 1.
 }
 
 data:ADD("stages", stages).
+
+// notes are optional and not produced by this exporter per mapping; include an informational string.
+data:ADD("notes", "exported by export.ks").
 
 // ensure the output directory exists
 IF NOT EXISTS("vessel") {

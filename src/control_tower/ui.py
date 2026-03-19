@@ -16,6 +16,47 @@ logger = logging.getLogger(__name__)
 
 
 class ControlTowerUI:
+    def show_solver_result_plot(self, result: dict, title: str = "Solver Result Plot") -> None:
+        """Show solver result (time-series) as interactive plots using DearPyGui.
+
+        Args:
+            result: dict with keys like 'time', 'altitude', 'velocity', 'throttle', etc.
+            title: Window title for the plot.
+        """
+        if self.headless:
+            logger.info("Headless mode: skipping plot display.")
+            return
+        try:
+            import dearpygui.dearpygui as dpg
+        except Exception as exc:
+            logger.exception("DearPyGui import failed: %s", exc)
+            return
+
+        # Prepare data
+        time = result.get("time", [])
+        altitude = result.get("altitude", [])
+        velocity = result.get("velocity", [])
+        throttle = result.get("throttle", [])
+
+        dpg.create_context()
+        dpg.create_viewport(title=title, width=900, height=700)
+        with dpg.window(label=title, width=880, height=680):
+            with dpg.plot(label="Trajectory", height=600, width=850):
+                dpg.add_plot_legend()
+                dpg.add_plot_axis(dpg.mvXAxis, label="Time (s)", tag="solver_plot_x")
+                dpg.add_plot_axis(dpg.mvYAxis, label="Altitude (m)", tag="solver_plot_alt")
+                if len(time) > 0 and len(altitude) > 0:
+                    dpg.add_line_series(time, altitude, label="Altitude", parent="solver_plot_alt", tag="solver_series_alt")
+                dpg.add_plot_axis(dpg.mvYAxis, label="Velocity (m/s)", tag="solver_plot_vel")
+                if len(time) > 0 and len(velocity) > 0:
+                    dpg.add_line_series(time, velocity, label="Velocity", parent="solver_plot_vel", tag="solver_series_vel")
+                dpg.add_plot_axis(dpg.mvYAxis, label="Throttle", tag="solver_plot_thr")
+                if len(time) > 0 and len(throttle) > 0:
+                    dpg.add_line_series(time, throttle, label="Throttle", parent="solver_plot_thr", tag="solver_series_thr")
+        dpg.setup_dearpygui()
+        dpg.show_viewport()
+        dpg.start_dearpygui()
+        dpg.destroy_context()
     """Encapsulate DearPyGui UI lifecycle for the control tower.
 
     This class does not import or call DearPyGui on module import.
@@ -402,7 +443,19 @@ class ControlTowerUI:
                 dpg.add_text(f"Description: {desc}")
 
                 def _plan_cb(sender, app_data, user_data=None):
-                    # Toggle planned state for this mission
+                    # 매니저의 plan_mission 호출 및 결과 팝업 표시
+                    try:
+                        from . import manager
+                        result = manager.plan_mission(mission)
+                        import dearpygui.dearpygui as dpg
+                        dpg.add_text(f"Result: {result}", parent=tag)
+                        # 또는 팝업으로 결과 표시
+                        dpg.show_item(dpg.add_window(label="Solver Result", width=400, height=200, modal=True, no_close=False, no_move=False, no_resize=False))
+                        dpg.add_text(str(result))
+                    except Exception as e:
+                        import dearpygui.dearpygui as dpg
+                        dpg.add_text(f"Error: {e}", parent=tag)
+                    # 기존 planned 토글 유지
                     for m in self._missions:
                         if m["id"] == mid:
                             m["planned"] = not bool(m.get("planned", False))
