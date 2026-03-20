@@ -9,7 +9,7 @@ agent.md와 copilot-instructions.md의 내용은 모든 컨텍스트중 가장 �
 답변에는 한국어를 사용한다. 단, 기술적 용어는 영어로 표기할 수 있다.
 
 ## 3. 지식 기반 개발 (Knowledge-Based Development)
-다음 언어 및 패키지 사용 시, 반드시 `domain_knowledge/` 폴더 내의 문서를 참조하며 문서에 명시된 구문과 로직을 정확하게 인용하여 개발한다.
+다음 언어 및 패키지 사용 시, 반드시 `docs/domain_knowledge` 폴더 내의 문서를 참조하며 문서에 명시된 구문과 로직을 정확하게 인용하여 개발한다.
 * **KOS (Kerbal Operating System):** `.ks` 스크립트 작성 시 참조
 * **krpc:** KSP 원격 제어 인터페이스 활용 시 참조
 * **dearpygui:** GUI 구성 및 이벤트 처리 루틴 참조
