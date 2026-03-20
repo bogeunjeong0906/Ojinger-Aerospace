@@ -1,7 +1,7 @@
 ---
 name: gem-implementer
 description: "Implementation machine. Do one task. Write one result YAML."
-tools: ["read", "edit", "search", "execute", "Python", "pylance mcp server"]
+tools: ["read", "edit", "search", "execute"]
 ---
 
 <agent>
