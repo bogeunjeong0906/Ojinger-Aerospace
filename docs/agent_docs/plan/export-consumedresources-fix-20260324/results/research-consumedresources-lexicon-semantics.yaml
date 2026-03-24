@@ -1,0 +1,56 @@
+task_id: research-consumedresources-lexicon-semantics
+status: completed
+summary: >-
+  KOS_DOC confirms that Engine:CONSUMEDRESOURCES is a Lexicon of
+  ConsumedResource values. Lexicon string keys are case-insensitive by default,
+  so export.ks's current key-based traversal of CONSUMEDRESOURCES is unsafe when
+  modded resource names differ only by case. The safest documented export pattern
+  is to iterate CONSUMEDRESOURCES:VALUES and read NAME, RATIO, DENSITY from each
+  ConsumedResource, avoiding KEYS materialization and secondary string-key lookup.
+root_cause: >-
+  export.ks currently iterates eng:CONSUMEDRESOURCES:KEYS and then performs a
+  second lookup with eng:CONSUMEDRESOURCES[propellant_key]. KOS_DOC documents
+  that Engine:CONSUMEDRESOURCES is a Lexicon and that Lexicon string keys are
+  case-insensitive by default. If a mod exposes consumed-resource names that
+  differ only by case, that data is incompatible with a string-keyed
+  case-insensitive lexicon path. The duplicate-key '(CooledLCH4)' runtime
+  failure is consistent with KEYS or key-traversal materializing or traversing that
+  conflicting key space. The docs do not explicitly name KEYS as throwing this
+  error, but they do document the exact key-collision semantics that make the
+  current pattern unsafe.
+documented_evidence:
+  - Engine:CONSUMEDRESOURCES is documented as Lexicon of ConsumedResource and describes the fuel resources this engine consumes and in what ratios. Source: docs/domain_knowledge/KOS_DOC/structures/vessels/engine.html.
+  - ConsumedResource exposes NAME, RATIO, DENSITY and related suffixes. Source: docs/domain_knowledge/KOS_DOC/structures/vessels/consumedresource.html.
+  - Lexicon string keys are case-insensitive by default. Source: docs/domain_knowledge/KOS_DOC/structures/collections/lexicon.html.
+  - Lexicon:KEYS returns a List of keys and Lexicon:VALUES returns a List of values. Source: docs/domain_knowledge/KOS_DOC/structures/collections/lexicon.html.
+  - export.ks currently uses the unsafe pattern FOR propellant_key IN eng:CONSUMEDRESOURCES:KEYS followed by eng:CONSUMEDRESOURCES[propellant_key]. Source: src/Script/export.ks.
+safe_replacement_pattern:
+  pattern: values_only
+  rationale: >-
+    VALUES is the safest documented path because it avoids both key-list
+    materialization in export code and secondary string-key lookup. It preserves
+    current export detail because each ConsumedResource already carries its own
+    NAME, RATIO and DENSITY.
+  example: |-
+    SET propellant_mix TO LIST().
+    FOR consumed_resource IN eng:CONSUMEDRESOURCES:VALUES {
+        SET mix_entry TO LEXICON().
+        SET mix_entry["name"] TO consumed_resource:NAME.
+        SET mix_entry["ratio"] TO consumed_resource:RATIO.
+        SET mix_entry["density"] TO consumed_resource:DENSITY.
+        propellant_mix:ADD(mix_entry).
+    }
+  recommendation: >-
+    Use values only for Engine:CONSUMEDRESOURCES export. Do not use KEYS for
+    this path, and do not attempt to preserve the original lexicon as a keyed
+    object in exported JSON. No documented safer key-value pair iterator was
+    found in KOS_DOC.
+additional_relevant_risks:
+  - stage_resource_amounts, stage_resource_capacities, stage_resource_masses, and stage_resource_capacity_masses are also string-keyed Lexicons populated from resource names in export.ks. Because Lexicon string keys are case-insensitive, case-distinct resource names would collapse into the same aggregate entry there as well.
+  - That aggregate-resource path does not currently enumerate KEYS at the point shown in export.ks, so it is a semantic collision risk first and not the same immediate runtime-failure path as CONSUMEDRESOURCES:KEYS.
+  - If exact mod resource-name casing must be preserved for stage-level totals, those aggregates should also move from Lexicon keyed by resource name to a List-based representation.
+implementation_guidance:
+  - Make the smallest change possible: replace the CONSUMEDRESOURCES:KEYS loop with a CONSUMEDRESOURCES:VALUES loop and keep the existing propellantMix output shape.
+  - Build each exported propellant row from ConsumedResource:NAME, ConsumedResource:RATIO, and ConsumedResource:DENSITY rather than from the lexicon key.
+  - Do not switch CASESENSITIVE on returned kOS lexicons. The docs state that setting CASESENSITIVE clears the lexicon, so it is not a safe runtime fix.
+  - If later work must harden stage-level resource aggregates against the same class of issue, replace those resource-name keyed Lexicons with a List-based export representation instead of relying on case-insensitive string keys.

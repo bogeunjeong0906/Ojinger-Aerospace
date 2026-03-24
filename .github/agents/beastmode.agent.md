@@ -1,6 +1,5 @@
 ---
 description: Beast Mode 3.1
-model: GPT-4.1 (copilot)
 ---
 
 # Beast Mode 3.1

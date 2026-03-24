@@ -1,0 +1,15 @@
+task_id: update-export-docs-if-needed
+status: blocked
+summary: >-
+  export.ks 구현과 현재 문서를 대조한 결과, export contract 문서 갱신이 필요하지만
+  현재 gem-documentation-writer 모드 제약상 결과 YAML 외 다른 파일을 수정할 수 없어
+  이 태스크는 blocked 로 기록한다.
+files_changed:
+  - docs/agent_docs/plan/export-ks-enhancement-20260324/results/update-export-docs-if-needed.yaml
+notes:
+  - src/Script/export.md 는 구현된 JSON shape 보다 넓은 범위를 약속하며, exact length, diameter, reference_area, drag_coefficient, payload_mass, precise deltaV 같은 비보장 필드를 포함한다.
+  - src/Script/rocket_modeling_required_parameters.md 역시 현재 export.ks 가 실제로 내보내지 않는 고수준 modeling 값들을 필수 파라미터처럼 기술한다.
+  - 구현 근거인 implement-export-ks-enhancement 결과에 따르면 export.ks 는 unsafe Part 기반 엔진 suffix, Resource:MAX, 수동 deltaV 계산을 제거하고 safe kOS API 기반 seed parameters 만 내보낸다.
+  - 실제 top-level JSON shape 는 rocket, rocketInfo, body, stages 이며, 각 stage 는 stage, parts, partDetails, engines, tanks, sim 구조를 가진다.
+  - direct high-level values 를 safe kOS API 로 얻기 어려운 경우, 스크립트는 Python-side computation 을 위한 seed parameters 만 export 해야 한다는 점이 research-kos-export-gaps 결과와 구현에 일치한다.
+  - 구현은 파일을 0:/<rocket_name>.json 과 1:/<rocket_name>.json 에 모두 WRITEJSON 하므로, 기존 문서의 0: 전용 서술도 최신 구현과 불일치한다.

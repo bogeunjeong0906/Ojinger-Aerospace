@@ -1,0 +1,67 @@
+plan_id: export-ks-enhancement-20260324
+objective: Enhance src/Script/export.ks to export missing rocket-modeling parameters while preserving current working behavior and avoiding kOS syntax/API errors.
+tasks:
+  - id: research-kos-export-gaps
+    owner: researcher
+    goal: Verify exact kOS commands, suffixes, and unsupported areas from KOS_DOC, then identify the missing rocket-modeling parameters that can be safely added to export.ks.
+    deps: []
+    status: pending
+    inputs:
+      - src/Script/export.ks
+      - src/Script/export.md
+      - src/Script/rocket_modeling_required_parameters.md
+      - docs/domain_knowledge/KOS_DOC/commands/serialization.html
+      - docs/domain_knowledge/KOS_DOC/structures/vessels.html
+      - docs/domain_knowledge/KOS_DOC/structures/celestial_bodies.html
+      - docs/domain_knowledge/KOS_DOC/structures/volumes_and_files.html
+      - docs/domain_knowledge/KOS_DOC/structures/collections.html
+    outputs:
+      - Verified gap list of missing export fields with a kOS-doc-backed source for each field or an explicit unsupported note.
+    acceptance:
+      - Every candidate field is tied to documented kOS syntax or explicitly rejected as unavailable or too risky.
+      - The research output separates safe additions from fields that would threaten current working behavior.
+      - Required JSON additions are grouped into rocket-level, stage-level, engine-level, tank-level, and body-level data.
+    constraints:
+      - Prioritize syntax correctness over breadth of exported data.
+      - Use only KOS_DOC as the authority for kOS commands and suffixes.
+      - Preserve the assumption that export.ks already works and should not be destabilized.
+  - id: implement-export-ks-enhancement
+    owner: implementer
+    goal: Update export.ks to add the verified missing rocket-modeling parameters using only documented kOS APIs, while preserving the existing export flow and file outputs.
+    deps:
+      - research-kos-export-gaps
+    status: pending
+    inputs:
+      - src/Script/export.ks
+      - src/Script/export.md
+      - src/Script/rocket_modeling_required_parameters.md
+      - Research output from research-kos-export-gaps
+    outputs:
+      - Enhanced src/Script/export.ks that exports the approved additional parameters without introducing kOS syntax errors.
+    acceptance:
+      - export.ks continues to export JSON for the rocket and preserves existing working behavior.
+      - Added fields come only from the verified research list and use documented kOS syntax.
+      - Unsupported parameters are omitted or guarded according to the research outcome rather than guessed.
+    constraints:
+      - Do not rewrite unrelated logic or change the file's primary execution purpose.
+      - Keep changes minimal and focused on missing rocket-modeling exports.
+      - Favor stable, explicit field extraction over aggressive inference.
+  - id: update-export-docs-if-needed
+    owner: documentation-writer
+    goal: Update the export requirements or schema notes only if the implemented JSON structure or supported field set changes enough to require documentation alignment.
+    deps:
+      - implement-export-ks-enhancement
+    status: pending
+    inputs:
+      - src/Script/export.md
+      - src/Script/rocket_modeling_required_parameters.md
+      - Updated src/Script/export.ks
+    outputs:
+      - Aligned requirement or schema note describing the final exported parameter set, only if needed.
+    acceptance:
+      - Documentation changes are limited to reflecting the implemented export behavior.
+      - No documentation update is made if the implementation does not materially change the documented contract.
+      - Any documented field names match the final JSON structure used by export.ks.
+    constraints:
+      - Keep documentation scope limited to this export.ks enhancement.
+      - Do not invent unsupported parameters or promise unimplemented fields.

@@ -1,0 +1,10 @@
+plan_id: export-doc-sync-20260324
+status: completed
+current_task_id: sync-export-docs-to-implemented-behavior
+last_completed_task_id: sync-export-docs-to-implemented-behavior
+next_task_id: null
+last_updated: 2026-03-24
+notes:
+  - Created to complete blocked export documentation sync using a different delegation route.
+  - Implementer updated src/Script/export.md and src/Script/rocket_modeling_required_parameters.md.
+  - Result persisted under results/sync-export-docs-to-implemented-behavior.yaml.

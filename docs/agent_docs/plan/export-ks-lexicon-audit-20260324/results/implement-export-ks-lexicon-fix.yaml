@@ -1,0 +1,18 @@
+task_id: implement-export-ks-lexicon-fix
+status: completed
+summary: >-
+  src/Script/export.ks 전체를 duplicate-key LEXICON safety 관점에서 재감사한 결과,
+  반복 누적이 발생하는 dynamic-key write는 stage_resource_* 집계 구간뿐이며 이 코드는
+  HASKEY 확인 후 bracket assignment로 0 초기화하고 같은 bracket assignment로 누적한다.
+  kOS 문서상 Lexicon:ADD는 기존 key에 대해 duplicate key error를 내지만,
+  SET lex[key] TO value 는 key가 없으면 추가하고 있으면 교체하므로 현재 구현은 이미 안전하다.
+  같은 이슈 클래스의 추가 수정 대상은 발견되지 않아 export.ks는 변경하지 않았다.
+changed_files: []
+blockers: []
+validation:
+  - plan.yaml의 implement-export-ks-lexicon-fix 태스크에 acceptance가 정의되어 있음을 확인했다.
+  - research-kos-lexicon-accumulation.yaml의 audit와 export.ks 전체 파일을 대조해 dynamic-key 누적 구간이 [142-152] 한 곳뿐임을 확인했다.
+  - kOS Lexicon 문서에서 HASKEY 존재, bracket assignment의 add-or-replace semantics, ADD의 duplicate key error, missing key read의 KOSKeyNotFoundException 동작을 재확인했다.
+  - get_errors로 src/Script/export.ks를 검증했으며 본 요청과 관련된 오류는 없었다.
+next_action: no-op complete; await orchestrator
+updated_at: 2026-03-24

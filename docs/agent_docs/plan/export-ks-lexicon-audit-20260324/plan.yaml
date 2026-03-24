@@ -1,0 +1,46 @@
+plan_id: export-ks-lexicon-audit-20260324
+objective: Replace duplicate-key accumulation in src/Script/export.ks with a documented safe kOS LEXICON update pattern, and audit the file for all relevant occurrences of the same issue class.
+tasks:
+  - id: research-kos-lexicon-accumulation
+    owner: researcher
+    goal: Verify documented kOS LEXICON and collection semantics for duplicate keys, determine a safe counting or aggregation update pattern, and identify every relevant occurrence in src/Script/export.ks that relies on duplicate-style insertion.
+    deps: []
+    status: pending
+    inputs:
+      - src/Script/export.ks
+      - docs/domain_knowledge/KOS_DOC/structures/collections.html
+      - docs/domain_knowledge/KOS_DOC/commands/files.html
+      - docs/domain_knowledge/KOS_DOC/commands/serialization.html
+    outputs:
+      - Verified kOS-doc-backed rule for duplicate key handling in LEXICON.
+      - Approved safe accumulation pattern for count or aggregate updates in export.ks.
+      - Audit list of all relevant duplicate-key or equivalent collection-update risks in src/Script/export.ks.
+    acceptance:
+      - The research outcome cites only KOS_DOC-backed syntax or semantics for the chosen collection-update pattern.
+      - The outcome distinguishes safe replacement logic from unsupported or unclear approaches instead of guessing.
+      - The audit list covers all relevant occurrences in src/Script/export.ks that could fail or misbehave because of duplicate-style insertion into a LEXICON.
+    constraints:
+      - Use docs/domain_knowledge/KOS_DOC as the authority for kOS APIs and syntax.
+      - Prefer the smallest safe replacement pattern that preserves current aggregation intent.
+      - If any behavior is undocumented or ambiguous, mark it for avoidance rather than inference.
+  - id: implement-export-ks-lexicon-fix
+    owner: implementer
+    goal: Update src/Script/export.ks to replace duplicate-key LEXICON accumulation with the researched safe alternative and fix every relevant occurrence from the audit without changing unrelated behavior.
+    deps:
+      - research-kos-lexicon-accumulation
+    status: pending
+    inputs:
+      - src/Script/export.ks
+      - Research output from research-kos-lexicon-accumulation
+    outputs:
+      - Updated src/Script/export.ks using safe kOS collection-update logic for counting or aggregation.
+      - Completed fix of all relevant duplicate-key or equivalent LEXICON update issues identified in the audit.
+    acceptance:
+      - No relevant code path in src/Script/export.ks attempts duplicate-style insertion into a LEXICON for counting or aggregation.
+      - All fixes use documented kOS APIs and syntax validated by the research task.
+      - The implementation addresses every relevant occurrence identified by the audit and does not broaden scope into unrelated refactors.
+      - Existing export behavior is preserved except for removal of duplicate-key failure risk and the intended safe aggregation behavior.
+    constraints:
+      - Keep the change set minimal and localized to the audited issue class.
+      - Prioritize kOS syntax correctness and documented collection semantics over cleverness or abstraction.
+      - Do not add a documentation task unless the implementation changes the user-visible export contract.
