@@ -8,6 +8,13 @@ applyTo: "docs/domain_knowledge/KOS_cheatsheet/**"
 AI 에이전트가 `docs/plans/kos_cheatsheet_quality_inspection.md`의 3-Tier 검수 계획을 자율적으로 실행한다.  
 사용자의 추가 입력 없이 처음부터 끝까지 완료하고 결과를 보고한다.
 
+## Git 운영 규칙 (필수)
+
+- 작업 중간중간 의미 단위로 commit 한다 (최소 3회).
+- 권장 commit 단위: `tier1`, `tier2`, `final-verdict`.
+- 작업 중 `git push`는 절대 금지한다.
+- 사용자의 명시적 승인 없이는 어떤 원격 push도 수행하지 않는다.
+
 ---
 
 ## STEP 0: 선행 조건 확인
@@ -123,6 +130,13 @@ EOF
 - [ ] `SHIP:CONTROL:PITCH/YAW/ROLL/MAINTHROTTLE` 계열 포함
 - [ ] Snippet 1개 이상 존재
 
+Tier 1 완료 후 즉시 중간 commit 수행:
+
+```bash
+git add docs/plans/results/quality_report.json
+git commit -m "quality: tier1 inspection snapshot"
+```
+
 ---
 
 ## STEP 3: Tier 2 Priority 2 육안 검수
@@ -207,6 +221,13 @@ for rel in SAMPLES:
 EOF
 ```
 
+Tier 2 완료 후 중간 commit 수행:
+
+```bash
+git add docs/plans/results/quality_report.json
+git commit -m "quality: tier2 manual checks snapshot"
+```
+
 ---
 
 ## STEP 6: 최종 판정 및 보고
@@ -226,6 +247,15 @@ EOF
 2. 버그가 스크립트 추출 로직 문제인지, 원본 HTML 구조 문제인지 판단
 3. 로직 문제 → `scripts/kos_cheatsheet_converter.py` 수정 후 `--mode full --force` 재실행
 4. 원본 구조 예외 → 해당 파일만 수동 수정
+
+최종 판정 반영 후 마지막 commit 수행:
+
+```bash
+git add docs/plans/results/quality_report.json
+git commit -m "quality: final verdict and handoff"
+```
+
+주의: 위 3개 commit 수행 후에도 `git push`는 금지한다.
 
 ---
 

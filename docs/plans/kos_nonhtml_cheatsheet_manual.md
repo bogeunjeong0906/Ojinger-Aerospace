@@ -15,6 +15,18 @@
 
 ---
 
+## 1-1. Git 운영 규칙 (필수)
+
+- 에이전트는 작업 중간중간 의미 단위로 commit 한다.
+- 기본 commit checkpoint:
+  1) P0+P1 완료 직후
+  2) P2 완료 직후
+  3) P3 및 전체 검증 완료 직후
+- 작업 중 `git push`는 금지한다.
+- 원격 반영은 사용자의 명시적 요청이 있을 때만 수행한다.
+
+---
+
 ## 2. 변환 대상 및 우선순위
 
 | 우선순위 | 소스 파일 | 출력 파일 | 예상 소요 |
@@ -143,7 +155,10 @@ SET ADDONS:MJ:ASCENT:DESIREDORBITALTITUDE TO 100000.
 1. cooked_sample.html 참조하여 HTML 구조 파악
 2. P0 terminal_open.html 생성 및 검증
 3. P1 kerbal_engineer_redux.html 생성 및 검증
-4. P2 kOS-Ferram-master/README.html 생성 및 검증
-5. P3 kOS.MechJeb2.Addon-main/README.html 생성 및 검증
-6. 완료 판정 기준 체크 후 사용자에게 보고
+4. P0+P1 결과 1차 commit (push 금지)
+5. P2 kOS-Ferram-master/README.html 생성 및 검증
+6. P2 결과 2차 commit (push 금지)
+7. P3 kOS.MechJeb2.Addon-main/README.html 생성 및 검증
+8. 완료 판정 기준 체크 후 사용자에게 보고
+9. 최종 결과 3차 commit (push 금지)
 ```

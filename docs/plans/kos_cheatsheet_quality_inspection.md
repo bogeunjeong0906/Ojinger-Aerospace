@@ -22,6 +22,16 @@
 | 상태 파일 존재 | `docs/domain_knowledge/KOS_cheatsheet/.cheatsheet_state.json` 존재 확인 |
 | Python 환경 | `conda activate ./.venv` 후 `python -c "from bs4 import BeautifulSoup"` 성공 확인 |
 
+## 2-1. Git 운영 규칙 (필수)
+
+- 에이전트는 검수 작업 중간중간 의미 단위로 commit 한다.
+- 기본 commit checkpoint:
+  1) Tier 1 완료 직후
+  2) Tier 2 완료 직후
+  3) 최종 verdict 기록 직후
+- 작업 중 `git push`는 금지한다.
+- 원격 반영은 사용자의 명시적 요청이 있을 때만 수행한다.
+
 ---
 
 ## 3. 검수 체계 (3-Tier)
@@ -162,10 +172,11 @@ commands/flight/cooked.html
 ```
 1. 선행 조건 확인
 2. python scripts/kos_cheatsheet_quality_checker.py 실행 → quality_report.json 생성
-3. Tier 2 Priority 1 파일 4개 순차 육안 검수 → report에 기록
-4. Tier 2 Priority 2 파일 5개 검수 → report에 기록  
-5. Tier 2 Priority 3 의심 파일 원본 대조 → 버그 발견 시 기록
+3. Tier 1 결과를 저장하고 1차 commit (push 금지)
+4. Tier 2 Priority 1~3 검수 수행 → report에 기록
+5. Tier 2 결과를 저장하고 2차 commit (push 금지)
 6. Tier 3 샘플 5개 suffix 정확도 검증 → report에 기록
 7. 최종 판정 기록 및 사용자에게 결과 보고
-8. Conditional Pass / Fail 시 → 버그픽스 후 재변환 
+8. 최종 결과 3차 commit (push 금지)
+9. Conditional Pass / Fail 시 → 버그픽스 후 재변환 
 ```

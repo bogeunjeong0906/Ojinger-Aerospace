@@ -35,6 +35,14 @@ agent.md와 copilot-instructions.md의 내용은 모든 컨텍스트중 가장 �
 파이썬 스크립트 실행시 가상환경을 반드시 활성화한다. 
 **활성화 커맨드**: conda activate ./.venv
 
+## 6-1. Git 작업 규칙 (Autopilot)
+Autopilot 모드로 다단계 작업을 수행할 때는 아래 규칙을 반드시 지킨다.
+
+* 작업 중간중간 의미 있는 단위로 commit 한다. (최소 2회 이상)
+* commit 메시지는 작업 단위를 명확히 구분한다. (예: plan, instructions, execution)
+* 작업 중에는 절대 push 하지 않는다.
+* 사용자의 명시적 승인 없이 `git push`, `git push --force`를 실행하지 않는다.
+
 ## 7. KOS_DOC 치트시트 관련 지침
 
 ### 7-1. HTML 변환 규칙

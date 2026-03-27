@@ -9,6 +9,13 @@ AI 에이전트가 `docs/plans/kos_nonhtml_cheatsheet_manual.md`에 정의된 4�
 자율적으로 읽고 수동으로 HTML 치트시트를 작성한다.  
 사용자의 추가 입력 없이 처음부터 끝까지 완료하고 결과를 보고한다.
 
+## Git 운영 규칙 (필수)
+
+- 작업 중간중간 의미 단위로 commit 한다 (최소 3회).
+- 권장 commit 단위: `p0-p1`, `p2`, `p3-final`.
+- 작업 중 `git push`는 절대 금지한다.
+- 사용자의 명시적 승인 없이는 어떤 원격 push도 수행하지 않는다.
+
 ---
 
 ## STEP 0: 선행 조건 확인
@@ -115,6 +122,13 @@ grep -c "<li>" docs/domain_knowledge/KOS_cheatsheet/mod/kerbal_engineer_redux.ht
 # 결과: 3 이상 (suffix + safety notes)
 ```
 
+P0/P1 완료 후 즉시 중간 commit 수행:
+
+```bash
+git add docs/domain_knowledge/KOS_cheatsheet/note/terminal_open.html docs/domain_knowledge/KOS_cheatsheet/mod/kerbal_engineer_redux.html
+git commit -m "nonhtml: add P0-P1 cheatsheets"
+```
+
 ---
 
 ## STEP 3: P2 — kOS-Ferram-master/README.html
@@ -149,6 +163,13 @@ grep -c "<li>" docs/domain_knowledge/KOS_cheatsheet/mod/kerbal_engineer_redux.ht
 ```bash
 grep -c "ADDONS:FAR" docs/domain_knowledge/KOS_cheatsheet/kOS-Ferram-master/README.html
 # 결과: 5 이상
+```
+
+P2 완료 후 중간 commit 수행:
+
+```bash
+git add docs/domain_knowledge/KOS_cheatsheet/kOS-Ferram-master/README.html
+git commit -m "nonhtml: add P2 ferram cheatsheet"
 ```
 
 ---
@@ -232,6 +253,15 @@ for f in files:
     print(f"{status}  {f}")
 EOF
 ```
+
+최종 완료 후 마지막 commit 수행:
+
+```bash
+git add docs/domain_knowledge/KOS_cheatsheet/kOS.MechJeb2.Addon-main/README.html
+git commit -m "nonhtml: add P3 mechjeb cheatsheet and final checks"
+```
+
+주의: 위 3개 commit 수행 후에도 `git push`는 금지한다.
 
 ---
 
