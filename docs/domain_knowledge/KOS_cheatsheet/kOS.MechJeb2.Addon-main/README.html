@@ -1,0 +1,159 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/kOS.MechJeb2.Addon-main/README.md + *.ks tests
+source_doc_title: kOS.MechJeb2.Addon
+source_doc_version: KSP 1.12.x / kOS 1.3.0+
+cheatsheet_type: snippet-first, agent-oriented
+-->
+
+<h1>kOS.MechJeb2.Addon - Cheat Sheet</h1>
+
+<h2>1) Core Intent</h2>
+<p>
+MechJeb2 자동조종과 정보 아이템을 kOS suffix로 직접 접근해 Ascent 제어, Vessel 상태 조회, Delta-V/Target 텔레메트리 조회를 통합한다.
+</p>
+
+<h2>2) Safety Critical Notes</h2>
+<ul>
+  <li>MechJeb2 미설치 또는 core 미동작 상태에서 wrapper 접근 시 예외가 날 수 있으므로 <code>ADDONS:MJ:AVAILABLE</code> 및 <code>ADDONS:MJ:CORE:RUNNING</code>을 먼저 확인한다.</li>
+  <li>kOS 조향/스로틀 제어와 MechJeb 자동조종을 동시에 켜면 제어 충돌이 발생할 수 있다. 권한 우선순위를 명확히 분리한다.</li>
+  <li>Ascent 파라미터(<code>DESIREDALTITUDE</code>, <code>TURN*</code>, <code>LIMITQA*</code>)는 autopilot enable 전에 설정하고, 비행 중 변경 시 짧은 주기로 검증한다.</li>
+</ul>
+
+<h2>3) Snippet Pack (Directly Usable)</h2>
+<pre><code>// --- availability / core ---
+SET mj TO ADDONS:MJ.
+IF NOT mj:AVAILABLE {
+  PRINT "MJ addon unavailable".
+  RETURN.
+}.
+SET core TO mj:CORE.
+IF NOT core:RUNNING {
+  PRINT "MJ core not running".
+  RETURN.
+}.
+
+// --- wrappers ---
+SET v TO mj:VESSEL.
+SET info TO mj:INFO.
+SET asc TO mj:ASCENT.
+
+// --- ascent guidance setup ---
+SET asc:DESIREDALTITUDE TO 100000.
+SET asc:DESIREDINCLINATION TO 0.
+SET asc:TURNSTARTALTITUDE TO 1500.
+SET asc:TURNENDALTITUDE TO 70000.
+SET asc:TURNSHAPEEXPONENT TO 0.4.
+SET asc:LIMITAOA TO TRUE.
+SET asc:MAXAOA TO 5.
+SET asc:LIMITQAENABLED TO TRUE.
+SET asc:LIMITQA TO 45000.
+SET asc:AUTOSTAGE TO TRUE.
+SET asc:SKIPCIRCULARIZATION TO FALSE.
+SET asc:ENABLED TO TRUE.
+
+// --- vessel/info telemetry ---
+PRINT "Q: " + v:DYNAMICPRESSURE.
+PRINT "Mach: " + v:MACH.
+PRINT "Surface speed: " + v:SPEEDSURFACE.
+PRINT "Total DV(vac): " + info:TOTALDVVAC.
+PRINT "Stage DV(vac): " + info:STAGEDELTAVVAC.
+PRINT "Target dist: " + info:TARGETDISTANCE.</code></pre>
+
+<h2>4) Tuning / Parameters</h2>
+<pre><code>// dynamic ascent retuning loop
+UNTIL NOT asc:ENABLED {
+  // keep AoA and dynamic pressure constraints active
+  IF v:AOA > asc:MAXAOA {
+    SET asc:CORRECTIVESTEERING TO TRUE.
+    SET asc:CORRECTIVESTEERINGGAIN TO 1.2.
+  }.
+
+  IF v:DYNAMICPRESSURE > asc:LIMITQA {
+    // reduce acceleration pressure load via MJ limit
+    SET asc:LIMITQAENABLED TO TRUE.
+  }.
+
+  WAIT 0.1.
+}.
+
+// read aliases from wrappers
+PRINT info:TDV.      // TOTALDVVAC alias
+PRINT info:STWR.     // SURFACETWR alias
+PRINT v:SURFVEL.     // SPEEDSURFACE alias</code></pre>
+
+<h2>5) Suffix and Key Inventory (No-loss policy)</h2>
+<ul>
+  <li>ADDONS:MJ</li>
+  <li>ADDONS:MJ:AVAILABLE</li>
+  <li>ADDONS:MJ:CORE</li>
+  <li>ADDONS:MJ:CORE:RUNNING</li>
+  <li>ADDONS:MJ:VESSEL</li>
+  <li>ADDONS:MJ:VESSELINFO</li>
+  <li>ADDONS:MJ:INFO</li>
+  <li>ADDONS:MJ:ASCENT</li>
+  <li>ADDONS:MJ:ASCENTGUIDANCE</li>
+  <li>ADDONS:MJ:VERSION</li>
+  <li>ASCENT:ENABLED</li>
+  <li>ASCENT:ASCENTTYPE</li>
+  <li>ASCENT:DESIREDALTITUDE</li>
+  <li>ASCENT:DESIREDINCLINATION</li>
+  <li>ASCENT:TURNSTARTALTITUDE</li>
+  <li>ASCENT:TURNSTARTVELOCITY</li>
+  <li>ASCENT:TURNENDALTITUDE</li>
+  <li>ASCENT:TURNENDANGLE</li>
+  <li>ASCENT:TURNSHAPEEXPONENT</li>
+  <li>ASCENT:AUTOPATH</li>
+  <li>ASCENT:FORCEROLL</li>
+  <li>ASCENT:VERTICALROLL</li>
+  <li>ASCENT:TURNROLL</li>
+  <li>ASCENT:ROLLALTITUDE</li>
+  <li>ASCENT:CORRECTIVESTEERING</li>
+  <li>ASCENT:CORRECTIVESTEERINGGAIN</li>
+  <li>ASCENT:LIMITAOA</li>
+  <li>ASCENT:MAXAOA</li>
+  <li>ASCENT:AOALIMITFADEOUTPRESSURE</li>
+  <li>ASCENT:LIMITQA</li>
+  <li>ASCENT:LIMITQAENABLED</li>
+  <li>ASCENT:LIMITTOPREVENTOVERHEATS</li>
+  <li>ASCENT:SKIPCIRCULARIZATION</li>
+  <li>ASCENT:AUTOSTAGE</li>
+  <li>ASCENT:AUTOSTAGELIMIT</li>
+  <li>ASCENT:AUTOSTAGEPREDELAY</li>
+  <li>ASCENT:AUTOSTAGEPOSTDELAY</li>
+  <li>ASCENT:CLAMPAUTOSTAGETHRUSTPCT</li>
+  <li>ASCENT:FAIRINGMAXDYNAMICPRESSURE</li>
+  <li>ASCENT:FAIRINGMINALTITUDE</li>
+  <li>ASCENT:FAIRINGMAXAEROTHERMALFLUX</li>
+  <li>ASCENT:HOTSTAGING</li>
+  <li>ASCENT:HOTSTAGINGLEADTIME</li>
+  <li>ASCENT:DROPSOLIDS</li>
+  <li>ASCENT:DROPSOLIDSLEADTIME</li>
+  <li>ASCENT:AUTODEPLOYANTENNAS</li>
+  <li>ASCENT:AUTODEPLOYSOLARPANELS</li>
+  <li>ASCENT:AUTOWARP</li>
+  <li>VESSEL:SPEEDSURFACE</li>
+  <li>VESSEL:SPEEDVERTICAL</li>
+  <li>VESSEL:ALTITUDEASL</li>
+  <li>VESSEL:DYNAMICPRESSURE</li>
+  <li>VESSEL:MACH</li>
+  <li>VESSEL:AOA</li>
+  <li>VESSEL:AOS</li>
+  <li>VESSEL:PUREDRAG</li>
+  <li>VESSEL:PURELIFT</li>
+  <li>INFO:TOTALDVVAC</li>
+  <li>INFO:STAGEDELTAVVAC</li>
+  <li>INFO:SURFACETWR</li>
+  <li>INFO:TARGETDISTANCE</li>
+  <li>INFO:TARGETRELV</li>
+  <li>INFO:CURRENTBIOME</li>
+  <li>INFO:VESSELMASS</li>
+  <li>INFO:NEXTMANEUVERNODEDELTAV</li>
+</ul>
+
+<h2>6) Agent Usage Hints</h2>
+<ul>
+  <li>초기화 단계에서 <code>AVAILABLE</code>와 <code>RUNNING</code> 체크를 통과하지 못하면 wrapper 접근 로직을 즉시 중단한다.</li>
+  <li>Ascent 자동화는 설정 단계와 활성화 단계를 분리하고, 활성화 후에는 read-only 텔레메트리 루프로 검증하는 패턴이 안정적이다.</li>
+  <li>테스트 스크립트의 assert/runner 코드는 치트시트에서 제외하고 실제 API 호출 패턴만 사용한다.</li>
+</ul>
