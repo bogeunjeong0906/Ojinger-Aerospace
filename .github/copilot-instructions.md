@@ -35,4 +35,10 @@ agent.md와 copilot-instructions.md의 내용은 모든 컨텍스트중 가장 �
 파이썬 스크립트 실행시 가상환경을 반드시 활성화한다. 
 **활성화 커맨드**: conda activate ./.venv
 
+## 7. KOS_DOC 치트시트 변환 규칙
+KOS_DOC을 치트시트로 변환하는 작업은 아래 규칙 파일을 항상 참조한다.
+
+* 규칙 파일: .github/instructions/copilot-instructions.md
+* 샘플 파일: docs/domain_knowledge/KOS_cheatsheet/cooked_sample.html
+
 

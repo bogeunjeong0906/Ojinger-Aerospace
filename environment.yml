@@ -9,3 +9,5 @@ dependencies:
     - krpc
     - casadi
     - dearpygui
+    - beautifulsoup4>=4.12
+    - lxml
