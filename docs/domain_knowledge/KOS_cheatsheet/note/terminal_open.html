@@ -1,0 +1,43 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/note/terminal_open.md
+source_doc_title: kOS 터미널 자동 오픈
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+
+<h1>kOS 터미널 자동 오픈 - Cheat Sheet</h1>
+
+<h2>1) Core Intent</h2>
+<p>
+kOS CPU가 실행 중일 때 스크립트에서 터미널 GUI를 강제로 열어 상호작용을 시작한다.
+</p>
+
+<h2>2) Safety Critical Notes</h2>
+<ul>
+  <li><code>kOSProcessor</code> 모듈명이 다른 커스텀 파트에서는 <code>GETMODULE("kOSProcessor")</code> 호출이 실패할 수 있다.</li>
+  <li>무한 루프에서 반복 호출하면 UI가 지속적으로 포커스를 점유할 수 있으므로 초기화 시점 1회 호출을 권장한다.</li>
+</ul>
+
+<h2>3) Snippet Pack (Directly Usable)</h2>
+<pre><code>// open kOS terminal from current CPU part
+CORE:PART:GETMODULE("kOSProcessor"):DOEVENT("Open Terminal").</code></pre>
+
+<h2>4) Tuning / Parameters</h2>
+<pre><code>// module/event names are string keys and should match part module definition
+SET moduleName TO "kOSProcessor".
+SET eventName TO "Open Terminal".
+CORE:PART:GETMODULE(moduleName):DOEVENT(eventName).</code></pre>
+
+<h2>5) Suffix and Key Inventory (No-loss policy)</h2>
+<ul>
+  <li>CORE:PART</li>
+  <li>CORE:PART:GETMODULE</li>
+  <li>DOEVENT("Open Terminal")</li>
+</ul>
+
+<h2>6) Agent Usage Hints</h2>
+<ul>
+  <li>터미널 입력이 필요한 테스트 러너 실행 직전에 호출하면 입력 대기 상태를 명확히 확인할 수 있다.</li>
+  <li>실패 가능성을 줄이려면 모듈 존재 여부를 먼저 체크하는 헬퍼 루틴과 함께 사용한다.</li>
+</ul>

@@ -1,0 +1,87 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/mod/kerbal_engineer_redux.md
+source_doc_title: kOS-KerbalEngineer
+source_doc_version: kOS-KerbalEngineer v0.1.1 / KerbalEngineer v1.1.9
+cheatsheet_type: snippet-first, agent-oriented
+-->
+
+<h1>kOS-KerbalEngineer - Cheat Sheet</h1>
+
+<h2>1) Core Intent</h2>
+<p>
+Kerbal Engineer Redux에서 계산한 burn time, suicide burn, TWR, thermal 지표를 kOS에서 즉시 읽어 비행 로직에 반영한다.
+</p>
+
+<h2>2) Safety Critical Notes</h2>
+<ul>
+  <li>Kerbal Engineer 모드가 없으면 <code>ADDONS:KE:*</code> 접근이 실패할 수 있다.</li>
+  <li>BurnTime 계열 값은 실시간으로 갱신되므로 burn 루프 안에서 재계산 없이 캐시하면 오차가 커진다.</li>
+</ul>
+
+<h2>3) Snippet Pack (Directly Usable)</h2>
+<pre><code>// next node half-burn time
+SET bt TO ADDONS:KE:NODEHALFBURNTIME.
+PRINT bt.
+
+// full node burn time
+SET fullBurn TO ADDONS:KE:NODEBURNTIME.
+PRINT fullBurn.
+
+// suicide burn telemetry
+PRINT ADDONS:KE:SUICIDEBURNCOUNTDOWN.
+PRINT ADDONS:KE:SUICIDEBURNDELTAV.
+PRINT ADDONS:KE:SUICIDEBURNLENGTH.
+PRINT ADDONS:KE:SUICIDEBURNDISTANCE.
+PRINT ADDONS:KE:SUICIDEBURNALTITUDE.
+
+// TWR and thermal criticals
+PRINT ADDONS:KE:ACTUALTWR.
+PRINT ADDONS:KE:TOTALTWR.
+PRINT ADDONS:KE:CRITICALPARTNAME.
+PRINT ADDONS:KE:CRITICALTHERMALPERCENTAGE.
+
+// version
+PRINT ADDONS:KE:VERSION.</code></pre>
+
+<h2>4) Tuning / Parameters</h2>
+<pre><code>// use half-burn value for node-centered burn timing
+SET halfBurn TO ADDONS:KE:NODEHALFBURNTIME.
+SET burnStartUT TO NEXTNODE:ETA - halfBurn.
+
+UNTIL TIME:SECONDS >= burnStartUT {
+  WAIT 0.1.
+}.
+
+// update continuously during burn for better cutoff
+UNTIL ADDONS:KE:NODEBURNTIME <= 0 {
+  LOCK THROTTLE TO 0.35.
+  WAIT 0.05.
+}.
+UNLOCK THROTTLE.</code></pre>
+
+<h2>5) Suffix and Key Inventory (No-loss policy)</h2>
+<ul>
+  <li>ADDONS:KE:NODEHALFBURNTIME</li>
+  <li>ADDONS:KE:NODEBURNTIME</li>
+  <li>ADDONS:KE:SUICIDEBURNCOUNTDOWN</li>
+  <li>ADDONS:KE:SUICIDEBURNDELTAV</li>
+  <li>ADDONS:KE:SUICIDEBURNLENGTH</li>
+  <li>ADDONS:KE:SUICIDEBURNDISTANCE</li>
+  <li>ADDONS:KE:SUICIDEBURNALTITUDE</li>
+  <li>ADDONS:KE:ACTUALTWR</li>
+  <li>ADDONS:KE:TOTALTWR</li>
+  <li>ADDONS:KE:CRITICALPARTNAME</li>
+  <li>ADDONS:KE:CRITICALTEMPERATURE</li>
+  <li>ADDONS:KE:CRITICALTEMPERATUREMAX</li>
+  <li>ADDONS:KE:CRITICALTHERMALPERCENTAGE</li>
+  <li>ADDONS:KE:CRITICALSKINTEMPERATURE</li>
+  <li>ADDONS:KE:CRITICALSKINTEMPERATUREMAX</li>
+  <li>ADDONS:KE:VERSION</li>
+</ul>
+
+<h2>6) Agent Usage Hints</h2>
+<ul>
+  <li>정밀 기동에서는 <code>NODEHALFBURNTIME</code>를 우선 사용하고, burn 중에는 <code>NODEBURNTIME</code>를 짧은 간격으로 재조회한다.</li>
+  <li>재진입/착륙 자동화에서는 <code>SUICIDEBURN*</code>와 <code>CRITICALTHERMALPERCENTAGE</code>를 동시에 사용해 스로틀 제한 조건을 만든다.</li>
+</ul>
