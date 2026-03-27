@@ -7,6 +7,12 @@ applyTo: "docs/domain_knowledge/KOS_DOC/**/*.html"
 ## 목적
 KOS 공식 문서를 AI 에이전트가 빠르게 검색/회수/코드생성에 활용할 수 있는 스니펫 중심 치트시트로 변환한다.
 
+## Git 운영 규칙 (필수)
+- 작업 중간중간 의미 단위로 commit 한다.
+- 변환 작업에서는 최소 2회 commit 한다: (1) 변환 실행 결과 (2) 검증/수정 반영.
+- 작업 중 `git push`는 금지한다.
+- 사용자의 명시적 승인 없이 `git push`, `git push --force`를 실행하지 않는다.
+
 ## 입력/출력 경로 규칙
 - 입력 루트: docs/domain_knowledge/KOS_DOC
 - 출력 루트: docs/domain_knowledge/KOS_cheatsheet
