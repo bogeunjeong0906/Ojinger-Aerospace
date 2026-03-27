@@ -1,0 +1,289 @@
+{
+  "generated_at": "2026-03-27T18:25:25.081521Z",
+  "verdict": "TBD",
+  "tier1": {
+    "total_files": 138,
+    "snippet_count": 93,
+    "snippet_rate": 67.4,
+    "suffix_count": 123,
+    "suffix_rate": 89.1,
+    "empty_section_count": 135,
+    "empty_section_files": [
+      {
+        "file": "library.html",
+        "missing_sections": [
+          "Safety",
+          "Snippet Pack",
+          "Tuning",
+          "Suffix",
+          "Agent"
+        ]
+      },
+      {
+        "file": "addons/RemoteTech.html",
+        "missing_sections": [
+          "Safety",
+          "Tuning"
+        ]
+      },
+      {
+        "file": "addons/KAC.html",
+        "missing_sections": [
+          "Safety",
+          "Tuning",
+          "Agent"
+        ]
+      },
+      {
+        "file": "addons/AGX.html",
+        "missing_sections": [
+          "Safety",
+          "Tuning",
+          "Suffix",
+          "Agent"
+        ]
+      },
+      {
+        "file": "addons/Trajectories.html",
+        "missing_sections": [
+          "Safety",
+          "Tuning"
+        ]
+      },
+      {
+        "file": "addons/OrbitalScience.html",
+        "missing_sections": [
+          "Safety",
+          "Tuning",
+          "Agent"
+        ]
+      },
+      {
+        "file": "addons/IR.html",
+        "missing_sections": [
+          "Tuning",
+          "Agent"
+        ]
+      },
+      {
+        "file": "structures/celestial_bodies.html",
+        "missing_sections": [
+          "Core Intent",
+          "Safety",
+          "Snippet Pack",
+          "Tuning",
+          "Suffix",
+          "Agent"
+        ]
+      },
+      {
+        "file": "structures/communication.html",
+        "missing_sections": [
+          "Core Intent",
+          "Safety",
+          "Snippet Pack",
+          "Tuning",
+          "Suffix",
+          "Agent"
+        ]
+      },
+      {
+        "file": "structures/orbits.html",
+        "missing_sections": [
+          "Core Intent",
+          "Safety",
+          "Snippet Pack",
+          "Tuning",
+          "Suffix",
+          "Agent"
+        ]
+      },
+      {
+        "file": "structures/volumes_and_files.html",
+        "missing_sections": [
+          "Core Intent",
+          "Safety",
+          "Snippet Pack",
+          "Tuning",
+          "Suffix",
+          "Agent"
+        ]
+      },
+      {
+        "file": "structures/reflection.html",
+        "missing_sections": [
+          "Safety",
+          "Snippet Pack",
+          "Tuning",
+          "Suffix",
+          "Agent"
+        ]
+      },
+      {
+        "file": "structures/gui.html",
+        "missing_sections": [
+          "Safety",
+          "Tuning"
+        ]
+      },
+      {
+        "file": "structures/collections.html",
+        "missing_sections": [
+          "Core Intent",
+          "Safety",
+          "Snippet Pack",
+          "Tuning",
+          "Suffix",
+          "Agent"
+        ]
+      },
+      {
+        "file": "structures/vessels.html",
+        "missing_sections": [
+          "Core Intent",
+          "Safety",
+          "Snippet Pack",
+          "Tuning",
+          "Suffix",
+          "Agent"
+        ]
+      },
+      {
+        "file": "structures/waypoint.html",
+        "missing_sections": [
+          "Safety",
+          "Snippet Pack",
+          "Tuning",
+          "Agent"
+        ]
+      },
+      {
+        "file": "structures/misc.html",
+        "missing_sections": [
+          "Core Intent",
+          "Safety",
+          "Snippet Pack",
+          "Tuning",
+          "Suffix",
+          "Agent"
+        ]
+      },
+      {
+        "file": "structures/orbits/orbit.html",
+        "missing_sections": [
+          "Tuning"
+        ]
+      },
+      {
+        "file": "structures/orbits/eta.html",
+        "missing_sections": [
+          "Safety",
+          "Tuning",
+          "Agent"
+        ]
+      },
+      {
+        "file": "structures/orbits/orbitablevelocity.html",
+        "missing_sections": [
+          "Safety",
+          "Tuning"
+        ]
+      }
+    ],
+    "low_token_files": [
+      {
+        "file": "structures/celestial_bodies.html",
+        "tokens": 4
+      },
+      {
+        "file": "structures/communication.html",
+        "tokens": 3
+      },
+      {
+        "file": "structures/orbits.html",
+        "tokens": 2
+      },
+      {
+        "file": "structures/volumes_and_files.html",
+        "tokens": 4
+      },
+      {
+        "file": "structures/collections.html",
+        "tokens": 3
+      },
+      {
+        "file": "structures/vessels.html",
+        "tokens": 4
+      },
+      {
+        "file": "structures/misc.html",
+        "tokens": 7
+      },
+      {
+        "file": "structures/misc/versioninfo.html",
+        "tokens": 16
+      },
+      {
+        "file": "structures/misc/resource_transfer.html",
+        "tokens": 28
+      },
+      {
+        "file": "structures/gui_widgets/spacing.html",
+        "tokens": 13
+      },
+      {
+        "file": "structures/gui_widgets/widget.html",
+        "tokens": 33
+      },
+      {
+        "file": "structures/gui_widgets/stylerecoffset.html",
+        "tokens": 4
+      },
+      {
+        "file": "structures/gui_widgets/stylestate.html",
+        "tokens": 15
+      },
+      {
+        "file": "structures/gui_widgets/scrollbox.html",
+        "tokens": 42
+      },
+      {
+        "file": "structures/volumes_and_files/volumeitem.html",
+        "tokens": 32
+      },
+      {
+        "file": "structures/volumes_and_files/volumedirectory.html",
+        "tokens": 35
+      },
+      {
+        "file": "structures/vessels/crafttemplate.html",
+        "tokens": 27
+      },
+      {
+        "file": "structures/vessels/separator.html",
+        "tokens": 42
+      },
+      {
+        "file": "structures/vessels/launchclamp.html",
+        "tokens": 46
+      },
+      {
+        "file": "structures/vessels/crewmember.html",
+        "tokens": 27
+      },
+      {
+        "file": "structures/vessels/sciencedatavalue.html",
+        "tokens": 39
+      }
+    ]
+  },
+  "tier2": {
+    "priority1": [],
+    "priority2": [],
+    "priority3": []
+  },
+  "tier3": {
+    "samples": []
+  },
+  "bugs": []
+}
