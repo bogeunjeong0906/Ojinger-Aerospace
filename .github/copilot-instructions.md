@@ -35,10 +35,26 @@ agent.md와 copilot-instructions.md의 내용은 모든 컨텍스트중 가장 �
 파이썬 스크립트 실행시 가상환경을 반드시 활성화한다. 
 **활성화 커맨드**: conda activate ./.venv
 
-## 7. KOS_DOC 치트시트 변환 규칙
-KOS_DOC을 치트시트로 변환하는 작업은 아래 규칙 파일을 항상 참조한다.
+## 7. KOS_DOC 치트시트 관련 지침
 
-* 규칙 파일: .github/instructions/copilot-instructions.md
-* 샘플 파일: docs/domain_knowledge/KOS_cheatsheet/cooked_sample.html
+### 7-1. HTML 변환 규칙
+KOS_DOC HTML 파일을 치트시트로 변환하는 작업 시 참조한다.
+
+* 규칙 파일: `.github/instructions/copilot-instructions.md`
+* 샘플 파일: `docs/domain_knowledge/KOS_cheatsheet/cooked_sample.html`
+* 변환 스크립트: `scripts/kos_cheatsheet_converter.py`
+
+### 7-2. 품질 검수
+생성된 치트시트 품질 검수 작업 시 참조한다.
+
+* 계획서: `docs/plans/kos_cheatsheet_quality_inspection.md`
+* 실행 지침: `.github/instructions/kos-quality-inspection.instructions.md`
+* 결과 출력: `docs/plans/results/quality_report.json`
+
+### 7-3. 비HTML 파일 치트시트화
+KOS_DOC 내 `.md`, `.ks` 파일을 수동으로 치트시트화하는 작업 시 참조한다.
+
+* 계획서: `docs/plans/kos_nonhtml_cheatsheet_manual.md`
+* 실행 지침: `.github/instructions/kos-nonhtml-cheatsheet.instructions.md`
 
 
