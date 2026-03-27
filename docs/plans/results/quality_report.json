@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-03-27T18:25:25.081521Z",
-  "verdict": "TBD",
+  "generated_at": "2026-03-27T18:25:54.160480Z",
+  "verdict": "Fail",
   "tier1": {
     "total_files": 138,
     "snippet_count": 93,
@@ -278,12 +278,174 @@
     ]
   },
   "tier2": {
-    "priority1": [],
-    "priority2": [],
-    "priority3": []
+    "priority1": [
+      {
+        "file": "commands/flight/cooked.html",
+        "status": "WARN",
+        "notes": "suffix_count>=22"
+      },
+      {
+        "file": "commands/flight/raw.html",
+        "status": "OK",
+        "notes": "all checks passed"
+      },
+      {
+        "file": "structures/vessels/vessel.html",
+        "status": "FAIL",
+        "notes": "suffix_count>=10 / has velocity/altitude/mass"
+      },
+      {
+        "file": "structures/vessels/control.html",
+        "status": "FAIL",
+        "notes": "has control suffixes / has snippet"
+      }
+    ],
+    "priority2": [
+      {
+        "file": "language/variables.html",
+        "status": "OK",
+        "notes": "all keywords present"
+      },
+      {
+        "file": "language/user_functions.html",
+        "status": "OK",
+        "notes": "all keywords present"
+      },
+      {
+        "file": "language/flow.html",
+        "status": "OK",
+        "notes": "all keywords present"
+      },
+      {
+        "file": "math/direction.html",
+        "status": "OK",
+        "notes": "all keywords present"
+      },
+      {
+        "file": "math/vector.html",
+        "status": "OK",
+        "notes": "all keywords present"
+      }
+    ],
+    "priority3": [
+      {
+        "file": "addons/AGX.html",
+        "source_code_blocks": 2,
+        "cheatsheet_snippets": 2,
+        "status": "OK"
+      },
+      {
+        "file": "structures/misc/terminal.html",
+        "source_code_blocks": 0,
+        "cheatsheet_snippets": 0,
+        "status": "OK"
+      },
+      {
+        "file": "structures/misc/resource_transfer.html",
+        "source_code_blocks": 0,
+        "cheatsheet_snippets": 0,
+        "status": "OK"
+      },
+      {
+        "file": "language/anonymous.html",
+        "source_code_blocks": 4,
+        "cheatsheet_snippets": 4,
+        "status": "OK"
+      },
+      {
+        "file": "language/syntax.html",
+        "source_code_blocks": 19,
+        "cheatsheet_snippets": 17,
+        "status": "OK"
+      }
+    ]
   },
   "tier3": {
-    "samples": []
+    "samples": [
+      {
+        "file": "structures/misc/steeringmanager.html",
+        "source_suffixes_count": 0,
+        "cheatsheet_suffixes_count": 7,
+        "missing_count": 0,
+        "extra_count": 7,
+        "missing_sample": [],
+        "extra_sample": [
+          "STEERINGMANAGER:MAXSTOPPINGTIME",
+          "STEERINGMANAGER:RESETPIDS",
+          "STEERINGMANAGER:ROLLTORQUEFACTOR",
+          "STEERINGMANAGER:ROTATIONEPSILONMAX",
+          "STEERINGMANAGER:SHOWFACINGVECTORS",
+          "STEERINGMANAGER:TORQUEEPSILONMAX",
+          "STEERINGMANAGER:TORQUEEPSILONMIN"
+        ]
+      },
+      {
+        "file": "structures/misc/pidloop.html",
+        "source_suffixes_count": 1,
+        "cheatsheet_suffixes_count": 3,
+        "missing_count": 0,
+        "extra_count": 2,
+        "missing_sample": [],
+        "extra_sample": [
+          "HOVERPID:SETPOINT",
+          "HOVERPID:UPDATE"
+        ]
+      },
+      {
+        "file": "structures/vessels/orbit.html",
+        "source_suffixes_count": 0,
+        "cheatsheet_suffixes_count": 0,
+        "missing_count": 0,
+        "extra_count": 0,
+        "missing_sample": [],
+        "extra_sample": []
+      },
+      {
+        "file": "math/direction.html",
+        "source_suffixes_count": 4,
+        "cheatsheet_suffixes_count": 11,
+        "missing_count": 3,
+        "extra_count": 10,
+        "missing_sample": [
+          "SHIP:FACING:FOREVECTOR",
+          "SHIP:FACING:STARVECTOR",
+          "SHIP:FACING:TOPVECTOR"
+        ],
+        "extra_sample": [
+          "SHIP:BODY:POSITION",
+          "SHIP:FACING",
+          "SHIP:PROGRADE",
+          "SHIP:PROGRADE:VECTOR",
+          "SHIP:STARFACING",
+          "SHIP:TOPVECTOR",
+          "SHIP:UP",
+          "SHIP:VELOCITY:ORBIT",
+          "SUN:POSITION",
+          "TARGET:FACING"
+        ]
+      },
+      {
+        "file": "commands/flight/cooked.html",
+        "source_suffixes_count": 10,
+        "cheatsheet_suffixes_count": 14,
+        "missing_count": 3,
+        "extra_count": 7,
+        "missing_sample": [
+          "STEERINGMANAGER:YAWPID:KD",
+          "STEERINGMANAGER:YAWTS",
+          "STEERINGMANGER:YAWPID:KD"
+        ],
+        "extra_sample": [
+          "BODY:POSITION",
+          "SHIP:VELOCITY:ORBIT",
+          "SHIP:VELOCITY:SURFACE",
+          "STEERINGMANAGER:PITCHPID:KI",
+          "STEERINGMANAGER:PITCHPID:KP",
+          "STEERINGMANAGER:ROLLTS",
+          "STEERINGMANAGER:TORQUEEPSILONMIN"
+        ]
+      }
+    ]
   },
   "bugs": []
 }
