@@ -1,0 +1,144 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/collections/lexicon.html
+source_doc_title: Lexicon
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Lexicon</h1>
+<h2>1) Core Intent</h2>
+<p>A Lexicon is an associative array ,
+and is similar to the LIST type .  If you are an experienced
+programmer who already knows what “associative array” means, you can
+probably skip this section and go to the next part of the page further
+down, otherwise read on:</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>set arr to lexicon().
+arr:add( "ABC", 1234.1 ).
+arr:add( "Carmine", 4.1 ).
+print arr["ABC"]. // prints 1234.1
+print arr["Carmine"]. // prints 4.1
+</code></pre>
+<pre><code>// Make an empty lexicon with zero items in it:
+set mylexicon to lexicon().
+</code></pre>
+<pre><code>set mylexicon to lexicon("key1", "value1", "key2", "value2").
+</code></pre>
+<pre><code>set mylexicon to lexicon().
+set mylexicon["key1"] to "value1".
+set mylexicon["key2"] to "value2".
+</code></pre>
+<pre><code>set mylist to list("key1", "value1", "key2", "value2").
+set mylexicon to lexicon(mylist).
+</code></pre>
+<pre><code>print SHIP:VELOCITY.
+print MUN:RADIUS.
+</code></pre>
+<pre><code>local mylex is lexicon(
+  "key1", "value1", "key2", "value2", "key3", "value3").
+print mylex:key1. // prints "value1".
+print mylex:key2. // prints "value2".
+print mylex:key3. // prints "value3".
+</code></pre>
+<pre><code>local mylex is lexicon(
+  "key1", "value1", "key2", "value2", "key3", "value3").
+// These two lines are exactly the same:
+print mylex["key1"].
+print mylex:key1.
+</code></pre>
+<pre><code>local mylex is lexicon(
+  "key_no_spaces", 100, "key with spaces", 200).
+print mylex["key_no_spaces"].   // This works fine.
+print mylex["key with spaces"]. // This works fine.
+print mylex:key_no_spaces.      // This works fine.
+print mylex:key with spaces.    // <-- BUT THIS IS AN ERROR.
+</code></pre>
+<pre><code>local mylex is lexicon().
+print mylex:mykey. // <--- Error: no such thing in the lexicon yet.
+set mylex["mykey"] to "value". // here it gets added, but it's too late.
+</code></pre>
+<pre><code>local mylex is lexicon().
+set mylex["mykey"] to "value". // adding the value first
+print mylex:mykey. // makes this line work.
+</code></pre>
+<pre><code>local mylex is lexicon().
+set mylex["LENGTH"] to 20.
+
+// prints 1.  LENGTH is already a suffix of Lexicons, so
+// that's what this gets you, not the key called "length":
+print mylex:length.
+
+// This will print 20, as there's no ambiguity that you were
+// definitely looking for the key called "length" in this
+// case, not the built-in suffix called "length":
+print mylex["length"].
+</code></pre>
+<pre><code>// Just gives a shallow list:
+print mylexicon.
+
+// Walks the entire tree of contents, descending down into
+// any Lists or Lexicons that are stored inside this Lexicon:
+print mylexicon:dump.
+</code></pre>
+<pre><code>SET ARR TO LEXICON().
+SET X TO ARR["somekey"].  // this will produce an error.
+</code></pre>
+<pre><code>SET ARR TO LEXICON().
+SET ARR["somekey"] TO 100. // adds new value to the lexicon.
+</code></pre>
+<pre><code>SET ARR TO LEXICON().
+ARR:ADD("somekey",100).
+</code></pre>
+<pre><code>SET ARR TO LEXICON().
+ARR:ADD("somekey",100).
+ARR:ADD("somekey",200).  // error, because "somekey" already exists.
+</code></pre>
+<pre><code>SET ARR TO LEXICON().
+SET ARR["somekey"] to 100.
+SET ARR["somekey"] to 200. // no error, because it replaces the value 100 with a 200.
+</code></pre>
+<pre><code>SET BAR TO LEXICON().       // Creates a new empty lexicon in BAR variable
+BAR:ADD("FIRST",10).        // Adds a new element to the lexicon with the key of "FIRST"
+BAR:ADD("SECOND",20).       // Adds a new element to the lexicon with the key of "SECOND"
+BAR:ADD("LAST",30).         // Adds a new element to the lexicon with the key of "LAST"
+
+PRINT BAR["FIRST"].            // Prints 10
+PRINT BAR["SECOND"].            // Prints 20
+PRINT BAR["LAST"].            // Prints 30
+
+SET FOO TO LEXICON().           // Creates a new empty lexicon in FOO variable
+FOO:ADD("ALTITUDE", ALTITUDE).  // Adds current altitude number to the lexicon
+FOO:ADD("ETA", ETA:APOAPSIS).   // Adds current seconds to apoapsis to the lexicon at the index "ETA"
+
+// As a reminder, at this point your lexicon, if you did all the above
+// steps in order, would look like this now:
+//
+//  FOO["ALTITUDE"] = 99999. // or whatever your altitude was when you added it.
+//  FOO["ETA"] = 99. // or whatever your ETA:APOAPSIS was when you added it.
+
+PRINT FOO:LENGTH.        // Prints 2
+PRINT FOO:LENGTH().      // Also prints 2.  LENGTH is a method that, because it takes zero arguments, can omit the parentheses.
+SET x TO "ALTITUDE". PRINT FOO[x].  // Prints the same thing as FOO["ALTITUDE"].
+
+FOO:REMOVE("ALTITUDE").              // Removes the element at "ALTITUDE" from the lexicon.
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>ARR:ADD</li>
+  <li>BAR:ADD</li>
+  <li>CASESENSITIVE</li>
+  <li>ETA:APOAPSIS</li>
+  <li>FOO:ADD</li>
+  <li>FOO:LENGTH</li>
+  <li>FOO:REMOVE</li>
+  <li>HASSUFFIX</li>
+  <li>HASVALUE</li>
+  <li>LEXICON:KEYS</li>
+  <li>MUN:RADIUS</li>
+  <li>SHIP:VELOCITY</li>
+  <li>STRUCTURE:HASSUFFIX</li>
+  <li>STRUCTURE:SUFFIXNAMES</li>
+  <li>SUFFIXNAMES</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: This type is serializable.</div>

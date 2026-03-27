@@ -1,0 +1,28 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/addons/AGX.html
+source_doc_title: Action Groups Extended
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Action Groups Extended</h1>
+<h2>1) Core Intent</h2>
+<p>Increase the action groups available to kOS from 10 to 250. Also adds the ability to edit actions in flight as well as the ability to name action groups so you can describe what a group does.</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>AG15 on. // Activate action group 15.
+print AG15. // Print action group 15's state to the terminal. (True/False)
+
+on AG15 { //Prints "Action group 15 clicked!" to the console when AG15 is toggled, either via "AG15 on." or in-game with an assigned key.
+  print "Action group 15 clicked!".
+  preserve.
+}
+</code></pre>
+<pre><code>declare cooldownTimeAG15 to 0.
+on AG15 {
+  if cooldownTimeAG15 + 10 < time:seconds {
+    print "Solar Panel Toggled!".
+    set cooldownTimeAG15 to time.
+  }
+  preserve.
+}
+</code></pre>

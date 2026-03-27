@@ -1,0 +1,35 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/commands/resource_transfer.html
+source_doc_title: Transferring resources
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Transferring resources</h1>
+<h2>1) Core Intent</h2>
+<p>Resource transfer is an important part of many missions in Kerbal Space Program,
+whether you are gassing up a lander or refuelling a station. Because of this, we need
+a way to describe a resource transfer in script and monitor that transfer to be sure it
+was successful.</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>SET transferFoo TO TRANSFER(resourceName, fromParts, toParts, amount).
+SET transferBar TO TRANSFERALL(resourceName, fromParts, toParts).
+</code></pre>
+<pre><code>LIST ELEMENTS IN elist.
+SET foo TO TRANSFERALL("OXIDIZER", elist[0], elist[1]).
+SET foo:ACTIVE to TRUE.
+</code></pre>
+<pre><code>SET foo TO TRANSFERALL("OXIDIZER", SHIP:PARTS[0], SHIP:PARTS[1]).
+SET foo:ACTIVE to TRUE.
+</code></pre>
+<pre><code>SET sourceParts to SHIP:PARTSDUBBED("fooPart").
+SET destinationParts to SHIP:PARTSDUBBED("barPart").
+SET foo TO TRANSFER("liquidfuel", sourceParts, destinationParts, 100).
+SET foo:ACTIVE to TRUE.
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>RESOURCETRANSFER</li>
+  <li>SHIP:PARTS</li>
+  <li>SHIP:PARTSDUBBED</li>
+</ul>

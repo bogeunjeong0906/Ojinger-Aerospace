@@ -1,0 +1,103 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/math/direction.html
+source_doc_title: Directions
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Directions</h1>
+<h2>1) Core Intent</h2>
+<p>Direction objects represent a rotation starting from an initial point in KSP ’s coordinate system where the initial state was looking down the \(+z\) axis, with the camera “up” being the \(+y\) axis. This exists primarily to enable automated steering. A Direction can be made from many suffix terms of other structures, as shown below:</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>SET myDir TO R( a, b, c ).
+</code></pre>
+<pre><code>SET myDir TO Q( x, y, z, w ).
+</code></pre>
+<pre><code>SET myDir TO HEADING(degreesFromNorth, pitchAboveHorizon).
+</code></pre>
+<pre><code>// Aim up the SOI's north axis (V(0,1,0)), rolling the roof to point to the sun.
+LOCK STEERING TO LOOKDIRUP( V(0,1,0), SUN:POSITION ).
+//
+// A direction that aims normal to orbit, with the roof pointed down toward the planet:
+LOCK normVec to VCRS(SHIP:BODY:POSITION,SHIP:VELOCITY:ORBIT).  // Cross-product these for a normal vector
+LOCK STEERING TO LOOKDIRUP( normVec, SHIP:BODY:POSITION).
+</code></pre>
+<pre><code>// Pick a new rotation that is pitched 30 degrees from the current one, taking into account
+// the ship's current orientation to decide which direction is the 'pitch' rotation:
+//
+SET pitchUp30 to ANGLEAXIS(-30,SHIP:STARFACING).
+SET newDir to pitchUp30*SHIP:FACING.
+LOCK STEERING TO newDir.
+</code></pre>
+<pre><code>SET myDir to ROTATEFROMTO( v1, v2 ).
+</code></pre>
+<pre><code>SET myDir TO SHIP:FACING.
+SET myDir TO TARGET:FACING.
+SET myDir TO SHIP:UP.
+</code></pre>
+<pre><code>// Initializes a direction to prograde
+// plus a relative pitch of 90
+SET X TO SHIP:PROGRADE + R(90,0,0).
+
+// Steer the vessel in the direction
+// suggested by direction X.
+LOCK STEERING TO X.
+
+// Create a rotation facing northeast,
+// 10 degrees above horizon
+SET Y TO HEADING(45, 10).
+
+// Steer the vessel in the direction
+// suggested by direction X.
+LOCK STEERING TO Y.
+
+// Set by a rotation in degrees
+SET Direction TO R(0,90,0).
+</code></pre>
+<pre><code>// A direction pointing along compass heading 330,
+// by rotating NORTH by 30 degrees around UP axis:
+SET newDir TO ANGLEAXIS(30,SHIP:UP) * NORTH.
+</code></pre>
+<pre><code>// What would the velocity of your ship be
+// if it was angled 20 degrees to your left?
+SET Vel to ANGLEAXIS(-20,SHIP:TOPVECTOR) * SHIP:VELOCITY:ORBIT.
+// At this point Vel:MAG and SHIP:VELOCITY:MAG should be the same,
+// but they don't point the same way
+</code></pre>
+<pre><code>SET dir TO SHIP:UP.
+SET newdir TO VCRS(SHIP:PROGRADE:VECTOR, dir:VECTOR)
+</code></pre>
+<pre><code>SET MyVec to V(100,200,300).
+SET MyDir to MyVec:DIRECTION.
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>ANGLEAXIS</li>
+  <li>DIRECTION</li>
+  <li>FOREVECTOR</li>
+  <li>LOOKDIRUP</li>
+  <li>RIGHTVECTOR</li>
+  <li>ROTATEFROMTO</li>
+  <li>SHIP:BODY:POSITION</li>
+  <li>SHIP:FACING</li>
+  <li>SHIP:PROGRADE</li>
+  <li>SHIP:PROGRADE:VECTOR</li>
+  <li>SHIP:STARFACING</li>
+  <li>SHIP:TOPVECTOR</li>
+  <li>SHIP:UP</li>
+  <li>SHIP:VELOCITY:MAG</li>
+  <li>SHIP:VELOCITY:ORBIT</li>
+  <li>STARVECTOR</li>
+  <li>STEERING</li>
+  <li>SUN:POSITION</li>
+  <li>TARGET:FACING</li>
+  <li>TOPVECTOR</li>
+  <li>UPVECTOR</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: When dealing with Directions (which are Rotations) in kOS, it is
+important to remember that KSP uses a left-handed coordinate system.  This affects the convention of which rotation
+direction is positive when calculating angles.</div>
+<div class="admonition"><strong>ℹ Note</strong>: The fact that KSP is using a left-handed coordinate system is important to keep in mind when visualizing
+the meaning of an ANGLEAXIS function call.  It affects which
+direction is positive when calculating angles.</div>

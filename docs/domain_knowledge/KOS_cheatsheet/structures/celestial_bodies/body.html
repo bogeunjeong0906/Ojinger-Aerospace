@@ -1,0 +1,51 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/celestial_bodies/body.html
+source_doc_title: Body
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Body</h1>
+<h2>1) Core Intent</h2>
+<p>This is any sort of planet or moon. To get a variable referring to a Body, you can do this:</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>// "name" is the name of the body,
+// like "Mun" for example.
+SET MY_VAR TO BODY("name").
+</code></pre>
+<pre><code>SET MUN_EXISTS TO BODYEXISTS("Mun").
+IF MUN_EXISTS PRINT "Mun Exists." ELSE PRINT "Mun does not exist.".
+</code></pre>
+<pre><code>SET the_mun TO Mun.
+SET the_mun TO Body("Mun").
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>ALTITUDE</li>
+  <li>ALTITUDEOF</li>
+  <li>ANGULARVEL</li>
+  <li>ATMOSPHERE</li>
+  <li>BODYEXISTS</li>
+  <li>DESCRIPTION</li>
+  <li>GEOCOORDINATES</li>
+  <li>GEOPOSITIONLATLNG</li>
+  <li>GEOPOSITIONOF</li>
+  <li>HASOCEAN</li>
+  <li>HASSOLIDSURFACE</li>
+  <li>ORBITABLE</li>
+  <li>ORBITABLE:GEOPOSITION</li>
+  <li>ORBITINGCHILDREN</li>
+  <li>ROTATIONANGLE</li>
+  <li>ROTATIONPERIOD</li>
+  <li>SOIRADIUS</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: Exception: If you are using a mod that replaces the stock game’s planets
+and moons with new bodies with new names, then there is a chance a body’s
+name will match an existing bound variable name in kOS and we cannot
+control this.  Therefore if this happens, that body name will NOT become a
+variable name, so you can only refer to that body with the expression BODY(name) .  (For example, this occurred when Galileo Planet Pack had
+a planet called “Eta” which has the same name as the bound variable “ETA”). This behavior was only added in kOS 1.0.2.
+Using a version of kOS prior to 1.0.2 will cause a name clash and
+broken behavior if a planet or moon exists that overrides a keyword name.</div>
+<div class="admonition"><strong>ℹ Note</strong>: This type is serializable.</div>

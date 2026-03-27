@@ -1,0 +1,149 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/misc/loaddistance.html
+source_doc_title: Vessel Load Distance
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Vessel Load Distance</h1>
+<h2>3) Snippet Pack</h2>
+<pre><code>SET distances TO KUNIVERSE:DEFAULTLOADDISTANCE.
+
+PRINT "escaping distances:".
+print "    load: " + distances:ESCAPING:LOAD + "m".
+print "  unload: " + distances:ESCAPING:UNLOAD + "m".
+print "  unpack: " + distances:ESCAPING:UNPACK + "m".
+print "    pack: " + distances:ESCAPING:PACK + "m".
+PRINT "flying distances:".
+print "    load: " + distances:FLYING:LOAD + "m".
+print "  unload: " + distances:FLYING:UNLOAD + "m".
+print "  unpack: " + distances:FLYING:UNPACK + "m".
+print "    pack: " + distances:FLYING:PACK + "m".
+PRINT "landed distances:".
+print "    load: " + distances:LANDED:LOAD + "m".
+print "  unload: " + distances:LANDED:UNLOAD + "m".
+print "  unpack: " + distances:LANDED:UNPACK + "m".
+print "    pack: " + distances:LANDED:PACK + "m".
+PRINT "orbit distances:".
+print "    load: " + distances:ORBIT:LOAD + "m".
+print "  unload: " + distances:ORBIT:UNLOAD + "m".
+print "  unpack: " + distances:ORBIT:UNPACK + "m".
+print "    pack: " + distances:ORBIT:PACK + "m".
+PRINT "prelaunch distances:".
+print "    load: " + distances:PRELAUNCH:LOAD + "m".
+print "  unload: " + distances:PRELAUNCH:UNLOAD + "m".
+print "  unpack: " + distances:PRELAUNCH:UNPACK + "m".
+print "    pack: " + distances:PRELAUNCH:PACK + "m".
+PRINT "splashed distances:".
+print "    load: " + distances:SPLASHED:LOAD + "m".
+print "  unload: " + distances:SPLASHED:UNLOAD + "m".
+print "  unpack: " + distances:SPLASHED:UNPACK + "m".
+print "    pack: " + distances:SPLASHED:PACK + "m".
+PRINT "suborbital distances:".
+print "    load: " + distances:SUBORBITAL:LOAD + "m".
+print "  unload: " + distances:SUBORBITAL:UNLOAD + "m".
+print "  unpack: " + distances:SUBORBITAL:UNPACK + "m".
+print "    pack: " + distances:SUBORBITAL:PACK + "m".
+</code></pre>
+<pre><code>// 30 km for in-flight
+// Note the order is important.  set UNLOAD BEFORE LOAD,
+// and PACK before UNPACK.  Otherwise the protections in
+// place to prevent invalid values will deny your attempt
+// to change some of the values:
+SET KUNIVERSE:DEFAULTLOADDISTANCE:FLYING:UNLOAD TO 30000.
+SET KUNIVERSE:DEFAULTLOADDISTANCE:FLYING:LOAD TO 29500.
+WAIT 0.001. // See paragraph above: "wait between load and pack changes"
+SET KUNIVERSE:DEFAULTLOADDISTANCE:FLYING:PACK TO 29999.
+SET KUNIVERSE:DEFAULTLOADDISTANCE:FLYING:UNPACK TO 29000.
+WAIT 0.001. // See paragraph above: "wait between load and pack changes"
+
+// 30 km for parked on the ground:
+// Note the order is important.  set UNLOAD BEFORE LOAD,
+// and PACK before UNPACK.  Otherwise the protections in
+// place to prevent invalid values will deny your attempt
+// to change some of the values:
+SET KUNIVERSE:DEFAULTLOADDISTANCE:LANDED:UNLOAD TO 30000.
+SET KUNIVERSE:DEFAULTLOADDISTANCE:LANDED:LOAD TO 29500.
+WAIT 0.001. // See paragraph above: "wait between load and pack changes"
+SET KUNIVERSE:DEFAULTLOADDISTANCE:LANDED:PACK TO 39999.
+SET KUNIVERSE:DEFAULTLOADDISTANCE:LANDED:UNPACK TO 29000.
+WAIT 0.001. // See paragraph above: "wait between load and pack changes"
+
+// 30 km for parked in the sea:
+// Note the order is important.  set UNLOAD BEFORE LOAD,
+// and PACK before UNPACK.  Otherwise the protections in
+// place to prevent invalid values will deny your attempt
+// to change some of the values:
+SET KUNIVERSE:DEFAULTLOADDISTANCE:SPLASHED:UNLOAD TO 30000.
+SET KUNIVERSE:DEFAULTLOADDISTANCE:SPLASHED:LOAD TO 29500.
+WAIT 0.001. // See paragraph above: "wait between load and pack changes"
+SET KUNIVERSE:DEFAULTLOADDISTANCE:SPLASHED:PACK TO 29999.
+SET KUNIVERSE:DEFAULTLOADDISTANCE:SPLASHED:UNPACK TO 29000.
+WAIT 0.001. // See paragraph above: "wait between load and pack changes"
+
+// 30 km for being on the launchpad or runway
+// Note the order is important.  set UNLOAD BEFORE LOAD,
+// and PACK before UNPACK.  Otherwise the protections in
+// place to prevent invalid values will deny your attempt
+// to change some of the values:
+SET KUNIVERSE:DEFAULTLOADDISTANCE:PRELAUNCH:UNLOAD TO 30000.
+SET KUNIVERSE:DEFAULTLOADDISTANCE:PRELAUNCH:LOAD TO 29500.
+WAIT 0.001. // See paragraph above: "wait between load and pack changes"
+SET KUNIVERSE:DEFAULTLOADDISTANCE:PRELAUNCH:PACK TO 29999.
+SET KUNIVERSE:DEFAULTLOADDISTANCE:PRELAUNCH:UNPACK TO 29000.
+WAIT 0.001. // See paragraph above: "wait between load and pack changes"
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>ESCAPING</li>
+  <li>ESCAPING:LOAD</li>
+  <li>ESCAPING:PACK</li>
+  <li>ESCAPING:UNLOAD</li>
+  <li>ESCAPING:UNPACK</li>
+  <li>FLYING:LOAD</li>
+  <li>FLYING:PACK</li>
+  <li>FLYING:UNLOAD</li>
+  <li>FLYING:UNPACK</li>
+  <li>KUNIVERSE:DEFAULTLOADDISTANCE</li>
+  <li>KUNIVERSE:DEFAULTLOADDISTANCE:FLYING:LOAD</li>
+  <li>KUNIVERSE:DEFAULTLOADDISTANCE:FLYING:PACK</li>
+  <li>KUNIVERSE:DEFAULTLOADDISTANCE:FLYING:UNLOAD</li>
+  <li>KUNIVERSE:DEFAULTLOADDISTANCE:FLYING:UNPACK</li>
+  <li>KUNIVERSE:DEFAULTLOADDISTANCE:LANDED:LOAD</li>
+  <li>KUNIVERSE:DEFAULTLOADDISTANCE:LANDED:PACK</li>
+  <li>KUNIVERSE:DEFAULTLOADDISTANCE:LANDED:UNLOAD</li>
+  <li>KUNIVERSE:DEFAULTLOADDISTANCE:LANDED:UNPACK</li>
+  <li>KUNIVERSE:DEFAULTLOADDISTANCE:PRELAUNCH:LOAD</li>
+  <li>KUNIVERSE:DEFAULTLOADDISTANCE:PRELAUNCH:PACK</li>
+  <li>KUNIVERSE:DEFAULTLOADDISTANCE:PRELAUNCH:UNLOAD</li>
+  <li>KUNIVERSE:DEFAULTLOADDISTANCE:PRELAUNCH:UNPACK</li>
+  <li>KUNIVERSE:DEFAULTLOADDISTANCE:SPLASHED:LOAD</li>
+  <li>KUNIVERSE:DEFAULTLOADDISTANCE:SPLASHED:PACK</li>
+  <li>KUNIVERSE:DEFAULTLOADDISTANCE:SPLASHED:UNLOAD</li>
+  <li>KUNIVERSE:DEFAULTLOADDISTANCE:SPLASHED:UNPACK</li>
+  <li>LANDED:LOAD</li>
+  <li>LANDED:PACK</li>
+  <li>LANDED:UNLOAD</li>
+  <li>LANDED:UNPACK</li>
+  <li>LOADDISTANCE</li>
+  <li>ORBIT:LOAD</li>
+  <li>ORBIT:PACK</li>
+  <li>ORBIT:UNLOAD</li>
+  <li>ORBIT:UNPACK</li>
+  <li>PRELAUNCH</li>
+  <li>PRELAUNCH:LOAD</li>
+  <li>PRELAUNCH:PACK</li>
+  <li>PRELAUNCH:UNLOAD</li>
+  <li>PRELAUNCH:UNPACK</li>
+  <li>SITUATIONLOADDISTANCE</li>
+  <li>SPLASHED</li>
+  <li>SPLASHED:LOAD</li>
+  <li>SPLASHED:PACK</li>
+  <li>SPLASHED:UNLOAD</li>
+  <li>SPLASHED:UNPACK</li>
+  <li>SUBORBITAL</li>
+  <li>SUBORBITAL:LOAD</li>
+  <li>SUBORBITAL:PACK</li>
+  <li>SUBORBITAL:UNLOAD</li>
+  <li>SUBORBITAL:UNPACK</li>
+</ul>

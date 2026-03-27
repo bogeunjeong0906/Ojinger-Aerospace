@@ -1,0 +1,68 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/gui_widgets/button.html
+source_doc_title: Button
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Button</h1>
+<h2>3) Snippet Pack</h2>
+<pre><code>set mybutton:ONCLICK to { print "Do something here.". }.
+</code></pre>
+<pre><code>set mybutton:ONTOGGLE to { parameter val. print "Button value just became " + val. }.
+</code></pre>
+<pre><code>LOCAL doneYet is FALSE.
+LOCAL g IS GUI(200).
+
+// b1 is a normal button that auto-releases itself:
+// Note that the callback hook, myButtonDetector, is
+// a named function found elsewhere in this same program:
+LOCAL b1 IS g:ADDBUTTON("button 1").
+SET b1:ONCLICK TO myButtonDetector@.
+
+// b2 is also a normal button that auto-releases itself,
+// but this time we'll use an anonymous callback hook for it:
+LOCAL b2 IS g:ADDBUTTON("button 2").
+SET b2:ONCLICK TO { print "Button Two got pressed". }
+
+// b3 is a toggle button.
+// We'll use it to demonstrate how ONTOGGLE callback hooks look:
+LOCAL b3 IS g:ADDBUTTON("button 3 (toggles)").
+set b3:style to g:skin:button.
+SET b3:TOGGLE TO TRUE.
+SET b3:ONTOGGLE TO myToggleDetector@.
+
+// b4 is the exit button.  For this we'll use another
+// anonymous function that just sets a boolean variable
+// to signal the end of the program:
+LOCAL b4 IS g:ADDBUTTON("EXIT DEMO").
+SET b4:ONCLICK TO { set doneYet to true. }
+
+g:show(). // Start showing the window.
+
+wait until doneYet. // program will stay here until exit clicked.
+
+g:hide(). // Finish the demo and close the window.
+
+//END.
+
+function myButtonDetector {
+  print "Button One got clicked.".
+}
+function myToggleDetector {
+  parameter newState.
+  print "Button Three has just become " + newState.
+}
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>BOX:ADDBUTTON</li>
+  <li>BOX:ADDCHECKBOX</li>
+  <li>BOX:ADDRADIOBUTTON</li>
+  <li>BUTTON:ADDCHECKBOX</li>
+  <li>BUTTON:ADDRADIOBUTTON</li>
+  <li>EXCLUSIVE</li>
+  <li>KOSDELEGATE</li>
+  <li>ONTOGGLE</li>
+  <li>TAKEPRESS</li>
+</ul>

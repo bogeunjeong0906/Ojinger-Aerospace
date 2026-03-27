@@ -1,0 +1,78 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/misc/kuniverse.html
+source_doc_title: KUniverse 4th wall methods
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>KUniverse 4th wall methods</h1>
+<h2>3) Snippet Pack</h2>
+<pre><code>kuniverse:debuglog("=== Now starting test ===").
+kuniverse:debuglog("--- Locking steering to up----").
+lock steering to up.
+kuniverse:debuglog("--- Now forcing a physics tick ----").
+wait 0.001.
+kuniverse:debuglog("--- Now unlocking steering again ----").
+unlock steering.
+wait 0.001.
+kuniverse:debuglog("=== Now done with test ===").
+</code></pre>
+<pre><code>kuniverse:debuglog("this is my message").
+</code></pre>
+<pre><code>kOS: (KUNIVERSE:DEBUGLOG) this is my message
+</code></pre>
+<pre><code>SET KUNIVERSE:ACTIVEVESSEL TO VESSEL("vessel 2").
+</code></pre>
+<pre><code>PRINT "ATTEMPTING TO REVERT TO THE Vehicle Assembly Building."
+IF KUNIVERSE:CANREVERTTOEDITOR {
+  IF KUNIVERSE:ORIGINEDITOR = "VAB" {
+    PRINT "REVERTING TO VAB.".
+    KUNIVERSE:REVERTTOEDITOR().
+  } ELSE {
+    PRINT "COULD REVERT, But only to space plane hanger, so I won't.".
+  }
+} ELSE {
+  PRINT "Cannot revert to any editor.".
+}
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>ACTIVEVESSEL</li>
+  <li>CANQUICKSAVE</li>
+  <li>CANREVERT</li>
+  <li>CANREVERTTOEDITOR</li>
+  <li>CANREVERTTOLAUNCH</li>
+  <li>CRAFTLIST</li>
+  <li>CRAFTTEMPLATE</li>
+  <li>DEBUGLOG</li>
+  <li>DEFAULTLOADDISTANCE</li>
+  <li>FORCEACTIVE</li>
+  <li>FORCESETACTIVEVESSEL</li>
+  <li>GETCRAFT</li>
+  <li>HOURSPERDAY</li>
+  <li>KUNIVERSE</li>
+  <li>KUNIVERSE:ACTIVEVESSEL</li>
+  <li>KUNIVERSE:CANREVERTTOEDITOR</li>
+  <li>KUNIVERSE:DEBUGLOG</li>
+  <li>KUNIVERSE:ORIGINEDITOR</li>
+  <li>KUNIVERSE:REALTIME</li>
+  <li>KUNIVERSE:REVERTTOEDITOR</li>
+  <li>LAUNCHCRAFT</li>
+  <li>LAUNCHCRAFTFROM</li>
+  <li>LAUNCHCRAFTWITHCREWFROM</li>
+  <li>LOADDISTANCE</li>
+  <li>ORIGINEDITOR</li>
+  <li>QUICKLOAD</li>
+  <li>QUICKLOADFROM</li>
+  <li>QUICKSAVE</li>
+  <li>QUICKSAVELIST</li>
+  <li>QUICKSAVETO</li>
+  <li>REALTIME</li>
+  <li>REALWORLDTIME</li>
+  <li>REVERTTO</li>
+  <li>REVERTTOEDITOR</li>
+  <li>REVERTTOLAUNCH</li>
+  <li>TIMESPAN</li>
+  <li>TIMESTAMP</li>
+  <li>TIMEWARP</li>
+</ul>

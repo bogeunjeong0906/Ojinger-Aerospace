@@ -1,0 +1,280 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/language/flow.html
+source_doc_title: Flow Control
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Flow Control</h1>
+<h2>2) Safety Critical Notes</h2>
+<div class="admonition"><strong>⚠ Warning</strong>: Do not make the body of a WHEN / THEN take a long time to
+execute. If you attempt to run code that lasts too long in the body
+of your WHEN / THEN statement, it will cause the main
+line code, and all other triggers (WHEN, ON, and cooked steering
+locks) to be stuck unable to continue until it finishes.  You also probably
+should not make the system execute a WAIT command when inside the
+body of a WHEN/THEN statement.</div>
+<h2>3) Snippet Pack</h2>
+<pre><code>SET X TO 1.
+UNTIL 0 {
+    SET X TO X + 1.
+    IF X > 10 { BREAK. } // Exits the loop when
+                         // X is greater than 10
+}
+</code></pre>
+<pre><code>SET X TO 1.
+IF X = 1 { PRINT "X equals one.". }     // Prints "X equals one."
+IF X > 10 { PRINT "X is greater than ten.". }  // Does nothing
+
+// IF-ELSE structure:
+IF X > 10 { PRINT "X is large".  } ELSE { PRINT "X is small".  }
+
+// An if-else ladder:
+IF X = 0 {
+    PRINT "zero".
+} ELSE IF X < 0 {
+    PRINT "negative".
+} ELSE {
+    PRINT "positive".
+}
+</code></pre>
+<pre><code>// both of these lines are fine
+IF TRUE { PRINT "Hello". }
+IF TRUE { PRINT "Hello". }.
+</code></pre>
+<pre><code>// works:
+IF X > 10 { PRINT "Large". }  ELSE { PRINT "Small". }.
+
+// syntax error - ELSE without IF.
+IF X > 10 { PRINT "Large". }. ELSE { PRINT "Small". }.
+</code></pre>
+<pre><code>SET X TO 1.
+LOCK Y TO X + 2.
+PRINT Y.         // Outputs 3
+SET X TO 4.
+PRINT Y.         // Outputs 6
+</code></pre>
+<pre><code>UNLOCK X.    // Releases a lock on variable X
+UNLOCK ALL.  // Releases ALL locks
+</code></pre>
+<pre><code>SET X to 1.
+UNTIL X > 10 {      // Prints the numbers 1-10
+    PRINT X.
+    SET X to X + 1.
+}
+</code></pre>
+<pre><code>SET PREV_TIME to TIME:SECONDS.
+SET PREV_VEL to SHIP:VELOCITY.
+SET ACCEL to V(9999,9999,9999).
+PRINT "Waiting for accellerations to stop.".
+UNTIL ACCEL:MAG < 0.5 {
+    SET ACCEL TO (SHIP:VELOCITY - PREV_VEL) / (TIME:SECONDS - PREV_TIME).
+    SET PREV_TIME to TIME:SECONDS.
+    SET PREV_VEL to SHIP:VELOCITY.
+
+    WAIT 0.001.  // This line is Vitally Important.
+}
+</code></pre>
+<pre><code>FOR variable1 IN variable2 { use variable1 here. }
+</code></pre>
+<pre><code>PRINT "Counting flamed out engines:".
+SET numOUT to 0.
+LIST ENGINES IN MyList.
+FOR eng IN MyList {
+    IF ENG:FLAMEOUT {
+        set numOUT to numOUT + 1.
+    }
+}
+PRINT "There are " + numOut + "Flamed out engines.".
+</code></pre>
+<pre><code>print "Countdown initiated:".
+FROM {local x is 10.} UNTIL x = 0 STEP {set x to x-1.} DO {
+  print "T -" + x.
+}
+</code></pre>
+<pre><code>// prints a count from 1 to 10:
+FROM {local x is 1.} UNTIL x > 10 STEP {set x to x+1.} DO { print x.}
+
+// Entire header in one line, body indented:
+// --------------------------------------------
+FROM {local x is 1.} UNTIL x > 10 STEP {set x to x+1.} DO {
+  print x.
+}
+
+// Each header part on its own line, body indented:
+// --------------------------------------------
+FROM {local x is 1.}
+UNTIL x > 10
+STEP {set x to x+1.}
+DO {
+  print x.
+}
+
+// Fully exploded out: Each header part on its own line,
+//  each clause indented separately:
+// --------------------------------------------
+FROM
+{
+  local x is 1.  // x will count upward from 1.
+  local y is 10. // while y is counting downward from 10.
+}
+UNTIL
+  x > 10 or y = 0
+STEP
+{
+  set x to x+1.
+  set y to y-1.
+}
+DO
+{
+  print "x is " + x + ", y is " + y.
+}
+
+// ETC.
+</code></pre>
+<pre><code>FROM { AAAA } UNTIL BBBB STEP { CCCC } DO { DDDD }
+</code></pre>
+<pre><code>{ // start a brace to keep the scope of AAAA local to the loop.
+    AAAA
+    UNTIL BBBB {
+        DDDD
+
+        CCCC
+    }
+} // end a brace to throw away the local scope of AAAA
+</code></pre>
+<pre><code>FROM {SET X to 1.} UNTIL X > 10 {SET X to X + 1.} DO {
+    PRINT X.
+}
+</code></pre>
+<pre><code>WAIT 6.2.                     // Wait 6.2 seconds
+WAIT UNTIL X > 40.            // Wait until X is greater than 40
+WAIT UNTIL APOAPSIS > 150000. // You can see where this is going
+</code></pre>
+<pre><code>IF X = 1 AND Y > 4 { PRINT "Both conditions are true". }
+IF X = 1 OR Y > 4 { PRINT "At least one condition is true". }
+IF NOT (X = 1 or Y > 4) { PRINT "Neither condition is true". }
+IF X <> 1 { PRINT "X is not 1". }
+SET MYCHECK TO NOT (X = 1 or Y > 4).
+IF MYCHECK { PRINT "mycheck is true." }
+LOCK CONTINUOUSCHECK TO X < 0.
+WHEN CONTINUOUSCHECK THEN { PRINT "X has just become negative.". }
+IF True { PRINT "This statement happens unconditionally." }
+IF False { PRINT "This statement never happens." }
+IF 1 { PRINT "This statement happens unconditionally." }
+IF 0 { PRINT "This statement never happens." }
+IF count { PRINT "count isn't zero.". }
+</code></pre>
+<pre><code>// This example will eventually print the message
+// once enough time has passed:
+
+SET tenSecondsLater to TIME:SECONDS + 10.
+WHEN TIME:SECONDS > tenSecondsLater THEN {
+  PRINT "Ten seconds have passed.".
+}
+
+PRINT "now checking in the background to see if 10 seconds have passed yet.".
+
+WAIT UNTIL FALSE. // Wait forever.  You have to end with Control-C
+                  // The trigger will interrupt this waiting when it
+                  // notices it should.
+</code></pre>
+<pre><code>// This example will print a message whenever you toggle
+// the lights, or press the '1' key.
+
+ON AG1 {
+  PRINT "You pressed '1', causing action group 1 to toggle.".
+  PRINT "Action group 1 is now " + AG1.
+  PRINT "No longer paying attention.".
+}
+
+WAIT UNTIL FALSE. // Wait forever.  You have to end with Control-C
+                  // The trigger will interrupt this waiting when it
+                  // notices it should.
+</code></pre>
+<pre><code>ON AG1 {
+  PRINT "You pressed '1', causing action group 1 to toggle.".
+  PRINT "Action group 1 is now " + AG1.
+  PRINT "No longer paying attention.".
+}
+</code></pre>
+<pre><code>ON AG1 {
+  PRINT "You pressed '1', causing action group 1 to toggle.".
+  PRINT "Action group 1 is now " + AG1.
+  RETURN true.
+}
+</code></pre>
+<pre><code>SET count TO 5.
+ON AG1 {
+  PRINT "You pressed '1', causing action group 1 to toggle.".
+  PRINT "Action group 1 is now " + AG1.
+  SET count TO count - 1.
+  PRINT "I will only pay attention " + count + " more times.".
+  if count > 0
+    RETURN true. // will keep the trigger alive.
+  else
+    RETURN false. // will let the trigger die.
+}
+</code></pre>
+<pre><code>ON AG1 {
+  PRINT "You pressed '1', causing action group 1 to toggle.".
+  PRINT "Action group 1 is now " + AG1.
+  PRESERVE.
+}
+</code></pre>
+<pre><code>SET count TO 5.
+ON AG1 {
+  PRINT "You pressed '1', causing action group 1 to toggle.".
+  PRINT "Action group 1 is now " + AG1.
+  SET count TO count - 1.
+  PRINT "I will only pay attention " + count + " more times.".
+  if count > 0
+    PRESERVE.
+}
+</code></pre>
+<pre><code>ON AG1 {
+  PRESERVE. // <-- Doesn't matter where you PRESERVE within the body.
+  PRINT "You pressed '1', causing action group 1 to toggle.".
+  PRINT "Action group 1 is now " + AG1.
+}
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>ACCEL:MAG</li>
+  <li>ENG:FLAMEOUT</li>
+  <li>FUNCTION</li>
+  <li>PRESERVE</li>
+  <li>SHIP:VELOCITY</li>
+  <li>STEERING</li>
+  <li>THROTTLE</li>
+  <li>TIME:SECONDS</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: The period ( . ) is optional after the end of a set of curly braces like so: // both of these lines are fine IF TRUE { PRINT "Hello" . } IF TRUE { PRINT "Hello" . }. In the case where you are using the ELSE keyword, you must not end the previous IF body with a period, as that terminates the IF command and causes the ELSE keyword to be without a matching IF : // works: IF X > 10 { PRINT "Large" . } ELSE { PRINT "Small" . }. // syntax error - ELSE without IF. IF X > 10 { PRINT "Large" . }. ELSE { PRINT "Small" . }.</div>
+<div class="admonition"><strong>ℹ Note</strong>: If a LOCK expression is used with a flight control such as THROTTLE or STEERING , then it will get repeatedly evaluated in each physics tick .
+When used with a flight control variable, a LOCK actually
+becomes a trigger .</div>
+<div class="admonition"><strong>ℹ Note</strong>: If you are writing an UNTIL loop that looks much like the
+example above, consider the possibility of writing it as a FROM loop instead.</div>
+<div class="admonition"><strong>ℹ Note</strong>: If you are an experienced programmer looking for something more
+like the for-loop from C, with its 3-part clauses of init,
+check, and increment in the header, see the FROM loop
+description.  The kerboscript ‘for’ loop is more like a
+‘foreach’ loop from other modern languages like C#.</div>
+<div class="admonition"><strong>ℹ Note</strong>: If you are an experienced programmer, you can think of the FROM loop as just being Kerboscript’s version of the generic 3-part
+for-loop for( int x=10; x > 0; --x ) {...} that first appeared
+in C and is now so common to many programming languages, except
+that its Boolean check uses the reverse of that logic because it’s
+based on UNTIL loops instead of WHILE loops.</div>
+<div class="admonition"><strong>ℹ Note</strong>: Before going too far into this explanation, be aware that the WHEN and ON statements are rather advanced topics for a
+new programmer and if you’re just getting a feel for how
+programming works, and are using kOS as a first gentle introduction
+to writing programs, you might want to avoid using them until
+you’re more comfortable with the other features of kOS first.</div>
+<div class="admonition"><strong>ℹ See also</strong>: General Guidelines for kOS Scripts Before you continue, be aware that there is
+also a page in the tutorials section describing the best practices
+to use with these statements, including minimizing how long
+trigger bodies take . and minimizing
+how many trigger conditions are active .
+It would be a good idea to read that documentation after reading this
+section.</div>

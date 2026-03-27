@@ -1,0 +1,67 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/misc/steeringmanager.html
+source_doc_title: SteeringManager
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>SteeringManager</h1>
+<h2>1) Core Intent</h2>
+<p>See the cooked control tuning explanation for
+information to help with tuning the steering manager.  It’s important to read
+that section first to understand which setting below is affecting which
+portion of the steering system.</p>
+<h2>2) Safety Critical Notes</h2>
+<div class="admonition"><strong>⚠ Warning</strong>: The suffixes SHOWRCSVECTORS and SHOWTHRUSTVECTORS were
+deprecated with the move to using stock torque calculation with KSP 1.1.</div>
+<h2>3) Snippet Pack</h2>
+<pre><code>// Display the ship facing, target facing, and world coordinates vectors.
+SET STEERINGMANAGER:SHOWFACINGVECTORS TO TRUE.
+
+// Change the torque calculation to multiply the available torque by 1.5.
+SET STEERINGMANAGER:ROLLTORQUEFACTOR TO 1.5.
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>ANGLEERROR</li>
+  <li>DIRECTION</li>
+  <li>MAXSTOPPINGTIME</li>
+  <li>PITCHERROR</li>
+  <li>PITCHPID</li>
+  <li>PITCHTORQUEADJUST</li>
+  <li>PITCHTORQUEFACTOR</li>
+  <li>RESETPIDS</li>
+  <li>RESETTODEFAULT</li>
+  <li>ROLLCONTROLANGLERANGE</li>
+  <li>ROLLERROR</li>
+  <li>ROLLTORQUEADJUST</li>
+  <li>ROLLTORQUEFACTOR</li>
+  <li>SHOWANGULARVECTORS</li>
+  <li>SHOWFACINGVECTORS</li>
+  <li>SHOWRCSVECTORS</li>
+  <li>SHOWSTEERINGSTATS</li>
+  <li>SHOWTHRUSTVECTORS</li>
+  <li>STEERINGMANAGER</li>
+  <li>STEERINGMANAGER:MAXSTOPPINGTIME</li>
+  <li>STEERINGMANAGER:RESETPIDS</li>
+  <li>STEERINGMANAGER:ROLLTORQUEFACTOR</li>
+  <li>STEERINGMANAGER:ROTATIONEPSILONMAX</li>
+  <li>STEERINGMANAGER:SHOWFACINGVECTORS</li>
+  <li>STEERINGMANAGER:TORQUEEPSILONMAX</li>
+  <li>STEERINGMANAGER:TORQUEEPSILONMIN</li>
+  <li>TORQUEEPSILONMAX</li>
+  <li>TORQUEEPSILONMIN</li>
+  <li>WRITECSVFILES</li>
+  <li>YAWERROR</li>
+  <li>YAWTORQUEADJUST</li>
+  <li>YAWTORQUEFACTOR</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: The SteeringManager will ignore the roll component of steering
+until after both the pitch and yaw components are close to being
+correct.  In other words it will try to point the nose of the
+craft in the right direction first, before it makes any attempt
+to roll the craft into the right orientation.  As long as the
+pitch or yaw is still far off from the target aim, this PIDloop
+won’t be getting used at all.</div>
+<div class="admonition"><strong>ℹ Note</strong>: This setting affects all three of the rotational velocity PID’s at once (pitch, yaw, and roll), rather than affecting the three axes individually one at a time.</div>

@@ -1,0 +1,174 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/language/delegates.html
+source_doc_title: Delegates (function references)
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Delegates (function references)</h1>
+<h2>3) Snippet Pack</h2>
+<pre><code>// example function:
+function myfunc { parameter a,b. return a+b. }
+
+// example delegate of that function.
+// Note the at-sign ('@'):
+set aaa to myfunc@.
+</code></pre>
+<pre><code>print aaa:call(1, 2).
+</code></pre>
+<pre><code>function myfunc {
+  parameter a,b.
+
+  return a + b.
+}
+
+print myfunc(1, 2). // Prints the number 3, by calling myfunc now.
+set aaa to myfunc@. // You don't see any effect just yet from this.
+print aaa:call(1, 2).  // Now you see the number 3 printed,
+                       // just like calling myfunc directly.
+</code></pre>
+<pre><code>function testfunc {print "test".}
+set del to testfunc@.
+
+// The following two are equivalent:
+
+del:call().
+del().
+</code></pre>
+<pre><code>// Just a hodgepodge list of numbers to use as an example:
+local numlist is LIST(5, 6, 1, 49.1, 10, -2, 0, -12, 50, 0.3, 1.2, -1, 0).
+
+local result is list().
+for num in numlist {
+  if num < 0 {
+    result:add(num).
+  }
+}
+// Now result is the subset list.
+</code></pre>
+<pre><code>local result is list().
+for num in numlist {
+  if num = round(num,0) {
+    result:add(num).
+  }
+}
+// Now result is the subset list.
+</code></pre>
+<pre><code>local result is list().
+for num in numlist {
+  if mod(num,2) = 0 {
+    result:add(num).
+  }
+}
+// Now result is the subset list.
+</code></pre>
+<pre><code>function make_sublist {
+  parameter
+    input_list, // Full list to take a subset of.
+    check.      // Condition to look for.
+
+  local result is list().
+  for num in input_list {
+    if check...TO-DO, how do I do this?? {
+      result:add(num).
+    }
+  }
+  return result.
+}
+</code></pre>
+<pre><code>function make_sublist {
+  parameter
+    input_list, // Full list to take a subset of.
+    check_func. // pass in a delegate that expects 1 number parameter and returns 1 number.
+
+  local result is list().
+  for num in input_list {
+    if check_func:call(num) {
+      result:add(num).
+    }
+  }
+  return result.
+}
+
+// Just a hodgepodge list of numbers to use as an example:
+local numlist is LIST(5, 6, 1, 49.1, 10, -2, 0, -12, 50, 0.3, 1.2, -1, 0).
+
+function is_neg { parameter n. return (n < 0). }
+function is_round { parameter n. return (n = round(n,0)). }
+function is_even { parameter n. return (mod(n,2) = 0). }
+
+print "A list of all the negatives:".
+print make_sublist(numlist, is_neg@). // note the '@' for a delegate of the function.
+
+print "A list of all the round numbers:".
+print make_sublist(numlist, is_round@). // note the '@' for a delegate of the function.
+
+print "A list of all the even numbers:".
+print make_sublist(numlist, is_even@). // note the '@' for a delegate of the function.
+</code></pre>
+<pre><code>set add_func to { parameter a,b. return a+b. }.
+// add_func is now a KOSDelegate of the anonymous function.
+</code></pre>
+<pre><code>function draw_ship_to_ship {
+  parameter
+    ship1,
+    ship2,
+    drawColor.
+
+  local vdraw is vecdraw().
+  set vdraw:start to ship1:position.
+  set vdraw:vec to ship2:position - ship1:position.
+  set vdraw:color to drawColor.
+  set vdraw:show to true.
+  return vdraw.
+}
+</code></pre>
+<pre><code>local draw_delegate is draw_ship_to_ship@.
+local draw_a_to_b is draw_delegate:bind(shipA, shipB).
+
+// Then later on you can call it with the first two arguments omitted
+// because you pre-loaded them with BIND:
+
+set greenvec to draw_a_to_b(green). // note, only passing 1 arg, the color.
+set tanvec to draw_a_to_b( rgb(0.7,0.6,0) ). // note, only passing 1 arg, the color.
+set whitevec to draw_a_to_b(white). // note, only passing 1 arg, the color.
+</code></pre>
+<pre><code>local draw_delegate is draw_ship_to_ship@.
+local draw_a_to_b is draw_delegate:bind(shipA, shipB).
+</code></pre>
+<pre><code>local draw_a_to_b is draw_ship_to_ship@:bind(shipA, shipB).
+</code></pre>
+<pre><code>// V() is the built-in function that makes a vector of x, y, and z
+// components.  You could bind the values one at a time as follows:
+local vecx is V@:bind(10). // vecx is now a KOSDelegate hardcoding x to 10 and taking just y and z args
+local vecxy is vecx:bind(5).  // vecxy is a KOSDelegate hardcoding x to 10 and y to 5, taking just the z arg
+local vecxyz is vecxy:bind(1).  // vecxyz is a KOSDelegate hardcoding x to 10, y to 5, and z to 1, taking no args.
+local vec is vecxyz:call(). // makes a V(10, 5, 1).
+
+// The above chain of bindings could have been chained together on one line like so:
+local vec is V@:bind(10):bind(5):bind(1):call().
+</code></pre>
+<pre><code>function mysquarefunc { parameter a. return a*a. }
+set x to mysquarefunc@.
+set y to x:call(5). // y is now 25.
+</code></pre>
+<pre><code>set r to round@.
+set s to sqrt@.
+print "square root of 7, to the nearest 2 places is: " + r:call(s:call(7), 2).
+</code></pre>
+<pre><code>//
+// WON'T WORK, WILL GIVE ERROR:
+//
+set altpos to latlng(10,20):altitudeposition@. // altitudeposition is a suffix of geoposition.
+print "altpos at altitude 1000 is " + altpos:call(1000).
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>KOSDELEGATE</li>
+  <li>KOSDELEGATE:ISDEAD</li>
+  <li>KOSDELEGATES</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: It’s important to know before going into this explanation, that the
+feature described here does not work on structure suffixes as of
+this release of kOS.  See the bottom of this page for more details.</div>

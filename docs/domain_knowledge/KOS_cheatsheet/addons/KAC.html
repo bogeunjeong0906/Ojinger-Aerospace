@@ -1,0 +1,54 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/addons/KAC.html
+source_doc_title: Kerbal Alarm Clock
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Kerbal Alarm Clock</h1>
+<h2>1) Core Intent</h2>
+<p>You can find out if Kerbal Alarm Clock addon is available in the
+current game installation by usng the boolean expression addons:available("KAC") .</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>if ADDONS:KAC:AVAILABLE
+{
+    //some KAC dependent code
+}
+</code></pre>
+<pre><code>for i in ADDONS:KAC:ALARMS
+{
+        print i:NAME + " - " + i:REMAINING + " - " + i:TYPE+ " - " + i:ACTION.
+}
+</code></pre>
+<pre><code>set na to addAlarm("Raw",time:seconds+300, "Test", "Notes").
+print na:NAME. //prints 'Test'
+set na:NOTES to "New Description".
+print na:NOTES. //prints 'New Description'
+</code></pre>
+<pre><code>set al to listAlarms("All").
+for i in al
+{
+    print i:ID + " - " + i:name.
+}
+</code></pre>
+<pre><code>set na to addAlarm("Raw",time:seconds+300, "Test", "Notes").
+if (DELETEALARM(na:ID))
+{
+    print "Alarm Deleted".
+}
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>ADDALARM</li>
+  <li>ADDONS:KAC</li>
+  <li>ADDONS:KAC:ALARMS</li>
+  <li>ADDONS:KAC:AVAILABLE</li>
+  <li>AVAILABLE</li>
+  <li>DELETEALARM</li>
+  <li>KACALARM</li>
+  <li>LISTALARMS</li>
+  <li>ORIGINBODY</li>
+  <li>REMAINING</li>
+  <li>REPEATPERIOD</li>
+  <li>TARGETBODY</li>
+</ul>

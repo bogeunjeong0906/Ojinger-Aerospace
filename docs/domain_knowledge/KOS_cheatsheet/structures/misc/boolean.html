@@ -1,0 +1,51 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/misc/boolean.html
+source_doc_title: Boolean
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Boolean</h1>
+<h2>1) Core Intent</h2>
+<p>A Boolean value is the smallest unit of data possible in a computer program.
+It can contain one of exactly two values, either True , or False .</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>set myVariable to true.
+set myVariable to false.
+</code></pre>
+<pre><code>set x to 781.
+set itHas3Digits to (x >= 100 and x <= 999).
+print itHas3Digits.
+True.
+</code></pre>
+<pre><code>set should_stage to false.
+
+// set should_stage to true if the ship has no active engines right now:
+//
+set should_stage to (ship:maxthrust = 0).
+
+// set should_stage to true if any of the active engines are flamed out,
+// which should cover most "asparagus staging" strategies:
+//
+list engines in englist.
+for eng in englist {
+
+  // note, eng:flameout is a Boolean value here, being used as the
+  // conditional check of this if-statement:
+  //
+  if eng:flameout {
+    set should_stage to true.
+  }
+}
+
+// Note 'should_stage' is a Boolean value here, being used as the
+// conditional check of this if-statement:
+//
+if should_stage {
+  stage.
+}
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>STRUCTURE</li>
+</ul>

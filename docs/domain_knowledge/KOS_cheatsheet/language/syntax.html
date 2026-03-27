@@ -1,0 +1,122 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/language/syntax.html
+source_doc_title: KerboScriptSyntax Specification
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>KerboScriptSyntax Specification</h1>
+<h2>1) Core Intent</h2>
+<p>This describes what is and is not a syntax error in the KerboScript programming language. It does not describe what function calls exist or which commands and built-in variables are present. Those are contained in other documents.</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>add all at break choose clearscreen compile copy declare defined
+delete do edit else file for from function global if in is list
+local lock log off on once parameter preserve print reboot remove
+rename return run runoncepath runpath set shutdown stage step
+switch then to toggle unlock unset until volume wait when
+</code></pre>
+<pre><code>* ``//`` -> Comment indicator - starts a comment that runs until
+  the end of the line.
+* ``( )`` -> Used either to group expressions to change the order of
+  operations (in the usual fashion), or to mark the parameters of
+  a function being called, like ``min(a, b)``.
+* ``{  }`` -> Used to group a list of statements together into a
+  single block of statements.  Used to define the beginning and
+  ending of a function body, loop body, or conditional body.
+* ``[  ]`` -> Denotes a list index or lexicon index.
+* ``#`` -> An archaic way to index lists that is mostly supplanted by
+  the ``[ ]`` square bracket operator, but exists for backward
+  compatibility.
+* ``,`` -> Separates arguments when calling a function, or parameters
+  when defining a function.
+* ``:`` -> The suffix operator.  Indicates a suffix of an object is
+  coming next.  Similar to the dot operator in other languages for
+  denoting a member of an object.
+* ``@`` -> Delegate operator.  Appended to a call-able identifier
+  such as a function name to suppress the usual compiler behavior
+  of trying to call the function as soon as the script mentions it.
+  "@" tells it to instead return a delegate of the function that
+  may be called later.
+</code></pre>
+<pre><code>set x to 1. // this is a comment.
+</code></pre>
+<pre><code>my_variable
+My_Variable
+MY_VARIABLE
+</code></pre>
+<pre><code>if "hello" = "HELLO" {
+    print "equal".
+} else {
+    print "unequal".
+}
+</code></pre>
+<pre><code>list parts in mylist.
+print mylist:length. // length is a suffix of mylist
+</code></pre>
+<pre><code>print ship:velocity:orbit:x.
+</code></pre>
+<pre><code>12345678
+12_345_678 (The underscores are ignored as just visual spacers)
+12345.6789
+12_345.6789
+-12345678
+1.123e12
+1.234e-12
+</code></pre>
+<pre><code>if x = 1
+  print "it's 1".
+</code></pre>
+<pre><code>if x = 1 { print "it's 1".  print "yippieee.".  }
+</code></pre>
+<pre><code>declare x to 3.
+print "x here is " + x.
+{
+  declare x to 5.
+  print "x here is " + x.
+  {
+    declare x to 7.
+    print "x here is " + x.
+  }
+}
+</code></pre>
+<pre><code>functionName( *arguments with commas between them* ).
+</code></pre>
+<pre><code>print ROUND(1230.12312, 2).
+</code></pre>
+<pre><code>print SIN(45).
+</code></pre>
+<pre><code>// These both work:
+CLEARSCREEN.
+CLEARSCREEN().
+</code></pre>
+<pre><code>set x to ship:partsnamed("rtg").
+print x:length().
+x:remove(0).
+x:clear().
+</code></pre>
+<pre><code>// Given this setup...
+set MyLex to Lexicon().
+MyLex:ADD( "key1", "value1").
+// ...these two lines have the same effect:
+print MyLex["key1"]. // key used in the usual way as an "index".
+print MyLex:key1.    // key used in an alternate way as a "suffix".
+</code></pre>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: Statements are ended with a period character (“.”).</div>
+<div class="admonition"><strong>ℹ Note</strong>: Kerboscript accepts Unicode source code, encoded using the UTF-8
+encoding method.  Because of this, the definition of a “letter”
+character for an identifier includes letters from many languages’
+alphabets, including accented Latin alphabet characters, Cyrllic
+characters, etc.  Not all languages have been tested but in
+principle they should work as long as they have a Unicode standard
+accepted definition of what counts as a “letter”.  We defer to
+the .NET libraries’ definition of what constitutes the “same” letter
+in uppercase and lowercase forms, and we hope this is right for
+most alphabets.</div>
+<div class="admonition"><strong>ℹ Note</strong>: Again, depending on the alphabet being used, the concept of
+“uppercase” and “lowercase” might not make sense in some
+languages.  kOS defers to .NET’s interpretation of what
+letters in Unicode are paired together as the “upper” and
+“lower” versions of the same letter.  For obvious reasons,
+the kOS developers cannot test every language and verify if
+this is correct or not.</div>

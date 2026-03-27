@@ -1,0 +1,169 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/vessels/bounds.html
+source_doc_title: BOUNDS
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>BOUNDS</h1>
+<h2>1) Core Intent</h2>
+<p>kOS can return information about the “bounding box” around either a whole
+vessel, or a part on a vessel.  When it does so, the structure it uses
+to tell your script about it is called a “Bounds”.</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>// How to get the distance of the bottom corner of the vessel's
+// bounding box to the ground.
+// As an example, try running this while you manually land,
+// so you can see it working as you fly the lander:
+
+local bounds_box is ship:bounds. // IMPORTANT! do this up front, not in the loop.
+until terminal:input:haschar {
+  clearscreen.
+  print "PRESS ANY KEY TO QUIT".
+  print "ALT:RADAR of ship bounding box's bottom corner is:".
+  print round(bounds_box:BOTTOMALTRADAR, 1).
+  wait 0.
+}
+terminal:input:getchar().
+</code></pre>
+<pre><code>// DELETE THIS LINE:
+//    local bounds_box is ship:bounds. // IMPORTANT! do this up front, not in the loop.
+//
+// REPLACE WITH THESE LINES:
+// Assumes you gave the nametag "sensing leg" to one of your landing legs:
+//
+set leg_part to ship:partstagged("sensing leg")[0].
+local bounds_box is leg_part:bounds.
+
+// (rest of the example is the same as above).
+</code></pre>
+<pre><code>set B to ship:BOUNDS.
+
+// The furthest corner of the box in the downward (negative up) direction:
+set bottom to B:FURTHESTCORNER( - up:vector ).
+</code></pre>
+<pre><code>// Example 1: An expensive example using :BOUNDS again and again:
+//                (THIS IS A BAD PRACTICE):
+// Please set the ship rotating before doing this, to prove that
+// it is indeed seeing the new rotated positions:
+//
+print "100 samples of my min/max corners as I rotate:".
+for i in range(0,100) {
+  print i + ": absmin=" + SHIP:bounds:absmin + ", absmax=" + SHIP:bounds:absmax.
+  wait 0.
+}
+</code></pre>
+<pre><code>// Example 2: The exact same thing, done more efficiently:
+//                (THIS IS BETTER PRACTICE):
+// Please set the ship rotating before doing this, to prove that
+// it is indeed seeing the new rotated positions:
+//
+local B is SHIP:bounds. // get the :bounds suffix ONCE.
+print "100 samples of my min/max corners as I rotate:".
+for i in range(0,100) {
+  print i + ": absmin=" + B:absmin + ", absmax=" + B:absmax.
+  wait 0.
+}
+</code></pre>
+<pre><code>local my_bounds is BOUNDS( ABSORIGIN, FACING, RELMIN, RELMAX ).
+</code></pre>
+<pre><code>// Makes a bounds that is centered around a flag,
+// oriented in that flag's UP direction, which
+// goes a lot further up into the sky than it does down
+// into the ground (to demonstrate that the bounds box
+// doesn't have to span equally far in all directions
+// around the origin, and thus why the origin isn't always
+// the center of the box):
+local my_flag is vessel("that flag").
+local my_bounds is BOUNDS(
+  my_flag:position,
+  my_flag:up, // In this facing, Z = up/down, X = north/south, and Y = east/west.
+
+  // box is 20x20x502 meters, centered in east/west/north/south terms, but
+  // extending higher up in the +Z direction than down in the -Z direction:
+  V(-10,-10, -2),
+  V(10, 10, 500)
+  ).
+</code></pre>
+<pre><code>// The following two print lines should print
+// the same vector, within reason.  (There may be a
+// small floating point precision variance between them):
+set B to ship:bounds.
+print B:ABSMIN.
+print B:ABSORIGIN + (B:FACING * B:RELMIN).
+</code></pre>
+<pre><code>// The following two print lines should print
+// the same vector, within reason.  (There may be a
+// small floating point precision variance between them):
+set B to ship:bounds.
+print B:ABSMAX.
+print B:ABSORIGIN + (B:FACING * B:RELMAX).
+</code></pre>
+<pre><code>MyBounds:ABSORIGIN + (MyBounds:FACING * MyBounds:RELCENTER).
+</code></pre>
+<pre><code>// Assume other_vessel has been set to some vessel nearby
+// other than the current SHIP:
+//
+local ves_box is other_vessel:bounds.
+local top is ves_box:furthestcorner(up:vector).
+local bottom is ves_box:furthestcorner(-up:vector).
+
+local from_other_to_me is ship:position - other_vessel:position.
+local nearest is ves_box:furthestcorner(from_other_to_me).
+print "The closest point on the other vessel's bounds box is this far away:".
+print nearest:mag.
+
+// A more complex example showing how you might use bounds boxes
+// when trying to figure out how big a target vessel is so you
+// know how to go around it:
+//
+local my_left is -ship:facing:starvector.
+local leftmost is ves_box:furthestcorner(my_left).
+print "In order to go around the other vessel, to the left, ".
+pritn "I would need to shift myself this far to my left:".
+print vdot(-ship:facing:starvector, leftmost).
+</code></pre>
+<h2>4) Tuning / Parameters</h2>
+<h3>SETTING a suffix of Bounds can break the link to its object</h3>
+<p>This “magically keep updating things” is only guaranteed to
+keep happening if you restrict yourself to only using GET access
+on Bounds suffixes.</p>
+<hr/>
+<h2>Making your own Bounds</h2>
+<p>There are a few suffixes of Bounds that are settable.
+Doing so isn’t very useful for Bounds coming from the vessel
+or a part.</p>
+<p>At minimum to make your own bounds you will need these pieces
+of information:.</p>
+<p>The ABSORIGIN of the bounds.</p>
+<p>The following function will let you construct your own Bounds,
+although it’s not clear what use this would have yet:.</p>
+<p>local my_bounds is BOUNDS ( ABSORIGIN , FACING , RELMIN , RELMAX ).</p>
+<p>The other suffixes are derived from calculations based on these.</p>
+<p>Example:.</p>
+<p>// Makes a bounds that is centered around a flag, // oriented in that flag's UP direction, which // goes a lot further up into the sky than it does down // into the ground (to demonstrate that the bounds box // doesn't have to span equally far in all directions // around the origin, and thus why the...</p>
+<p>Again, it’s unclear how a script might use this, but it’s there
+for completeness.</p>
+<p>Obviously, a bounds box you make manually yourself this way does not
+have the “magic” linkage to a vessel or part that the ones kOS makes have,
+and therefore its position is more fixed in space unless your script
+manually re-assignes its properties.</p>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>ABSCENTER</li>
+  <li>ABSORIGIN</li>
+  <li>ALT:RADAR</li>
+  <li>BOTTOMALT</li>
+  <li>BOTTOMALTRADAR</li>
+  <li>BOUNDS:BOTTOMALT</li>
+  <li>BOUNDS:EXTENTS</li>
+  <li>BOUNDS:RELCENTER</li>
+  <li>BOUNDS:RELMAX</li>
+  <li>BOUNDS:RELMIN</li>
+  <li>DIRECTION</li>
+  <li>FURTHESTCORNER</li>
+  <li>PART:BOUNDS</li>
+  <li>RELCENTER</li>
+  <li>RELORIGIN</li>
+  <li>VESSEL:BOUNDS</li>
+</ul>

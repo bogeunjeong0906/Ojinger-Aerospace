@@ -1,0 +1,95 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/vessels/vessel.html
+source_doc_title: Vessel
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Vessel</h1>
+<h2>1) Core Intent</h2>
+<p>All vessels share a structure. To get a variable referring to any vessel you can do this:</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>// Get a vessel by it's name.
+// The name is Case Sensitive.
+SET MY_VESS TO VESSEL("Some Ship Name").
+
+// Save the current vessel in a variable,
+// in case the current vessel changes.
+SET MY_VESS TO SHIP.
+
+// Save the target vessel in a variable,
+// in case the target vessel changes.
+SET MY_VESS TO TARGET.
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>AGGREGATERESOURCE</li>
+  <li>AGGRGATERESOURCES</li>
+  <li>AIRSPEED</li>
+  <li>ALLTAGGEDPARTS</li>
+  <li>ANGULARMOMENTUM</li>
+  <li>ANGULARVEL</li>
+  <li>AVAILABLETHRUST</li>
+  <li>AVAILABLETHRUSTAT</li>
+  <li>BURNTIME</li>
+  <li>CONNECTION</li>
+  <li>CONTROLPART</li>
+  <li>CREWCAPACITY</li>
+  <li>CREWMEMBER</li>
+  <li>CREWMEMBERS</li>
+  <li>DELTAVASL</li>
+  <li>DELTAVVACUUM</li>
+  <li>DIRECTION</li>
+  <li>DOCKINGPORT</li>
+  <li>DOCKINGPORTS</li>
+  <li>DYNAMICPRESSURE</li>
+  <li>ELEMENTS</li>
+  <li>GROUNDSPEED</li>
+  <li>KERBONAUTS</li>
+  <li>LOADDISTANCE</li>
+  <li>MAXTHRUST</li>
+  <li>MAXTHRUSTAT</li>
+  <li>MESSAGEQUEUE</li>
+  <li>MESSAGES</li>
+  <li>MODULESINGROUP</li>
+  <li>MODULESNAMED</li>
+  <li>ORBITABLE</li>
+  <li>PART:BOUNDS</li>
+  <li>PART:CONTROLFROM</li>
+  <li>PARTMODULE</li>
+  <li>PARTMODULES</li>
+  <li>PARTSDUBBED</li>
+  <li>PARTSDUBBEDPATTERN</li>
+  <li>PARTSINGROUP</li>
+  <li>PARTSNAMED</li>
+  <li>PARTSNAMEDPATTERN</li>
+  <li>PARTSTAGGED</li>
+  <li>PARTSTAGGEDPATTERN</li>
+  <li>PARTSTITLED</li>
+  <li>PARTSTITLEDPATTERN</li>
+  <li>RESOURCES</li>
+  <li>ROOTPART</li>
+  <li>SHIP:FACING</li>
+  <li>SHIPNAME</li>
+  <li>SIZECLASS</li>
+  <li>STAGEDELTAV</li>
+  <li>STAGENUM</li>
+  <li>STARTTRACKING</li>
+  <li>STOPTRACKING</li>
+  <li>STRING:MATCHESPATTERN</li>
+  <li>TERMVELOCITY</li>
+  <li>UNPACKED</li>
+  <li>VERTICALSPEED</li>
+  <li>VESSEL:SHIPNAME</li>
+  <li>VESSEL:TYPE</li>
+  <li>VESSELSENSORS</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: This type is serializable.</div>
+<div class="admonition"><strong>ℹ Note</strong>: The old name for this value was SURFACESPEED.  The name was changed
+because it was confusing before.  “surface speed” implied it’s the Scalar magnitude of “surface velocity”, but it wasn’t, because of how
+it ignores the vertical component.</div>
+<div class="admonition"><strong>ℹ Note</strong>: This does not change the value returned by Vessel:TYPE .  KSP
+internally manages the “discovery information” for vessels, including
+assteroids, in a different system. As a result, the value kOS reads for TYPE may be different from that displayed on the map.</div>
+<div class="admonition"><strong>ℹ Note</strong>: Removed to account for significant changes to planetary atmosphere mechanics introduced in KSP 1.0</div>

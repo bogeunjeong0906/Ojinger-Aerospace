@@ -1,0 +1,41 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/gui_widgets/tipdisplay.html
+source_doc_title: TipDisplay
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>TipDisplay</h1>
+<h2>3) Snippet Pack</h2>
+<pre><code>local done is false.
+local g is gui(200).
+local tiptext is g:addtipdisplay().
+
+local buttonsBox is g:addhbox().
+
+local b1 is buttonsBox:addbutton("low").
+set b1:tooltip to "Makes low pitch note.".
+set b1:onclick to {getvoice(0):play(note(200,0.5)).}.
+
+local b2 is buttonsBox:addbutton("medium").
+set b2:tooltip to "Makes medium pitch note.".
+set b2:onclick to {getvoice(0):play(note(300,0.5)).}.
+
+local b3 is buttonsBox:addbutton("high").
+set b3:tooltip to "Makes high pitch note.".
+set b3:onclick to {getvoice(0):play(note(400,0.5)).}.
+
+local bClose is g:addbutton("Close").
+set bClose:tooltip to "Ends program.".
+set bClose:onclick to {set done to true.}.
+
+g:show().
+wait until done.
+g:dispose().
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>BOX:ADDTIPDISPLAY</li>
+  <li>TEXTFIELD</li>
+  <li>TEXTFIELD:TOOLTIP</li>
+</ul>

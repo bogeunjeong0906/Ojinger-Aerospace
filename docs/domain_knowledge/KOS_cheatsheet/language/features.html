@@ -1,0 +1,78 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/language/features.html
+source_doc_title: General Features of theKerboScriptLanguage
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>General Features of theKerboScriptLanguage</h1>
+<h2>3) Snippet Pack</h2>
+<pre><code>SET X TO 4 + 2.5.
+PRINT X.             // Outputs 6.5
+</code></pre>
+<pre><code>PRINT "Hello World!".
+</code></pre>
+<pre><code>PRINT "4 plus 3 is: " + (4+3).
+</code></pre>
+<pre><code>set myValue to (x >= 10 and x <= 99).
+if myValue {
+  print "x is a two digit number.".
+}
+</code></pre>
+<pre><code>PRINT "The Mun's periapsis altitude is: " + MUN:PERIAPSIS.
+PRINT "The ship's surface velocity is: " + SHIP:VELOCITY:SURFACE.
+</code></pre>
+<pre><code>SET VEC TO V(10,10,10).  // A vector with x,y,z components
+                         // all set to 10.
+SET VEC:X to VEC:X * 4.  // multiply just the X part of VEC by 4.
+PRINT VEC.               // Results in V(40,10,10).
+</code></pre>
+<pre><code>SET PLIST TO SHIP:PARTSDUBBED("my engines"). // calling a suffix
+                                             // method with one
+                                             // argument that
+                                             // returns a list.
+PLIST:REMOVE(0). // calling a suffix method with one argument that
+                 // doesn't return anything.
+PRINT PLIST:SUBLIST(0,4). // calling a suffix method with 2
+                          // arguments that returns a list.
+</code></pre>
+<pre><code>set x to true.
+if x or y+2 > 10 {
+    print "yes".
+} else {
+    print "no".
+}.
+</code></pre>
+<pre><code>DECLARE FUNCTION DEGREES_TO_RADIANS {
+  DECLARE PARAMETER DEG.
+
+  RETURN CONSTANT():PI * DEG/180.
+}.
+
+SET ALPHA TO 45.
+PRINT ALPHA + " degrees is " + DEGREES_TO_RADIANS(ALPHA) + " radians.".
+</code></pre>
+<pre><code>SET myCraft TO SHIP.
+SET myMass TO myCraft:MASS.
+SET myVel TO myCraft:VELOCITY:ORBIT.
+</code></pre>
+<pre><code>SET n TO Node( TIME:SECONDS + 60, 0, 10, 10).
+SET n:ETA to 500.
+</code></pre>
+<pre><code>// When the altitude eventually goes above 50,000 at some point later,
+// interrupt whatever is going on to set off action group 1:
+WHEN ship:altitude > 50000 then { ag1 on. }
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>BOOLEANS</li>
+  <li>MUN:PERIAPSIS</li>
+  <li>PLIST:REMOVE</li>
+  <li>PLIST:SUBLIST</li>
+  <li>SHIP:PARTSDUBBED</li>
+  <li>SHIP:VELOCITY:SURFACE</li>
+  <li>TIME:SECONDS</li>
+  <li>VELOCITY:ORBIT</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: This feature did not exist in prior versions of kerboscript.</div>

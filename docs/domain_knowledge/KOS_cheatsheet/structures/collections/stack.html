@@ -1,0 +1,24 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/collections/stack.html
+source_doc_title: Stack
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Stack</h1>
+<h2>1) Core Intent</h2>
+<p>A Stack is a collection of any type in kOS. Stacks work according to Last-In first-out principle. It may be useful to contrast Stack with Queue to better understand how both structures work. You can read more about stacks on Wikipedia .</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>SET S TO STACK().
+S:PUSH("alice").
+S:PUSH("bob").
+
+PRINT S:POP. // will print 'bob'
+PRINT S:POP. // will print 'alice'
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>ENUMERABLE</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: This type is serializable.</div>

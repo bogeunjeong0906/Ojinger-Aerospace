@@ -1,0 +1,343 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/language/user_functions.html
+source_doc_title: KerboScriptUser Functions
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>KerboScriptUser Functions</h1>
+<h2>1) Core Intent</h2>
+<p>This page covers functions created by you, the user of kerboscript,
+rather than the built-in functions provided by kOS.</p>
+<h2>2) Safety Critical Notes</h2>
+<div class="admonition"><strong>⚠ Warning</strong>: Functions created in programs can only be called from programs,
+not from the interpreter terminal prompt . If you attempt to create a function in a program, and then call it
+from the interactive prompt in the interpreter instead of calling
+it from inside a program, it will definitely not work properly,
+but the exact error you get will depend on several “random”
+factors.  This may be fixed later by a later release, but for
+now, don’t do it.  For further explanation, see the section entitled Functions and the interpreter terminal .</div>
+<div class="admonition"><strong>⚠ Warning</strong>: Breaking Change: The kerboscript from prior versions
+of kOS did allow you to make declare statements
+without any initializers in them (and in fact you couldn’t
+provide an initializer for them in prior versions even if
+you wanted to).</div>
+<h2>3) Snippet Pack</h2>
+<pre><code>declare function hi { print "hello". }
+declare local function hi { print "hello". }
+declare global function hi { print "hello". }
+local function hi { print "hello". }
+global function hi { print "hello". }
+function hi { print "hello". }
+</code></pre>
+<pre><code>// Print the string you pass in, in one of the 4 corners
+// of the terminal:
+//   mode = 1 for upper-left, 2 for upper-right, 3
+//          for lower-left, and 4 for lower-right:
+//
+function print_corner {
+  parameter mode.
+  parameter text.
+
+  local row is 0.
+  local col is 0.
+
+  if mode = 2 or mode = 4 {
+    set col to terminal:width - text:length.
+  }.
+  if mode = 3 or mode = 4 {
+    set row to terminal:height - 1.
+  }.
+
+  print text at (col, row).
+}.
+
+// An example of calling it:
+
+print_corner(4,"That's me in the corner").
+</code></pre>
+<pre><code>// f1 behaves as if it was declared global
+// because this is the outermost file scope:
+function f1 {
+   print "I am in f1".
+}
+if true {
+  // f2 behaves as if it was declared local
+  // because this is inside some braces ("{","}"):
+  function f2 {
+   print "I am in f2".
+  }
+  f2(). // can be called from here.
+}
+f2(). // This throws an error because f2 was local to the "if true" braces.
+</code></pre>
+<pre><code>// This will run mylib1 3 times, re-running the mainline code in it:`
+run mylib1.
+run mylib1.
+runpath("mylib1"). // just the same thing as 'run mylib1', really.
+
+// This will run mylib2 only one time, ignoring the additional
+// instances:
+run once mylib2.
+run once mylib2. // mylib2 was already run, will not be run again.
+runoncepath("mylib2"). // mylib2 was already run, will not be run again.
+</code></pre>
+<pre><code>// prog1
+run once counterlib.
+
+// Get some unique IDs:
+print "prog1:      next counter ID = " + counter_next().
+print "prog1:      next counter ID = " + counter_next().
+print "prog1:      next counter ID = " + counter_next().
+
+run subprogram.
+</code></pre>
+<pre><code>// subprogram
+runoncepath("counterlib"). // same as 'run once counterlib.'
+
+print "subprogram: next counter ID = " + counter_next().
+print "subprogram: next counter ID = " + counter_next().
+print "subprogram: next counter ID = " + counter_next().
+</code></pre>
+<pre><code>// init code:
+global current_num is 0.
+
+// counter_next()
+function counter_next {
+   set current_num to current_num + 1.
+   return current_num.
+}
+</code></pre>
+<pre><code>prog1:      next counter ID = 1
+prog1:      next counter ID = 2
+prog1:      next counter ID = 3
+subprogram: next counter ID = 4
+subprogram: next counter ID = 5
+subprogram: next counter ID = 6
+</code></pre>
+<pre><code>prog1:      next counter ID = 1
+prog1:      next counter ID = 2
+prog1:      next counter ID = 3
+subprogram: next counter ID = 1
+subprogram: next counter ID = 2
+subprogram: next counter ID = 3
+</code></pre>
+<pre><code>function example_function {
+  print "hello, this is my example.".
+}
+
+example_function().
+</code></pre>
+<pre><code>print_corner(4,"That's me in the corner").
+</code></pre>
+<pre><code>FUNCTION MYFUNC {
+  DECLARE PARAMETER P1, P2, P3 is 0, P4 is "cheese".
+  print P1 + ", " + P2 + ", " + P3 + ", " + P4.
+}
+</code></pre>
+<pre><code>FUNCTION MYFUNC {
+  PARAMETER P1, P2, P3 is 0, P4 is "cheese".
+
+  print P1 + ", " + P2 + ", " + P3 + ", " + P4.
+}
+</code></pre>
+<pre><code>FUNCTION MYFUNC {
+  PARAMETER P1.
+  PARAMETER P2.
+  PARAMETER P3 is 0.
+  PARAMETER P4 is "cheese".
+
+  print P1 + ", " + P2 + ", " + P3 + ", " + P4.
+}
+</code></pre>
+<pre><code>MYFUNC(1,2).         // prints "1, 2, 0, cheese".
+MYFUNC(1,2,3).       // prints "1, 2, 3, cheese".
+MYFUNC(1,2,3,"hi").  // prints "1, 2, 3, hi".
+</code></pre>
+<pre><code>DECLARE PARAMETER thisIsOptional is 0,
+                  thisIsOptionalToo is 0.
+                  thisIsMandatory.
+</code></pre>
+<pre><code>function example_function {
+  print "hello, this is my example.".
+}
+
+example_function. // please don't do this, even if it works.
+</code></pre>
+<pre><code>declare x to 5.
+local y is 2*x - 1.
+declare local halfSpeed to SHIP:VELOCITY:ORBIT:MAG / 2.
+</code></pre>
+<pre><code>declare x.  // no initial value for x given.
+</code></pre>
+<pre><code>local x is 5.
+</code></pre>
+<pre><code>return 3*x.
+
+return.
+</code></pre>
+<pre><code>// Note, in this example, the keyword 'declare' is
+// spelled out explicitly.  You can choose to do so
+// if you wish.  It's up to you what you aesthetically
+// prefer.
+
+// Calculate what component of a vessel's surface
+// velocity is Northward:
+declare function north_velocity {
+  declare parameter which_vessel.
+
+  return VDOT(which_vessel:velocity:surface, which_vessel:north:vector).
+}.
+</code></pre>
+<pre><code>function embiggen {
+  parameter x.
+
+  set x to x + 10.
+
+  print "x has been embiggened to " + x.
+}.
+
+set global_val to 30.
+print global_val.
+embiggen(global_val).
+print global_val.
+</code></pre>
+<pre><code>30
+x has been embiggened to 40
+30
+</code></pre>
+<pre><code>function half_vector {
+  parameter vec. //vector passed in.
+
+  print "full vector is " + vec.
+
+  set vec:x to vec:x/2.
+  set vec:y to vec:y/2.
+  set vec:z to vec:z/2.
+
+  print "half vector is " + vec.
+}.
+
+set global_vec to V(10,20,30).
+half_vector(global_vec).
+print "afterward, global_vec is now " + global_vec.
+</code></pre>
+<pre><code>full vector is v(10,20,30)
+half vector is v(5,10,15)
+afterward, global_vec is now v(5,10,15)
+</code></pre>
+<pre><code>function getMean {
+  parameter aList.
+
+  function getSum {
+    parameter aList. // note, this is a local aList MASKING the other one.
+
+    local sum is 0.
+    for num in aList {
+      set sum to sum + num.
+    }.
+    return sum.
+  }.
+
+  return getSum(aList) / aList:LENGTH.
+}.
+
+set L to LIST().
+L:ADD(10).
+L:ADD(9).
+print "mean average is " + getMean(L).
+
+// The following line will give an error because
+// getSum is local inside of getMean, and isn't allowed
+// to be called from here:
+//
+print "getSum is " + getSum(L).
+</code></pre>
+<pre><code>// A badly designed function, with inconsistency
+// in whether or not it returns a value:
+//
+DECLARE FUNCTION foo {
+   DECLARE PARAMETER x.
+   IF X < 0 {
+     RETURN. // no return value.
+   } ELSE {
+     RETURN "hello". // a string return value
+   }
+}
+</code></pre>
+<pre><code>function mean {
+  parameter the_list.
+  local sum is 0.
+
+  for item in the_list {
+    set dum to sum + item. // typo - said 'dum' instead of 'sum'.
+  }.
+
+  return sum / the_list:length.
+}.
+</code></pre>
+<pre><code>@lazyglobal off.
+
+local function mean {
+  local parameter the_list.
+  local sum is 0.
+
+  for item in the_list {
+    set dum to sum + item. // error - 'dum' is an unknown identifier.
+  }.
+
+  return sum / the_list:length.
+}.
+</code></pre>
+<h2>4) Tuning / Parameters</h2>
+<h2>DECLARE PARAMETER</h2>
+<p>If your function expects to have parameters passed into it, you can
+use the DECLARE PARAMETER command to do
+so.</p>
+<p>An example of using declare parameter can be seen in the example
+above, where it is used for the mode and text parameters.</p>
+<p>(Again, even when the word ‘declare’ is missing, we still call them
+‘declare parameter’ commands.).</p>
+<hr/>
+<h2>Optional Parameters (parameter defaults)</h2>
+<p>If you wish, you may make some of the parameters of a user function optional
+by defaulting them to a starting value with the IS keyword, as follows:.</p>
+<p>example 1:.</p>
+<p>FUNCTION MYFUNC { DECLARE PARAMETER P1 , P2 , P3 is 0 , P4 is "cheese" .</p>
+<p>example 2:.</p>
+<p>FUNCTION MYFUNC { PARAMETER P1 , P2 , P3 is 0 , P4 is "cheese" .</p>
+<p>example 3:.</p>
+<p>FUNCTION MYFUNC { PARAMETER P1 .</p>
+<p>In the above examples, all of which are the same, if you call the function
+with parameter 3 or 4 missing, kOS will assign it the default value mentioned
+in the PARAMETER statement, like in the examples below:.</p>
+<p>MYFUNC ( 1 , 2 ).</p>
+<p>Whenever arguments are missing, the system always makes up the difference by
+using defaults for the lastmost parameters until the correct number have been
+padded.</p>
+<p>It is illegal to put mandatory (not defaulted) parameters after defaulted ones.</p>
+<p>This will not work:.</p>
+<p>DECLARE PARAMETER thisIsOptional is 0 , thisIsOptionalToo is 0 .</p>
+<p>Because the optional parameters didn’t come at the end.</p>
+<p>Default parameters follow short-circuit logic Remember that if you have an optional parameter with an initializer
+expression, the expression will not get executed if the calling
+function had an argument present in that position.</p>
+<p>Functions and the terminal interpreter You cannot call functions from the interpreter interactive
+command line if they were declared inside of script programs.
+If you do, you will get seemingly “random” errors.</p>
+<p>Calling a function without parentheses (please don’t) In some cases it is possible to call a function with the
+parentheses off, as shown below, but this is not recommended: function example_function { print "hello, this is my example." .</p>
+<p>Omitting parentheses only works in the same file One reason to avoid the above technique (of leaving the parentheses
+off) is that it really only works when you try to call a function
+that was declared in the same file.</p>
+<hr/>
+<h3>Default parameters follow short-circuit logic</h3>
+<p>Remember that if you have an optional parameter with an initializer
+expression, the expression will not get executed if the calling
+function had an argument present in that position.</p>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>KOSDELEGATE</li>
+  <li>PARAMETER</li>
+  <li>SHIP:VELOCITY:ORBIT:MAG</li>
+</ul>

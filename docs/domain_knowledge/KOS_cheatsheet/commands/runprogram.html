@@ -1,0 +1,83 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/commands/runprogram.html
+source_doc_title: Running Programs
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Running Programs</h1>
+<h2>1) Core Intent</h2>
+<p>KerboScript supports running executing code saved in files on the local or
+archive disks. The terms “program” and “script” are generally used
+interchangably when describing this behavior. Programs can either be run using
+one of the Run Functions or the Run Keyword .  Supported file types are:</p>
+<h2>2) Safety Critical Notes</h2>
+<div class="admonition"><strong>⚠ Warning</strong>: The “ONCE” component has no effect on how frequently a given program is
+compiled.  Every unique program is compiled exactly once per program context
+execution, and remains in memory until the program finishes and returns
+control to the terminal.</div>
+<h2>3) Snippet Pack</h2>
+<pre><code>RUNPATH( "myfile.ks" ). // Run a program called myfile.ks.
+RUNPATH( "myfile" ). // Run a program called myfile, where kOS will guess
+                     // the filename extension you meant, and probably
+                     // pick ".ks" for you.
+RUNPATH( "myfile.ks", 1, 2 ). // Run a program called myfile.ks, and
+                              // pass in the values 1 and 2 as its first
+                              // two parameters.
+</code></pre>
+<pre><code>SET file_base to "prog_num_".
+SET file_num to 3.
+SET file_ending to ".ks".
+RUNPATH( file_base + file_num + file_ending, 1, 2 ).
+    // The above has the same effect as if you had done:
+    RUNPATH("prog_num_3.ks", 1, 2).
+</code></pre>
+<pre><code>SET filename_variable TO "myfile.ks".
+RUN filename_variable. // Error: a file called "filename_variable" not found.
+
+RUN "my" + "file" + ".ks".  // Syntax error - a single literal string expected,
+                            // not an expression that returns a string.
+</code></pre>
+<pre><code>RUN "myfile.ks".
+RUN myfile.ks. // using a bare word literal string
+</code></pre>
+<pre><code>// All 3 of these work:
+RUN myfile(1,2,3).
+RUN myfile.ks(1,2,3).
+RUM "myfile.ks"(1,2,3).
+</code></pre>
+<pre><code>RUN "AutoLaunch.ks"( 75000, true, "hello" ).
+RUNPATH("AutoLaunch.ksm", 75000, true, "hello" ).
+</code></pre>
+<pre><code>// AutoLaunch.ks program file:
+parameter final_alt, do_countdown, message.
+//
+// rest of program not shown...
+//
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>RUNONCEPATH</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ See also</strong>: KerboScript Machine Code An explaination of how scripts are compiled, as well as an explaination
+of how COMPILE stores opcodes. Filename Warning Warning detailing issues with case sensitive host file systems.</div>
+<div class="admonition"><strong>ℹ Note</strong>: If you attempt to run the same program twice from within another script,
+the previously compiled version will be executed without attempting to
+recompile even if the original source script has been modified.  However
+once the program has finished executing and returns to the main terminal
+input, the memory containing the programs is released.  This means that
+every time that a script file is run from the terminal it is recompiled,
+even if the script file has not changed.</div>
+<div class="admonition"><strong>ℹ Note</strong>: The RUNPATH and RUNONCEPATH functions were added in
+version 1.0.0.  Previously, only the more limited RUN command existed.</div>
+<div class="admonition"><strong>ℹ Note</strong>: The RUNPATH or RUNONCEPATH functions are nearly
+identical to each other except for what is described below under the
+heading Running a program “ONCE” .</div>
+<div class="admonition"><strong>ℹ Note</strong>: You should prefer RUNPATH over RUN The RUN command is older, and less powerful than the newer Run Functions , and is kept around mostly for backward compatibility.
+You can’t use a variable or expression to refer to the file name.
+The following examples will throw exceptions (but are compatible with
+the Run Functions ): SET filename_variable TO "myfile.ks" . RUN filename_variable . // Error: a file called "filename_variable" not found. RUN "my" + "file" + ".ks" . // Syntax error - a single literal string expected, // not an expression that returns a string. Due to a parsing ambiguity issue, it was impossible to make RUN work with any arbitrary expression as the filename without changing its syntax a little in
+a way that would break every old kOS script.  Therefore it was deemed better to
+just add a new function that uses the new syntax instead of changing the syntax
+of RUN .</div>

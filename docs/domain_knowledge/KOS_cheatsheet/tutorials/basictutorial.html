@@ -1,0 +1,375 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/tutorials/basictutorial.html
+source_doc_title: KOS and programming introduction
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>KOS and programming introduction</h1>
+<h2>1) Core Intent</h2>
+<p>This tutorial is for people who are new to programming and want to start programming using KOS.</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>edit hello.
+</code></pre>
+<pre><code>run hello.
+</code></pre>
+<pre><code>switch to 0.
+</code></pre>
+<pre><code>print "hello world".  // shows: hello world
+</code></pre>
+<pre><code>// print "hello world 1".
+print "hello world 2".
+</code></pre>
+<pre><code>clearscreen.
+</code></pre>
+<pre><code>set x to "hello world".
+</code></pre>
+<pre><code>set x to "hello world".
+print x. // shows: hello world
+</code></pre>
+<pre><code>set x to "hello world".
+set y to true.
+set z to 123.
+
+print x.   // shows: hello world
+print "x". // shows: x
+print y.   // shows: true
+print "y". // shows: y
+print z.   // shows: 123
+print "z". // shows: z
+</code></pre>
+<pre><code>set x to "hello world".
+set x to "updated text".
+print x. // shows: updated text
+
+set x to "hello world".
+print x. // shows: hello world
+set x to "updated text".
+print x. // shows: updated text
+</code></pre>
+<pre><code>set x to "hello world".
+set y to x.
+set x to "updated text".
+
+print y. // shows: hello world
+print x. // shows: updated text
+</code></pre>
+<pre><code>set WhateverThisVariableIs to false.
+print WhateverThisVariableIs. // shows: false
+</code></pre>
+<pre><code>set x to 1.
+
+if x = 1 {
+  print "x is one".
+}
+</code></pre>
+<pre><code>if x = 1
+  print "x is one".
+</code></pre>
+<pre><code>set SomeBoolean to true.
+
+if SomeBoolean = true {
+  print "this is a true".
+}
+</code></pre>
+<pre><code>set SomeAnimal to "Dog".
+
+if SomeAnimal = "Cat" {
+  print "this is a cat".
+} else {
+  print "this is not a cat".
+}
+</code></pre>
+<pre><code>set SomeAnimal to "Dog".
+
+if SomeAnimal = "Cat" {
+  print "this is a cat".
+} else if SomeAnimal = "Dog" {
+  print "this is a dog".
+} else {
+  print "this is neither a cat nor a dog".
+}
+</code></pre>
+<pre><code>if distance <= 1 {
+  print "Distance is within a meter.".
+} else if distance <= 100 {
+  print "Distance is within 100 meters.".
+} else {
+  print "Distance is farther than 100 m.".
+}
+</code></pre>
+<pre><code>if distance <= 1 {
+  print "Distance is within a meter.".
+}
+if distance <= 100 {
+  print "Distance is within 100 meters.".
+}
+if distance > 1000 {
+  print "Distance is farther than 1 kilometer.".
+}
+</code></pre>
+<pre><code>Distance is within a meter.
+</code></pre>
+<pre><code>Distance is within a meter.
+Distance is within 100 meters.
+</code></pre>
+<pre><code>set Done to false.
+
+if Done = false {
+  if distance <= 1 {
+    print "Distance is within a meter.".
+    set Done to true.
+  }
+}
+
+if Done = false {
+  if distance <= 100 {
+    print "Distance is within 100 meters.".
+    set Done to true.
+  }
+}
+
+if Done = false {
+  if distance > 1000 {
+    print "Distance is farther than 1 kilometer.".
+    set Done to true.
+  }
+}
+</code></pre>
+<pre><code>wait 10.
+print "done waiting".
+</code></pre>
+<pre><code>set x to 0.
+until x > 100 {
+  print x.
+  set x to x + 1.
+}
+</code></pre>
+<pre><code>print time:seconds.
+</code></pre>
+<pre><code>set CurrentTime to time:seconds.
+</code></pre>
+<pre><code>set CurrentTime to time:seconds.
+print CurrentTime. // shows: 60
+wait 10.
+print CurrentTime. // shows: 60
+</code></pre>
+<pre><code>lock TimeSecondsPlusTen to time:seconds + 10.
+</code></pre>
+<pre><code>set Adder to 0.
+lock Multiplier to Adder * 2.
+set TimePlusFive to time:seconds + 5.
+
+until time:seconds > TimePlusFive {
+  print Multiplier.
+  set Adder to Adder + 1.
+  wait 1.
+}
+</code></pre>
+<pre><code>0
+2
+4
+6
+8
+10
+</code></pre>
+<pre><code>set TimePlusFive to time:seconds + 5.
+wait until time:seconds > TimePlusFive.
+print "done waiting".
+</code></pre>
+<pre><code>set Value1 to 0.
+set Value2 to 5.
+set Value3 to 10.
+set Value4 to 15.
+set Value5 to 20.
+</code></pre>
+<pre><code>set ValueList to list(Value1, Value2, Value3, Value4, Value5).
+print ValueList.
+</code></pre>
+<pre><code>[0] = 0
+[1] = 5
+[2] = 10
+[3] = 15
+[4] = 20
+</code></pre>
+<pre><code>print ValueList[2]. // shows 10
+</code></pre>
+<pre><code>print ValueList[0]. // shows 0
+print ValueList[1]. // shows 5
+print ValueList[2]. // shows 10
+print ValueList[3]. // shows 15
+print ValueList[4]. // shows 20
+</code></pre>
+<pre><code>for Whatever in ValueList {
+  print Whatever.
+}
+
+for Value in ValueList {
+  print Value.
+}
+</code></pre>
+<pre><code>0
+5
+10
+15
+20
+</code></pre>
+<pre><code>set x to 3.
+print ValueList[x]. // shows 15
+</code></pre>
+<pre><code>print ValueList[3]. // also shows 15
+</code></pre>
+<pre><code>set MyLexicon to lexicon("MyValue1", 100, "MyValue2", 200, "MyValue3", 300).
+</code></pre>
+<pre><code>print MyLexicon["MyValue1"]. // shows 100
+print MyLexicon["MyValue2"]. // shows 200
+print MyLexicon["MyValue3"]. // shows 300
+</code></pre>
+<pre><code>Let go of the gas pedal.
+Press in the clutch pedal.
+Shift the gear stick from first to second.
+Let go of the clutch pedal.
+Press in the gas pedal.
+</code></pre>
+<pre><code>Let go of the gas pedal.
+Press in the clutch pedal.
+Shift the gear stick from second to third.
+Let go of the clutch pedal.
+Press in the gas pedal.
+</code></pre>
+<pre><code>Let go of the gas pedal.
+Press in the clutch pedal.
+Shift the gear stick from third to fourth.
+Let go of the clutch pedal.
+Press in the gas pedal.
+</code></pre>
+<pre><code>Shift from first to second.
+And after a after he tells you:
+Shift from second to third.
+And not long after that he tells you:
+Shift from third to fourth.
+</code></pre>
+<pre><code>Function ShiftGearFirstToSecond {
+  Let go of the gas pedal.
+  Press in the clutch pedal.
+  Shift the gear stick from first gear to second gear.
+  Let go of the clutch pedal.
+  Press in the gas pedal.
+}
+</code></pre>
+<pre><code>Function ShiftGear {
+  Let go of the gas pedal.
+  Press in the clutch pedal.
+  Shift the gear stick from ____ to ____.
+  Let go of the clutch pedal.
+  Press in the gas pedal.
+}
+</code></pre>
+<pre><code>Function ShiftGear {
+  Parameter StartGear.
+  Parameter EndGear.
+
+  Let go of the gas pedal.
+  Press in the clutch pedal.
+  Shift the gear stick from StartGear to EndGear.
+  Let go of the clutch pedal.
+  Press in the gas pedal.
+}
+</code></pre>
+<pre><code>Function OneThroughFivePrint {
+  print 1.
+  print 2.
+  print 3.
+  print 4.
+  print 5.
+  }
+</code></pre>
+<pre><code>OneThroughFivePrint().
+</code></pre>
+<pre><code>1
+2
+3
+4
+5
+</code></pre>
+<pre><code>Function VelocityCalculator {
+  Parameter OrbitHeight.
+
+  set KerbinRadius to 600000.
+  set TotalRadius to OrbitHeight + KerbinRadius.
+  set OrbitalPeriod to ship:orbit:period.
+  print (2 * 3.1416 * TotalRadius) / OrbitalPeriod.
+}
+</code></pre>
+<pre><code>VelocityCalculator(400000).
+</code></pre>
+<pre><code>Function VelocityCalculator {
+  Parameter OrbitHeight.
+
+  set KerbinRadius to 600000.
+  set TotalRadius to OrbitHeight + KerbinRadius.
+  set OrbitalPeriod to ship:orbit:period.
+  return (2 * 3.1416 * TotalRadius) / OrbitalPeriod.
+  // everything after the return command will be skipped because a return command ends a function.
+  print "this will be skipped".
+}
+
+set CurrentVelocity to VelocityCalculator(400000).
+print CurrentVelocity.
+</code></pre>
+<pre><code>print ship:orbit:apoapsis. // shows the ship's apoapsis
+print kerbin:orbit:apoapsis. // shows kerbin's apoapsis
+print ship:body:orbit:apoapsis. // shows kerbin's apoapsis if you're currently orbiting kerbin
+</code></pre>
+<pre><code>print ___:orbit:apoapsis. // shows the apoapsis of whatever you fill in the blank
+</code></pre>
+<pre><code>print ship:orbit:periapsis. // shows the ship's periapsis
+print ship:orbit:period. // shows the ship's period
+print ship:orbit:inclination. // shows the ship's inclination
+print ship:orbit:eccentricity. // shows the ship's eccentricity
+print ship:orbit:semimajoraxis. // shows the ship's semimajoraxis
+</code></pre>
+<pre><code>print kerbin:name. // shows kerbin
+print kerbin:mass. // shows kerbin's mass
+print kerbin:radius // shows kerbin's radius
+print kerbin:mu // shows kerbin's gravitational parameter
+</code></pre>
+<pre><code>print ship:body:name. // shows kerbin
+print ship:body:mass. // shows kerbin's mass
+print ship:body:radius // shows kerbin's radius
+print ship:body:mu // shows kerbin's gravitational parameter
+</code></pre>
+<h2>4) Tuning / Parameters</h2>
+<h3>Making scripts in-game</h3>
+<p>First we’ll look at making and editing scripts in-game.
+Put your vessel with KOS processor on the launchpad and right click the processor.
+Press the button that says ‘open terminal’ and click on the window that just popped up.</p>
+<p>typing the following will create a file called ‘hello’, to enter the command press ENTER (don’t forget the period at the end):.</p>
+<p>edit hello .</p>
+<p>you can now edit the file and make your script for the processor to execute, the other tutorials will show how you can make a
+working script.</p>
+<p>To run the file, type:.</p>
+<p>run hello .</p>
+<hr/>
+<h3>Making scrips with an editor</h3>
+<p>To use a text editor instead go to your KSP folder and go to Ships/Script/ and create an empty file and name it whatever you want
+(be cautious using spaces in filenames because this might mess stuff up, also, avoid using capital letters in .ks files if you are running Linux).</p>
+<p>All KOS script files should end with .ks .
+An example of a valid KOS script file name would be:.</p>
+<p>hello.ks.</p>
+<p>Running files you made using text editors is a bit more complex than if you’d make a file in game.
+This is because when you make a script in game the script is locally stored on the ship.
+Files you made with a text editor are saved in the archive, can be accessed from different saved games and won’t...</p>
+<p>To access the archive type:.</p>
+<p>switch to 0 .</p>
+<p>To run hello.ks type the same as above:.</p>
+<p>run hello .</p>
+<hr/>
+<h3>A working example of a function</h3>
+<p>Here’s an example of a simple function which works in KOS:.</p>
+<p>Function OneThroughFivePrint { print 1 .</p>
+<p>Functions can have any name but avoid making functions and variables the same name as this will very likely cause problems.
+A function will do anything that’s inside of the curly brackets.</p>
+<p>OneThroughFivePrint ().</p>
+<p>This will show:.</p>
+<p>1 2 3 4 5.</p>

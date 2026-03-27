@@ -1,0 +1,28 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/misc/note.html
+source_doc_title: Note
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Note</h1>
+<h2>1) Core Intent</h2>
+<p>Notes are structures that get passed in to the SKID chip to tell it what tone to play
+and for how long.</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>SET V1 TO GETVOICE(0).
+V1:PLAY( NOTE(440, 0.2, 0.25, 1) ).
+</code></pre>
+<pre><code>SET V1 TO GETVOICE(0).
+// A fast "whoop" sound that pitches up from 300 Hz to 600 Hz quickly:
+V1:PLAY( SLIDENOTE(300, 600, 0.2, 0.25, 1) ).
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>DURATION</li>
+  <li>ENDFREQUENCY</li>
+  <li>FREQUENCY</li>
+  <li>KEYDOWNLENGTH</li>
+  <li>SLIDENOTE</li>
+  <li>V1:PLAY</li>
+</ul>

@@ -1,0 +1,30 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/gui_widgets/gui.html
+source_doc_title: GUI structure
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>GUI structure</h1>
+<h2>3) Snippet Pack</h2>
+<pre><code>set g to gui(200).
+// .. call G:addbutton, G:addslider, etc etc here
+g:show().
+</code></pre>
+<pre><code>set g to gui(200).
+// .. call G:addbutton, G:addslider, etc etc here
+g:show().
+wait until done. // whatever you decide "done" is.
+g:hide().
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>CLEARGUIS</li>
+  <li>DRAGGABLE</li>
+  <li>EXTRADELAY</li>
+  <li>LABEL:TOOLTIP</li>
+  <li>TIPDISPLAY</li>
+  <li>WIDGET:DISPOSE</li>
+  <li>WIDGET:HIDE</li>
+  <li>WIDGET:SHOW</li>
+</ul>

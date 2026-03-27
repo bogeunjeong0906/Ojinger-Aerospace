@@ -1,0 +1,96 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/language/anonymous.html
+source_doc_title: Anonymous Functions (A kind of Delegate)
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Anonymous Functions (A kind of Delegate)</h1>
+<h2>3) Snippet Pack</h2>
+<pre><code>function my_function_name {
+  // ---.
+  //    |
+  //    |---  The body of the function goes here.
+  //    |
+  // ---'
+}
+</code></pre>
+<pre><code>set some_variable to {
+  // ---.
+  //    |
+  //    |---  The body of the function goes here.
+  //    |
+  // ---'
+}.   // <-- Note the period ('.') statement terminator is mandatory
+     //     here because this is actually an ordinary SET statement.
+
+// some_variable is now a KOSDelegate of this function.
+// It can be called just like delegates can, like so:
+some_variable().
+// or like so:
+some_variable:call().
+</code></pre>
+<pre><code>function select_bodies {
+
+  // The parameter is expected to be a
+  // delegate you can call on a body, that
+  // returns true if the body should be
+  // included, or false if it shouldn't:
+  parameter should_include.
+
+  local all_bodies is LIST().
+  local some_bodies is LIST().
+
+  list BODIES in all_bodies.
+  for bod in all_bodies {
+    if should_include(bod) {
+      some_bodies:ADD(bod).
+    }
+  }
+  return some_bodies.
+}
+
+// Example of how it could have been used with a traditional named function:
+// -------------------------------------------------------------------------
+//
+// function is_smaller_than_mun {
+//   parameter b. return (b:RADIUS < Mun:RADIUS).
+// }
+//
+// local small_bodies is select_bodies( is_smaller_than_mun@ ).
+
+// But we're going to do the same thing using an anonymous function instead:
+// -------------------------------------------------------------------------
+
+local small_bodies is select_bodies( { parameter b. return (b:RADIUS < Mun:RADIUS).} ).
+
+
+
+print "List of all bodies smaller than Mun is:".
+print small_bodies.
+</code></pre>
+<pre><code>function make_vessel_utilities {
+  parameter ves.
+
+  // Create a lexicon of anonymous functions to use on vessel ves:
+  //
+  return LEXICON(
+      "isSmall", {return ves:mass < 50.},
+      "isBig", {return ves:mass > 150.},
+      "circularEnough", {return ves:obt:eccentricity < 0.1.}
+    ).
+}
+
+local that_ship_utils is make_vessel_utilities(Vessel("that ship")).
+
+if that_ship_utils["isSmall"]() {
+  print "that ship is small".
+}
+
+if that_ship_utils["circularEnough"]() {
+  print "that ship is circularized".
+}
+</code></pre>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: The anonymous function feature described on
+this page did not exist prior to kOS 1.0.0</div>

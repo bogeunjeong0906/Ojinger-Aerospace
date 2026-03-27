@@ -1,0 +1,114 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/commands/communication.html
+source_doc_title: Communication
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Communication</h1>
+<h2>1) Core Intent</h2>
+<p>kOS allows you to write scripts that communicate with scripts running on other processors within the same vessel
+(inter-processor communication) or on other vessels (inter-vessel communication). By default kOS supports the following list of managers. If a manager is not
+currently available (because the required mod isn’t installed, or the system
+is disabled in the settings) it will not be shown in lists of available managers.</p>
+<h2>2) Safety Critical Notes</h2>
+<div class="admonition"><strong>⚠ Warning</strong>: Take care when configuring your game for connectivity.  Enabling
+multiple systems at the same time may result in unexpected behaviors
+both for the game connectivity itself, and for kOS’s connectivity
+manager.  kOS only supports selecting one connectivity manager at a time
+and you should ensure that only the corresponding in game connectivity
+system is enabled.</div>
+<div class="admonition"><strong>⚠ Warning</strong>: Attempting to send a message to the “home” connection will result in an
+error message.  While this connection uses the same structure as when
+sending inter-vessel and inter-processor messages, message support is
+not included.</div>
+<div class="admonition"><strong>⚠ Warning</strong>: Attempting to send a message to the “control” connection will result in
+an error message.  While this connection uses the same structure as when
+sending inter-vessel and inter-processor messages, message support is
+not included.</div>
+<h2>3) Snippet Pack</h2>
+<pre><code>SET V TO VESSEL("vesselname").
+</code></pre>
+<pre><code>SET MESSAGE TO "HELLO". // can be any serializable value or a primitive
+SET C TO VESSEL("probe"):CONNECTION.
+PRINT "Delay is " + C:DELAY + " seconds".
+IF C:SENDMESSAGE(MESSAGE) {
+  PRINT "Message sent!".
+}
+</code></pre>
+<pre><code>WHEN NOT SHIP:MESSAGES:EMPTY {
+  SET RECEIVED TO SHIP:MESSAGES:POP.
+  PRINT "Sent by " + RECEIVED:SENDER:NAME + " at " + RECEIVED:SENTAT.
+  PRINT RECEIVED:CONTENT.
+}
+</code></pre>
+<pre><code>LIST PROCESSORS IN ALL_PROCESSORS.
+PRINT ALL_PROCESSORS[0]:NAME.
+</code></pre>
+<pre><code>PRINT SHIP:MODULESNAMED("kOSProcessor")[0]:VOLUME:NAME.
+</code></pre>
+<pre><code>SET MESSAGE TO "undock". // can be any serializable value or a primitive
+SET P TO PROCESSOR("probe").
+IF P:CONNECTION:SENDMESSAGE(MESSAGE) {
+  PRINT "Message sent!".
+}
+</code></pre>
+<pre><code>WAIT UNTIL NOT CORE:MESSAGES:EMPTY. // make sure we've received something
+SET RECEIVED TO CORE:MESSAGES:POP.
+IF RECEIVED:CONTENT = "undock" {
+  PRINT "Undocking!!!".
+  UNDOCK().
+} ELSE {
+  PRINT "Unexpected message: " + RECEIVED:CONTENT.
+}
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>CONFIG:RT</li>
+  <li>CONNECTION</li>
+  <li>CONNECTION:SENDMESSAGE</li>
+  <li>CONTROLCONNECTION</li>
+  <li>CORE:MESSAGES</li>
+  <li>CORE:MESSAGES:EMPTY</li>
+  <li>CORE:MESSAGES:POP</li>
+  <li>HOMECONNECTION</li>
+  <li>KOSPROCESSOR</li>
+  <li>KOSPROCESSOR:CONNECTION</li>
+  <li>KUNIVERSE:ACTIVEVESSEL</li>
+  <li>LOADDISTANCE</li>
+  <li>MESSAGE:CONTENT</li>
+  <li>MESSAGE:RECEIVEDAT</li>
+  <li>MESSAGE:SENDER</li>
+  <li>MESSAGE:SENTAT</li>
+  <li>MESSAGEQUEUE</li>
+  <li>PROCESSOR</li>
+  <li>RECEIVED:CONTENT</li>
+  <li>RECEIVED:SENDER:NAME</li>
+  <li>RECEIVED:SENTAT</li>
+  <li>SHIP:MESSAGES</li>
+  <li>SHIP:MESSAGES:EMPTY</li>
+  <li>SHIP:MESSAGES:POP</li>
+  <li>SHIP:MODULESNAMED</li>
+  <li>VESSEL:CONNECTION</li>
+  <li>VOLUME:NAME</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: The concept of selectable connectivity managers was added after KSP
+introduced a stock communications system (CommNet). kOS was updated to
+support both CommNet and RemoteTech. Other mods may be supported or
+provide their own support in the future.</div>
+<div class="admonition"><strong>ℹ Note</strong>: Active Vessel : CommNet has limitations on updating connections for vessels
+which are not the active vessel.  The best way to ensure that a connection
+is updated is to include one of the kinds of antenna that can act as
+a relay on one or both of the vessels.</div>
+<div class="admonition"><strong>ℹ Note</strong>: Debris Vessel : To save on computer load, CommNet cuts all “debris”
+vessels out of the system when loading the scene and does not track
+them.  Therefore any vessel that was of type “debris” when the scene
+was first loaded will be unable to have a connection, regardless of
+what antennas it may have on it, and regardless of whether you change
+its vessel type to something other than “debris” during the scene.
+The vessel type has to be something other than “debris” at the moment
+the scene is first loaded in order for it to be able to have CommNet
+connections.  If you have a “debris” vessel that has no communication
+connections, you can change the vessel type from “debris” to something
+else, and then go to the tracking station and come back , then that can cause the vessel to have a connection again.</div>

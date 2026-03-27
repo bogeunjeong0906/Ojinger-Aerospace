@@ -1,0 +1,33 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/vessels/sensor.html
+source_doc_title: Sensor
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Sensor</h1>
+<h2>1) Core Intent</h2>
+<p>The type of structures returned by LIST SENSORS IN SOMEVARIABLE . This is not fully understood because the type of PartModule in the KSP API called ModuleEnviroSensor , which all Sensors are a kind of, is not well documented. Here is an example of using Sensor :</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>PRINT "Full Sensor Dump:".
+LIST SENSORS IN SENSELIST.
+
+// TURN EVERY SINGLE SENSOR ON
+FOR S IN SENSELIST {
+  PRINT "SENSOR: " + S:TYPE.
+  PRINT "VALUE:  " + S:DISPLAY.
+  IF S:ACTIVE {
+    PRINT "     SENSOR IS ALREADY ON.".
+  } ELSE {
+    PRINT "     SENSOR WAS OFF.  TURNING IT ON.".
+    S:TOGGLE().
+  }
+}
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>PARTMODULE</li>
+  <li>POWERCONSUMPTION</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: A Sensor is a type of Part , and therefore can use all the suffixes of Part .</div>

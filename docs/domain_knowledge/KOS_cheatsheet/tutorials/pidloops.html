@@ -1,0 +1,295 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/tutorials/pidloops.html
+source_doc_title: PID Loops in kOS
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>PID Loops in kOS</h1>
+<h2>1) Core Intent</h2>
+<p>This tutorial covers how one can implement a PID loop using kOS. A P-loop, or “proportional feedback loop” was already introduced in the second section of the Design Patterns Tutorial , and that will serve as our starting point. After some code rearrangement, the integral and derivative terms will be added and discussed in turn. Next, a couple extra features will be added to the full PID-loop. Lastly, we’ll show a case-study in tuning a full PID loop using the Ziegler-Nichols method. We’ll use the LOG method to dump telemetry from KSP into a file and our favorite graphing software to visualize the data.</p>
+<h2>2) Safety Critical Notes</h2>
+<div class="admonition"><strong>⚠ Warning</strong>: Obsolete Atmospheric Model Assumed Here. The following section was written prior to Kerbal Space Program 1.0, when
+the game’s atmospheric model was drastically different than it is today.
+Much of what it says is no longer applicable.  Most importantly, it is
+built on the assumption that the most efficient speed for a rocket to
+travel at is exactly at the edge of terminal velocity.  This isn’t true
+in the real world, and it’s no longer true in Kerbal Space Program either
+(although it was when this section was first written). Please take that under advisement when reading this section.  Although
+what it says is good for teaching PID loop tuning, the goal it is trying
+to seek, of holding the rocket at terminal velocity, is no longer a
+good goal to try to achieve.  A new replacement for this section should
+be written, but has not been yet.</div>
+<h2>3) Snippet Pack</h2>
+<pre><code>// staging, throttle, steering, go
+WHEN STAGE:LIQUIDFUEL < 0.1 THEN {
+    STAGE.
+    PRESERVE.
+}
+LOCK THROTTLE TO 1.
+LOCK STEERING TO R(0,0,-90) + HEADING(90,90).
+STAGE.
+WAIT UNTIL SHIP:ALTITUDE > 1000.
+
+// P-loop setup
+SET g TO KERBIN:MU / KERBIN:RADIUS^2.
+LOCK accvec TO SHIP:SENSORS:ACC - SHIP:SENSORS:GRAV.
+LOCK gforce TO accvec:MAG / g.
+LOCK dthrott TO 0.05 * (1.2 - gforce).
+
+SET thrott TO 1.
+LOCK THROTTLE to thrott.
+
+UNTIL SHIP:ALTITUDE > 40000 {
+    SET thrott to thrott + dthrott.
+    WAIT 0.1.
+}
+</code></pre>
+<pre><code>// P-loop
+SET g TO KERBIN:MU / KERBIN:RADIUS^2.
+LOCK accvec TO SHIP:SENSORS:ACC - SHIP:SENSORS:GRAV.
+LOCK gforce TO accvec:MAG / g.
+
+SET gforce_setpoint TO 1.2.
+SET Kp TO 0.05.
+LOCK dthrott TO Kp * (gforce_setpoint - gforce).
+
+SET thrott TO 1.
+LOCK THROTTLE to thrott.
+
+UNTIL SHIP:ALTITUDE > 40000 {
+    SET thrott to thrott + dthrott.
+    WAIT 0.1.
+}
+</code></pre>
+<pre><code>// PI-loop
+SET g TO KERBIN:MU / KERBIN:RADIUS^2.
+LOCK accvec TO SHIP:SENSORS:ACC - SHIP:SENSORS:GRAV.
+LOCK gforce TO accvec:MAG / g.
+
+SET gforce_setpoint TO 1.2.
+
+LOCK P TO gforce_setpoint - gforce.
+SET I TO 0.
+
+SET Kp TO 0.01.
+SET Ki TO 0.006.
+
+LOCK dthrott TO Kp * P + Ki * I.
+
+SET thrott TO 1.
+LOCK THROTTLE to thrott.
+
+SET t0 TO TIME:SECONDS.
+UNTIL SHIP:ALTITUDE > 40000 {
+    SET dt TO TIME:SECONDS - t0.
+    IF dt > 0 {
+        SET I TO I + P * dt.
+        SET thrott to thrott + dthrott.
+        SET t0 TO TIME:SECONDS.
+    }
+    WAIT 0.001.
+}
+</code></pre>
+<pre><code>// PID-loop
+SET g TO KERBIN:MU / KERBIN:RADIUS^2.
+LOCK accvec TO SHIP:SENSORS:ACC - SHIP:SENSORS:GRAV.
+LOCK gforce TO accvec:MAG / g.
+
+SET gforce_setpoint TO 1.2.
+
+LOCK P TO gforce_setpoint - gforce.
+SET I TO 0.
+SET D TO 0.
+SET P0 TO P.
+
+SET Kp TO 0.01.
+SET Ki TO 0.006.
+SET Kd TO 0.006.
+
+LOCK dthrott TO Kp * P + Ki * I + Kd * D.
+
+SET thrott TO 1.
+LOCK THROTTLE to thrott.
+
+SET t0 TO TIME:SECONDS.
+UNTIL SHIP:ALTITUDE > 40000 {
+    SET dt TO TIME:SECONDS - t0.
+    IF dt > 0 {
+        SET I TO I + P * dt.
+        SET D TO (P - P0) / dt.
+        SET thrott to thrott + dthrott.
+        SET P0 TO P.
+        SET t0 TO TIME:SECONDS.
+    }
+    WAIT 0.001.
+}
+</code></pre>
+<pre><code>// pidloop
+SET g TO KERBIN:MU / KERBIN:RADIUS^2.
+LOCK accvec TO SHIP:SENSORS:ACC - SHIP:SENSORS:GRAV.
+LOCK gforce TO accvec:MAG / g.
+
+SET Kp TO 0.01.
+SET Ki TO 0.006.
+SET Kd TO 0.006.
+SET PID TO PIDLOOP(Kp, Ki, Kd).
+SET PID:SETPOINT TO 1.2.
+
+SET thrott TO 1.
+LOCK THROTTLE TO thrott.
+
+UNTIL SHIP:ALTITUDE > 40000 {
+    SET thrott TO thrott + PID:UPDATE(TIME:SECONDS, gforce).
+    // pid:update() is given the input time and input and returns the output. gforce is the input.
+    WAIT 0.001.
+}
+</code></pre>
+<pre><code>// PID-loop
+SET g TO KERBIN:MU / KERBIN:RADIUS^2.
+LOCK accvec TO SHIP:SENSORS:ACC - SHIP:SENSORS:GRAV.
+LOCK gforce TO accvec:MAG / g.
+
+SET gforce_setpoint TO 1.2.
+
+LOCK P TO gforce_setpoint - gforce.
+SET I TO 0.
+SET D TO 0.
+SET P0 TO P.
+
+LOCK in_deadband TO ABS(P) < 0.01.
+
+SET Kp TO 0.01.
+SET Ki TO 0.006.
+SET Kd TO 0.006.
+
+LOCK dthrott TO Kp * P + Ki * I + Kd * D.
+
+SET thrott TO 1.
+LOCK THROTTLE to thrott.
+
+SET t0 TO TIME:SECONDS.
+UNTIL SHIP:ALTITUDE > 40000 {
+    SET dt TO TIME:SECONDS - t0.
+    IF dt > 0 {
+        IF NOT in_deadband {
+            SET I TO I + P * dt.
+            SET D TO (P - P0) / dt.
+
+            // If Ki is non-zero, then limit Ki*I to [-1,1]
+            IF Ki > 0 {
+                SET I TO MIN(1.0/Ki, MAX(-1.0/Ki, I)).
+            }
+
+            // set throttle but keep in range [0,1]
+            SET thrott to MIN(1, MAX(0, thrott + dthrott)).
+
+            SET P0 TO P.
+            SET t0 TO TIME:SECONDS.
+        }
+    }
+    WAIT 0.001.
+}
+</code></pre>
+<pre><code>DECLARE PARAMETER Kp.
+
+SWITCH TO 1. // This is the default usually, but just to be sure.
+
+LOCK g TO SHIP:BODY:MU / (SHIP:BODY:RADIUS + SHIP:ALTITUDE)^2.
+LOCK maxtwr TO SHIP:MAXTHRUST / (g * SHIP:MASS).
+
+// feedback based on atmospheric efficiency
+LOCK surfspeed TO SHIP:VELOCITY:SURFACE:MAG.
+LOCK atmoeff TO surfspeed / SHIP:TERMVELOCITY. // OBSOLETED EXAMPLE! SHIP:TERMVELOCITY No longer exists
+LOCK P TO 1.0 - atmoeff.
+
+SET t0 TO TIME:SECONDS.
+LOCK dthrott TO Kp*P.
+SET start_time TO t0.
+
+LOG "# Throttle PID Tuning" TO throttle_log.
+LOG "# Kp: " + Kp TO throttle_log.
+LOG "# t P maxtwr" TO throttle_log.
+
+LOCK logline TO (TIME:SECONDS - start_time)
+        + " " + P
+        + " " + maxtwr.
+
+SET thrott TO 1.
+LOCK THROTTLE TO thrott.
+SAS ON.
+STAGE.
+WAIT 3.
+
+UNTIL SHIP:ALTITUDE > 30000 {
+    SET dt TO TIME:SECONDS - t0.
+    IF dt > 0 {
+        SET thrott TO MIN(1,MAX(0,thrott + dthrott)).
+        SET t0 TO TIME:SECONDS.
+        LOG logline TO throttle_log.
+    }
+    WAIT 0.001.
+}
+COPYPATH("throttle_log", "0:/").
+</code></pre>
+<pre><code>copypath("0:/tune", "").
+run tune(0.5).
+</code></pre>
+<h2>4) Tuning / Parameters</h2>
+<h2>Proportional-Integral-Derivative Feedback Loop (PID-loop)</h2>
+<p>Incorporating the derivative term (D) and derivative gain (Kd) requires an additional variable (P0) to keep track of the previous value of the proportional term (P).</p>
+<p>// PID-loop SET g TO KERBIN : MU / KERBIN : RADIUS ^ 2 .</p>
+<p>When tuned properly, the derivative term will cause the PID-loop to act quickly without causing problematic oscillations.</p>
+<hr/>
+<h2>Usingpidloop</h2>
+<p>As mentioned earlier, kOS 0.18.1 introduced a new structure called pidloop that can take the place of much of the previous code.</p>
+<p>// pidloop SET g TO KERBIN : MU / KERBIN : RADIUS ^ 2 .</p>
+<p>The primary advantage to using pidloop is the reduction in the number of instructions per update (see Config:IPU ).</p>
+<p>Note that pidloop offers a great deal more options than were presented here, but nevertheless, this should provide a decent introduction to using pidloop .</p>
+<hr/>
+<h2>Tuning a PID-loop</h2>
+<p>Obsolete Atmospheric Model Assumed Here.</p>
+<p>We are going to start with the same rocket design we have been using so far and actually tune the PID-loop using the Ziegler-Nichols method.</p>
+<p>Control Type Kp Ki Kd P 0.5 Ku PI 0.45 Ku 1.2 Kp / Tu PD 0.8 Ku Kp Tu / 8 classic PID 0.6 Ku 2 Kp / Tu Kp Tu / 8 Pessen Integral Rule 0.7 Ku 0.4 Kp / Tu 0.15 Kp Tu some overshoot 0.33 Ku 2 Kp / Tu Kp Tu / 3 no overshoot 0.2 Ku 2 Kp / Tu Kp Tu / 3.</p>
+<p>An immediate problem to overcome with this method is that it assumes a steady state can be achieved.</p>
+<p>Obsolete, deprecated This example assumes Kerbal Space Program’s old
+atmospheric model which has now been obsoleted,
+and this example won’t quite work as described if
+you try using it today.</p>
+<p>The script we’ll use to tune the highly overpowered rocket shown will launch the rocket straight up (using SAS) and will log data to an output file until it reaches 30km at which point the log file will be copied to the archive and the program will terminate.</p>
+<p>Obsolete, deprecated The example program here uses the suffix SHIP:TERMVELOCITY ,
+which no longer exists in kOS because of changes to the base
+game’s atmospheric model.</p>
+<p>DECLARE PARAMETER Kp .</p>
+<p>Give this script a short name, something like “tune.txt” so that running is simple:.</p>
+<p>copypath ( "0:/tune" , "" ).</p>
+<p>Obsolete, deprecated These data values wouldn’t quite come out this
+way if you tried using this example today.</p>
+<p>After every launch completes, you’ll have to go into the archive directory and rename the output logfile.</p>
+<p>The value of 0.002 is obviously too low.</p>
+<p>Obsolete, deprecated These data values wouldn’t quite come out this
+way if you tried using this example today.</p>
+<p>This is done for each value of Kp and the slopes of the fitted lines are plotted as a function of Kp in the following plot:.</p>
+<p>Obsolete, deprecated These data values wouldn’t quite come out this
+way if you tried using this example today.</p>
+<p>The period of oscillation was averaged over the interval and plotted on top of the amplitude change over time.</p>
+<p>As soon as the PID-loop was activated at 3 seconds after ignition, the throttle was cut.</p>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>CONFIG:IPU</li>
+  <li>KERBIN:MU</li>
+  <li>KERBIN:RADIUS</li>
+  <li>PID:SETPOINT</li>
+  <li>PID:UPDATE</li>
+  <li>SHIP:ALTITUDE</li>
+  <li>SHIP:BODY:MU</li>
+  <li>SHIP:BODY:RADIUS</li>
+  <li>SHIP:MASS</li>
+  <li>SHIP:MAXTHRUST</li>
+  <li>SHIP:SENSORS:ACC</li>
+  <li>SHIP:SENSORS:GRAV</li>
+  <li>SHIP:TERMVELOCITY</li>
+  <li>SHIP:VELOCITY:SURFACE:MAG</li>
+  <li>STAGE:LIQUIDFUEL</li>
+  <li>TIME:SECONDS</li>
+</ul>

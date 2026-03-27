@@ -1,0 +1,90 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/commands/flight/cooked.html
+source_doc_title: Cooked Control
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+
+<h1>Cooked Control - Cheat Sheet (Sample)</h1>
+
+<h2>1) Core Intent</h2>
+<p>
+Cooked control means: script sets a target and kOS autopilot continuously drives steering/throttle.
+Primary interfaces are <code>LOCK THROTTLE</code>, <code>LOCK STEERING</code>,
+<code>LOCK WHEELTHROTTLE</code>, <code>LOCK WHEELSTEERING</code>.
+</p>
+
+<h2>2) Safety Critical Notes</h2>
+<ul>
+  <li>If <code>CONFIG:SUPPRESSAUTOPILOT</code> is true, cooked controls on this page do not take effect.</li>
+  <li>Do not use <code>SAS</code> together with <code>LOCK STEERING</code>.</li>
+  <li>Do not run <code>WAIT</code> (or slow logic) inside cooked LOCK expressions because they execute every physics tick and can starve script CPU time.</li>
+  <li>When done, explicitly free controls with <code>UNLOCK STEERING.</code> and <code>UNLOCK THROTTLE.</code></li>
+</ul>
+
+<h2>3) Snippet Pack (Directly Usable)</h2>
+<pre><code>// throttle lock: expected range [0.0 .. 1.0]
+LOCK THROTTLE TO 0.5.
+
+// steering targets (direction/heading/vector)
+LOCK STEERING TO UP + R(20,0,0).
+LOCK STEERING TO HEADING(180, 30).
+LOCK STEERING TO (-1) * SHIP:VELOCITY:SURFACE.
+LOCK STEERING TO VCRS(SHIP:VELOCITY:ORBIT, BODY:POSITION).
+LOCK STEERING TO "kill".
+
+// rover-specific cooked controls
+LOCK WHEELTHROTTLE TO 0.2.
+LOCK WHEELSTEERING TO 45.
+
+// unlock when manual control is needed
+UNLOCK STEERING.
+UNLOCK THROTTLE.</code></pre>
+
+<h2>4) Tuning Snippet Pack (SteeringManager)</h2>
+<pre><code>// faster turning, possible overshoot increase
+SET STEERINGMANAGER:MAXSTOPPINGTIME TO 10.
+
+// rotational velocity PID tuning
+SET STEERINGMANAGER:PITCHPID:KP TO 0.85.
+SET STEERINGMANAGER:PITCHPID:KI TO 0.5.
+SET STEERINGMANAGER:PITCHPID:KD TO 0.1.
+
+// torque response smoothing
+SET STEERINGMANAGER:PITCHTS TO 10.
+SET STEERINGMANAGER:ROLLTS TO 5.</code></pre>
+
+<h2>5) Suffix and Key Inventory (No-loss policy for extracted items)</h2>
+<ul>
+  <li>CONFIG:SUPPRESSAUTOPILOT</li>
+  <li>SHIP:VELOCITY:SURFACE</li>
+  <li>SHIP:VELOCITY:ORBIT</li>
+  <li>SHIP:CONTROL:PILOTMAINTHROTTLE</li>
+  <li>BODY:POSITION</li>
+  <li>STEERINGMANAGER</li>
+  <li>STEERINGMANAGER:MAXSTOPPINGTIME</li>
+  <li>STEERINGMANAGER:PITCHPID:KP</li>
+  <li>STEERINGMANAGER:PITCHPID:KI</li>
+  <li>STEERINGMANAGER:PITCHPID:KD</li>
+  <li>STEERINGMANAGER:PITCHTS</li>
+  <li>STEERINGMANAGER:YAWTS</li>
+  <li>STEERINGMANAGER:ROLLTS</li>
+  <li>STEERINGMANAGER:TORQUEEPSILONMIN</li>
+  <li>STEERINGMANAGER:TORQUEEPSILONMAX</li>
+  <li>STEERINGMANAGER:TORQUEPSILONMIN</li>
+  <li>STEERINGMANAGER:TORQUEPSILONMAX</li>
+  <li>STEERINGMANAGER:PITCHTORQUEADJUST</li>
+  <li>STEERINGMANAGER:YAWTORQUEADJUST</li>
+  <li>STEERINGMANAGER:ROLLTORQUEADJUST</li>
+  <li>STEERINGMANAGER:PITCHTORQUEFACTOR</li>
+  <li>STEERINGMANAGER:YAWTORQUEFACTOR</li>
+  <li>STEERINGMANAGER:ROLLTORQUEFACTOR</li>
+</ul>
+
+<h2>6) Agent Usage Hints</h2>
+<ul>
+  <li>Preferred retrieval keys: <code>LOCK STEERING</code>, <code>UNLOCK STEERING</code>, <code>WAIT warning</code>, <code>MAXSTOPPINGTIME</code>.</li>
+  <li>When generating code, always include an unlock path at script end or abort handling.</li>
+  <li>For atmosphere aircraft, cooked steering may be suboptimal; consider raw steering for precise behavior.</li>
+</ul>

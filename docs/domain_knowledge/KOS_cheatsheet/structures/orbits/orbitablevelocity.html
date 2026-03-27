@@ -1,0 +1,36 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/orbits/orbitablevelocity.html
+source_doc_title: OrbitableVelocity
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>OrbitableVelocity</h1>
+<h2>1) Core Intent</h2>
+<p>When any Orbitable object returns its VELOCITY suffix, it returns it as a structure containing a pair of both its orbit-frame velocity and its surface-frame velocity at the same instant of time. To obtain its velocity as a vector you must pick whether you want the oribtal or surface velocities by giving a further suffix:</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>SET VORB TO SHIP:VELOCITY:ORBIT
+SET VSRF TO SHIP:VELOCITY:SURFACE
+SET MUNORB TO MUN:VELOCITY:ORBIT
+SET MUNSRF TO MUN:VELOCITY:SURFACE
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>MUN:VELOCITY:ORBIT</li>
+  <li>MUN:VELOCITY:SURFACE</li>
+  <li>ORBITABLE</li>
+  <li>SHIP:VELOCITY:ORBIT</li>
+  <li>SHIP:VELOCITY:SURFACE</li>
+  <li>VELOCITY</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: Special case instance, the Sun: Because the Sun has no parent
+SoI body that it orbits around (Kerbal Space Program does not
+simulate the existence of anything outside the one solar system),
+that means that the Sun’s surface velocity is just hardcoded to
+be the same thing as its orbital velocity.  This may or may not be
+entirely correct, but the “correct” answer to the question, “What is
+sun:velocity:surface?” would technically be “I refuse to answer.
+That’s an invalid question.” Rather than crash or throw an exception,
+kOS just returns the same as the orbital velocity in this case.</div>
+<div class="admonition"><strong>ℹ Note</strong>: At first glance it may seem that Mun:VELOCITY:SURFACE is wrong because it creates a vector in the opposite direction from Mun:VELOCITY:ORBIT , but this is actually correct. Kerbin’s surface rotates once every 6 hours, and the Mun takes a lot longer than 6 hours to orbit Kerbin. Therefore, relative to Kerbin’s surface, the Mun is going backward.</div>

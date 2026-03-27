@@ -1,0 +1,39 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/vessels/aggregateresource.html
+source_doc_title: AggregateResource
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>AggregateResource</h1>
+<h2>1) Core Intent</h2>
+<p>A ship can have many parts that contain resources (i.e. fuel, electric charge, etc). kOS has several tools for getting the summation of each resource.</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>PRINT "THESE ARE ALL THE RESOURCES ON THE SHIP:".
+LIST RESOURCES IN RESLIST.
+FOR RES IN RESLIST {
+    PRINT "Resource " + RES:NAME.
+    PRINT "    value = " + RES:AMOUNT.
+    PRINT "    which is "
+          + ROUND(100*RES:AMOUNT/RES:CAPACITY)
+          + "% full.".
+}.
+</code></pre>
+<pre><code>PRINT "THESE ARE ALL THE RESOURCES active in this stage:".
+SET RESLIST TO STAGE:RESOURCES.
+FOR RES IN RESLIST {
+    PRINT "Resource " + RES:NAME.
+    PRINT "    value = " + RES:AMOUNT.
+    PRINT "    which is "
+          + ROUND(100*RES:AMOUNT/RES:CAPACITY)
+          + "% full.".
+}.
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>CAPACITY</li>
+  <li>RES:AMOUNT</li>
+  <li>RES:CAPACITY</li>
+  <li>RES:NAME</li>
+  <li>STAGE:RESOURCES</li>
+</ul>

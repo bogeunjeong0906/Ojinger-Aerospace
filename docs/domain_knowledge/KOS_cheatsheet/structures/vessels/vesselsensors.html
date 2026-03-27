@@ -1,0 +1,16 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/vessels/vesselsensors.html
+source_doc_title: VesselSensors
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>VesselSensors</h1>
+<h2>1) Core Intent</h2>
+<p>When you ask a Vessel to tell you its Vessel:SENSORS suffix, it returns an object of this type. It is a snapshot of sensor data taken at the moment the sensor reading was requested.</p>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>VESSEL:SENSORS</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: These values are only enabled if you have the proper type of sensor on board the vessel. If you don’t have a thermometer, for example, then the :TEMP suffix will always read zero.</div>

@@ -1,0 +1,86 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/math/vector.html
+source_doc_title: Vectors
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Vectors</h1>
+<h2>1) Core Intent</h2>
+<p>Scalar multiplication or dot product of two Vectors . See also VECTORDOTPRODUCT :</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>SET vec TO V(x,y,z).
+</code></pre>
+<pre><code>SET a TO 2.
+SET vec1 TO V(1,2,3).
+SET vec2 TO V(2,3,4).
+PRINT a * vec1.     // prints: V(2,4,6)
+PRINT vec1 * vec2.  // prints: 20
+</code></pre>
+<pre><code>PRINT -vec1.     // these two both print the
+PRINT (-1)*vec1. // exact same thing.
+</code></pre>
+<pre><code>SET a TO 2.
+SET vec1 TO V(1,2,3).
+SET vec2 TO V(2,3,4).
+PRINT vec1 + vec2.  // prints: V(3,5,7)
+PRINT vec2 - vec1.  // prints: V(1,1,1)
+</code></pre>
+<pre><code>// These two both print the same exact thing:
+PRINT -vec1.
+PRINT (-1)*vec1.
+</code></pre>
+<pre><code>SET vec1 TO V(1,2,3).
+SET vec2 TO V(2,3,4).
+
+// These are different ways to perform the same operation.
+// All of them will print the value: 20
+// -------------------------------------------------------
+PRINT VDOT(vec1, vec2).
+PRINT VECTORDOTPRODUCT(vec1, vec2).
+PRINT vec1 * vec2. // multiplication of two vectors with asterisk "*" performs a VDOT().
+</code></pre>
+<pre><code>SET vec1 TO V(1,2,3).
+SET vec2 TO V(2,3,4).
+
+// These will both print: V(-1,2,-1)
+PRINT VCRS(vec1, vec2).
+PRINT VECTORCROSSPRODUCT(vec1, vec2).
+</code></pre>
+<pre><code>arccos( (VDOT(v1,v2) / (v1:MAG * v2:MAG) ) )
+</code></pre>
+<pre><code>// initializes a vector with x=100, y=5, z=0
+SET varname TO V(100,5,0).
+
+varname:X.    // Returns 100.
+V(100,5,0):Y. // Returns 5.
+V(100,5,0):Z. // Returns 0.
+
+// Returns the magnitude of the vector
+varname:MAG.
+
+// Changes x coordinate value to 111.
+SET varname:X TO 111.
+
+// Lengthen or shorten vector to make its magnitude 10.
+SET varname:MAG to 10.
+
+// get vector pointing opposite to surface velocity.
+SET retroSurf to (-1)*velocity:surface.
+
+// use cross product to find normal to the orbit plane.
+SET norm to VCRS(velocity:orbit, ship:body:position).
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>DIRECTION</li>
+  <li>NORMALIZED</li>
+  <li>SQRMAGNITUDE</li>
+  <li>VECTORANGLE</li>
+  <li>VECTORCROSSPRODUCT</li>
+  <li>VECTORDOTPRODUCT</li>
+  <li>VECTOREXCLUDE</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: Remember that the XYZ grid in Kerbal Space Program uses a left-handed coordinate system.</div>
+<div class="admonition"><strong>ℹ Note</strong>: This type is serializable.</div>

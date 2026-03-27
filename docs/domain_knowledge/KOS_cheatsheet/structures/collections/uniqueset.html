@@ -1,0 +1,24 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/collections/uniqueset.html
+source_doc_title: UniqueSet
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>UniqueSet</h1>
+<h2>1) Core Intent</h2>
+<p>A UniqueSet is a collection of any type in kOS. It doesn’t store items in any particular order and does not allow duplicate items.
+You can read more about sets on Wikipedia .</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>SET S TO UNIQUESET(1,2,3).
+PRINT S:LENGTH. // will print 3
+S:ADD(1). // 1 was already in the set so nothing happens
+PRINT S:LENGTH. // will print 3 again
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>ENUMERABLE</li>
+  <li>UNIQUESET</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: This type is serializable.</div>

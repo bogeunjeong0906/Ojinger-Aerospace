@@ -1,0 +1,27 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/volumes_and_files/path.html
+source_doc_title: Path
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Path</h1>
+<h2>1) Core Intent</h2>
+<p>Represents a path. Contains suffixes that can be helpful when using and manipulating paths. You can use path() to create new instances.</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>copypath("../file", path()).
+</code></pre>
+<pre><code>set p to path("0:/home").
+set p2 to p:combine("d1", "d2", "file.ks").
+print p2
+0:/home/d1/d2/file.ks
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>CHANGEEXTENSION</li>
+  <li>CHANGENAME</li>
+  <li>EXTENSION</li>
+  <li>HASEXTENSION</li>
+  <li>ISPARENT</li>
+  <li>SEGMENTS</li>
+</ul>

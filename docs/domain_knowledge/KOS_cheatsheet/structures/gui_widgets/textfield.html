@@ -1,0 +1,27 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/gui_widgets/textfield.html
+source_doc_title: TextField
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>TextField</h1>
+<h2>3) Snippet Pack</h2>
+<pre><code>set myTextField:ONCHANGE to {parameter str. print "Value is now: " + str.}.
+</code></pre>
+<pre><code>set myTextField:ONCONFIRM to {parameter str. print "Value is now: " + str.}.
+</code></pre>
+<pre><code>set myTextField:TOOLTIP to "Type a Planet Name Here".
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>BOX:ADDTEXTFIELD</li>
+  <li>CONFIRMED</li>
+  <li>KOSDELEGATE</li>
+  <li>LABEL:TEXT</li>
+  <li>ONCHANGE</li>
+  <li>ONCONFIRM</li>
+  <li>TEXTFIELD</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: The values of CHANGED and CONFIRMED reset to False as soon as their value is accessed.</div>

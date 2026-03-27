@@ -1,0 +1,28 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/vessels/element.html
+source_doc_title: Element
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Element</h1>
+<h2>1) Core Intent</h2>
+<p>An element is a docked component of a Vessel .  When you dock several
+vessels together to create one larger vessel, you can obtain the “chunks” of the
+larger vessel organized by which original vessel they came from.  These “chunks”
+are called elements, and they are what the Element structure refers to.</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>list elements in eList.
+// now eList is a list of elements from the vessel.
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>AGGREGATERESOURCE</li>
+  <li>AGGREGATERESOURCES</li>
+  <li>AGGRGATERESOURCES</li>
+  <li>DOCKINGPORT</li>
+  <li>DOCKINGPORTS</li>
+  <li>RESOURCES</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: Element boundries are not formed between two docking ports that were launched coupled. a craft with such an arrangement will appear as one element until you uncoupled the nodes and redocked</div>

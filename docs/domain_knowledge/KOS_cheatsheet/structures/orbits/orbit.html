@@ -1,0 +1,48 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/orbits/orbit.html
+source_doc_title: Orbit
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Orbit</h1>
+<h2>1) Core Intent</h2>
+<p>Variables of type Orbit hold descriptive information about the elliptical shape of a predicted orbit. Whenever there are multiple patches of orbit ellipses strung together, for example, when an encounter with a body is expected to alter the path, or when a maneuver node is planned, then each individual patch of the path is represented by one Orbit object.</p>
+<h2>2) Safety Critical Notes</h2>
+<div class="admonition"><strong>⚠ Warning</strong>: Radians vs Degrees Some of the parameters listed below come directly from KSP’s API and there is a bit of inconsistency with whether it uses radians or degrees for angles. As much as possible we have tried to present everything in kOS as degrees for consistency, but some of these may have slipped through. If you see any of these being reported in radians, please make a bug report.</div>
+<h2>3) Snippet Pack</h2>
+<pre><code>SET myOrbit TO CREATEORBIT(0, 0, 270000, 0, 0, 0, 0, Mun).
+</code></pre>
+<pre><code>SET myOrbit TO CREATEORBIT(V(2295.5, 0, 0), V(0, 0, 70000 + Kerbin:RADIUS), Kerbin, 0).
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>APOAPSIS</li>
+  <li>ARGUMENTOFPERIAPSIS</li>
+  <li>CREATEORBIT</li>
+  <li>ECCENTRICITY</li>
+  <li>ETA:TRANSITION</li>
+  <li>HASNEXTPATCH</li>
+  <li>INCLINATION</li>
+  <li>LONGITUDEOFASCENDINGNODE</li>
+  <li>MEANANOMALYATEPOCH</li>
+  <li>NEXTPATCH</li>
+  <li>NEXTPATCHETA</li>
+  <li>ORBIT:LONGITUDEOFASCENDINGNODE</li>
+  <li>ORBIT:TRANSITION</li>
+  <li>ORBITABLE</li>
+  <li>ORBITABLEVELOCITY</li>
+  <li>ORBITETA</li>
+  <li>PERIAPSIS</li>
+  <li>POSITION</li>
+  <li>SEMIMAJORAXIS</li>
+  <li>SEMIMINORAXIS</li>
+  <li>SHIP:ORBIT:APOAPSIS</li>
+  <li>TIME:SECONDS</li>
+  <li>TRANSITION</li>
+  <li>TRUEANOMALY</li>
+  <li>VELOCITY</li>
+  <li>VESSEL:PATCHES</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: To get the same functionality, you must use Vessel:PATCHES which is a suffix of the Vessel itself.</div>

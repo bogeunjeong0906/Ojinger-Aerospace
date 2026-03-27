@@ -1,0 +1,59 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/communication/connection.html
+source_doc_title: Connection
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Connection</h1>
+<h2>1) Core Intent</h2>
+<p>Connections represent your ability to communicate with other processors or vessels . You can
+use them to find out whether such communication is currently possible and send messages.</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>SET MY_PROCESSOR TO PROCESSOR("second").
+SET MY_CONNECTION TO MY_PROCESSOR:CONNECTION.
+</code></pre>
+<pre><code>SET MY_VESSEL TO VESSEL("dunarover").
+SET MY_CONNECTION TO MY_VESSEL:CONNECTION.
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>CONNECTION:ISCONNECTED</li>
+  <li>DESTINATION</li>
+  <li>ISCONNECTED</li>
+  <li>KOSPROCESSOR</li>
+  <li>MY_PROCESSOR:CONNECTION</li>
+  <li>MY_VESSEL:CONNECTION</li>
+  <li>PROCESSORS</li>
+  <li>SENDMESSAGE</li>
+  <li>STRUCTURE</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: Debris Vessels : If you are using the KSP Stock CommNet system,
+be aware that it never includes “debris” type vessels in the
+communications network. ISCONNECTED will always be false
+for any vessel of type “debris”, no matter what antennas it
+may have on it. Note ISCONNECTION fails just after scene load : If you have just loaded
+the scene, such as after a vessel switch, then both the Stock CommNet
+system and the RemoteTech mod often have a slight delay before they
+“find” all the communication paths that exist.  This means that
+ISCONNECTION will often return False for the first second or two
+after a scene load, even when the correct answer should be True .
+It will be unable to report the correct answer until a second or so
+later after the communications paths have all been discovered by the
+game.  Because of this, if you have a boot script that depends on an
+accurate answer for ISCONNECTED, it’s a good idea for that boot
+script to start with a short wait of a second or two at the top of
+the script.</div>
+<div class="admonition"><strong>ℹ Note</strong>: ISCONNECTION fails just after scene load : If you have just loaded
+the scene, such as after a vessel switch, then both the Stock CommNet
+system and the RemoteTech mod often have a slight delay before they
+“find” all the communication paths that exist.  This means that
+ISCONNECTION will often return False for the first second or two
+after a scene load, even when the correct answer should be True .
+It will be unable to report the correct answer until a second or so
+later after the communications paths have all been discovered by the
+game.  Because of this, if you have a boot script that depends on an
+accurate answer for ISCONNECTED, it’s a good idea for that boot
+script to start with a short wait of a second or two at the top of
+the script.</div>

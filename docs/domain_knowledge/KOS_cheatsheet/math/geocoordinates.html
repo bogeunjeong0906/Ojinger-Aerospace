@@ -1,0 +1,73 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/math/geocoordinates.html
+source_doc_title: Geographic Coordinates
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Geographic Coordinates</h1>
+<h2>1) Core Intent</h2>
+<p>The GeoCoordinates object (also LATLNG ) represents a latitude and longitude pair, which is a location on the surface of a Body .</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>SET spot to SHIP:GEOPOSITION.
+</code></pre>
+<pre><code>SET spot TO LATLNG(10, 20).     // Initialize point at latitude 10,
+                                // longitude 20
+
+PRINT spot:LAT.                 // Print 10
+PRINT spot:LNG.                 // Print 20
+
+PRINT spot:DISTANCE.            // Print distance from vessel to x
+PRINT spot:HEADING.             // Print the heading to the point
+PRINT spot:BEARING.             // Print the heading to the point
+                                // relative to vessel heading
+
+SET spot TO SHIP:GEOPOSITION.   // Make spot into a location on the
+                                // surface directly underneath the
+                                // current ship
+
+SET spot TO LATLNG(spot:LAT,spot:LNG+5). // Make spot into a new
+                                         // location 5 degrees east
+                                         // of the old one
+
+// Point nose of ship at a spot 100,000 meters altitude above a
+// particular known latitude of 50 east, 20.2 north:
+LOCK STEERING TO LATLNG(50,20.2):ALTITUDEPOSITION(100000).
+
+// A nice complex example:
+// -------------------------
+// Drawing an debug arrow in 3D space at the spot where the GeoCoordinate
+// "spot" is:
+// It starts at a position 100m above the ground altitude and is aimed down
+// at the spot on the ground:
+SET VD TO VECDRAWARGS(
+              spot:ALTITUDEPOSITION(spot:TERRAINHEIGHT+100),
+              spot:POSITION - spot:ALTITUDEPOSITION(TERRAINHEIGHT+100),
+              red, "THIS IS THE SPOT", 1, true).
+
+PRINT "THESE TWO NUMBERS SHOULD BE THE SAME:".
+PRINT (SHIP:ALTITIUDE - SHIP:GEOPOSITION:TERRAINHEIGHT).
+PRINT ALT:RADAR.
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>ALT:RADAR</li>
+  <li>ALTITUDEPOSITION</li>
+  <li>ALTITUDEVELOCITY</li>
+  <li>BODY:GEOPOSITIONLATLNG</li>
+  <li>DISTANCE</li>
+  <li>GEOCOORDINATES</li>
+  <li>GEOCOORDINATES:BEARING</li>
+  <li>GEOCOORDINATES:LAT</li>
+  <li>GEOCOORDINATES:LNG</li>
+  <li>GEOCOORDINATES:VELOCITY</li>
+  <li>ORBITABLEVELOCITY</li>
+  <li>POSITION</li>
+  <li>SHIP:ALTITIUDE</li>
+  <li>SHIP:GEOPOSITION</li>
+  <li>SHIP:GEOPOSITION:TERRAINHEIGHT</li>
+  <li>TERRAINHEIGHT</li>
+  <li>VELOCITY</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: This type is serializable.</div>

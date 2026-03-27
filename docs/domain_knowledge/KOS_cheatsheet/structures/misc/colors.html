@@ -1,0 +1,48 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/misc/colors.html
+source_doc_title: Colors
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Colors</h1>
+<h2>1) Core Intent</h2>
+<p>Any place you need to specify a color in the game (at the moment this is
+just with VECDRAW , HIGHLIGHT . and HUDTEXT) You do so with a
+rgba color structure defined as follows:</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>SET myColor TO RGB(r,g,b).
+</code></pre>
+<pre><code>SET myColor TO RGBA(r,g,b,a).
+</code></pre>
+<pre><code>SET myarrow TO VECDRAW.
+SET myarrow:VEC to V(10,10,10).
+SET myarrow:COLOR to YELLOW.
+SET mycolor TO YELLOW.
+SET myarrow:COLOR to mycolor.
+SET myarrow:COLOR to RGB(1.0,1.0,0.0).
+
+// COLOUR spelling works too
+SET myarrow:COLOUR to RGB(1.0,1.0,0.0).
+
+// half transparent yellow.
+SET myarrow:COLOR to RGBA(1.0,1.0,0.0,0.5).
+
+PRINT GREEN:HTML. // prints #00ff00
+</code></pre>
+<pre><code>SET myColor TO HSV(h,s,v).
+
+`More Information about HSV <http://en.wikipedia.org/wiki/HSL_and_HSV>`_,
+</code></pre>
+<pre><code>SET myColor TO HSVA(h,s,v,a).
+</code></pre>
+<pre><code>SET myarrow TO VECDRAW.
+SET myarrow:VEC to V(10,10,10).
+SET myarrow:COLOR to HSV(60,1,1). // Yellow
+SET myarrow:COLOR:S to 0.5. // Light yellow
+SET myarrow:COLOR:H to 0. // pink
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>GREEN:HTML</li>
+</ul>

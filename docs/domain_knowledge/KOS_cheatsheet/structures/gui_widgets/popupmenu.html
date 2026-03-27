@@ -1,0 +1,37 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/gui_widgets/popupmenu.html
+source_doc_title: PopupMenu
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>PopupMenu</h1>
+<h2>3) Snippet Pack</h2>
+<pre><code>local popup is gui:addpopupmenu().
+
+// Make the popup display the Body:NAME's instead of the Body:TOSTRING's:
+set popup:OPTIONSUFFIX to "NAME".
+
+list bodies in bodies.
+for planet in bodies {
+        if planet:hasbody and planet:body = Sun {
+                popup:addoption(planet).
+        }
+}
+set popup:value to body.
+</code></pre>
+<pre><code>set myPopupMenu:ONCHANGE to { parameter choice. print "You have selected: " + choice:TOSTRING. }.
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>ADDOPTION</li>
+  <li>BOX:ADDPOPUPMENU</li>
+  <li>KOSDELEGATE</li>
+  <li>MAXVISIBLE</li>
+  <li>ONCHANGE</li>
+  <li>OPTIONSSUFFIX</li>
+  <li>OPTIONSUFFIX</li>
+  <li>STRUCTURE</li>
+  <li>STRUCTURE:TOSTRING</li>
+  <li>TOSTRING</li>
+</ul>

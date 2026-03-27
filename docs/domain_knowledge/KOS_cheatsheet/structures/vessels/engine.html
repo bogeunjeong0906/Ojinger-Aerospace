@@ -1,0 +1,55 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/vessels/engine.html
+source_doc_title: Engine
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Engine</h1>
+<h2>1) Core Intent</h2>
+<p>Some of the Parts returned by LIST PARTS will be of type Engine. It is also possible to get just the Engine parts by executing LIST ENGINES , for example:</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>LIST ENGINES IN myVariable.
+FOR eng IN myVariable {
+    print "An engine exists with ISP = " + eng:ISP.
+}.
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>ACTIVATE</li>
+  <li>ALLOWRESTART</li>
+  <li>ALLOWSHUTDOWN</li>
+  <li>AUTOSWITCH</li>
+  <li>AVAILABLETHRUST</li>
+  <li>AVAILABLETHRUSTAT</li>
+  <li>CONSUMEDRESOURCE</li>
+  <li>CONSUMEDRESOURCES</li>
+  <li>ENGINE:FLAMEOUT</li>
+  <li>ENGINE:HASGIMBAL</li>
+  <li>ENGINE:IGNITION</li>
+  <li>FLAMEOUT</li>
+  <li>FUELFLOW</li>
+  <li>FUELSTABILITY</li>
+  <li>HASGIMBAL</li>
+  <li>IGNITION</li>
+  <li>IGNITIONS</li>
+  <li>MASSFLOW</li>
+  <li>MAXFUELFLOW</li>
+  <li>MAXMASSFLOW</li>
+  <li>MAXTHRUST</li>
+  <li>MAXTHRUSTAT</li>
+  <li>MINTHROTTLE</li>
+  <li>MULTIMODE</li>
+  <li>POSSIBLETHRUST</li>
+  <li>POSSIBLETHRUSTAT</li>
+  <li>PRESSUREFED</li>
+  <li>PRIMARYMODE</li>
+  <li>SEALEVELISP</li>
+  <li>SHUTDOWN</li>
+  <li>THROTTLELOCK</li>
+  <li>THRUSTLIMIT</li>
+  <li>TOGGLEMODE</li>
+  <li>VACUUMISP</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: Engine is a type of Part , and therefore can use all the suffixes of Part . Shown below are only the suffixes that are unique to Engine .</div>

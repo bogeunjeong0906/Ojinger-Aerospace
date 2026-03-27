@@ -1,0 +1,103 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/misc/timewarp.html
+source_doc_title: WARP
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>WARP</h1>
+<h2>3) Snippet Pack</h2>
+<pre><code>// This will eventually give you a rate of 100, after several
+// update ticks have passed, but not right away:
+set kuniverse:timewarp:warp to 4.
+
+// This will *also* do the same thing, and not set the rate
+// to 100 right away, but instead tells kOS indirectly
+// to set the WARP to 4, so as to target a destination
+// rate of 100.
+set kuniverse:timewarp:rate to 100.
+</code></pre>
+<pre><code>// If you do any of these, then the effect is the same:
+set kuniverse:timewarp:rate to 89.
+set kuniverse:timewarp:rate to 145.
+set kuniverse:timewarp:rate to 100.
+// Because the game only allows permanent rates of 1,5,10,50,100,1000, etc.
+// A rate of 100 was the closest match it could allow.
+</code></pre>
+<pre><code>set kuniverse:timewarp:mode to "RAILS".
+set kuniverse:timewarp:rate to 1000.
+print "starting to change warp".
+until kuniverse:timewarp:issettled {
+    print "rate = " + round(rate,1).
+    wait 0.
+}
+print "warp is now 1000x".
+
+// The above would output something like this to the screen:
+starting to change warp.
+rate = 113.5
+rate = 143.2
+rate = 213.1
+rate = 233.2
+rate = 250.0
+rate = 264.1
+rate = 301.5
+rate = 320.5
+rate = 361.5
+rate = 391.3
+rate = 421.5
+rate = 430.0
+rate = 450.5
+rate = 471.5
+rate = 490.1
+rate = 501.5
+rate = 613.5
+rate = 643.2
+rate = 713.1
+rate = 733.2
+rate = 750.0
+rate = 764.1
+rate = 801.5
+rate = 820.5
+rate = 861.5
+rate = 891.3
+rate = 921.5
+rate = 930.0
+rate = 950.5
+rate = 971.5
+rate = 990.1
+rate = 1000
+warp is now 1000x.
+</code></pre>
+<pre><code>// These two do the same thing:
+SET WARPMODE TO "PHYSICS".
+SET KUNIVERSE:TIMEWARP:MODE TO "PHYSICS".
+
+// These two do the same thing:
+SET WARPMODE TO "RAILS".
+SET KUNIVERSE:TIMEWARP:MODE TO "RAILS".
+</code></pre>
+<pre><code>// These do the same thing:
+SET WARP TO 3.
+SET KUNIVERSE:TIMEWARP:WARP to 3.
+</code></pre>
+<pre><code>// These two do the same thing:
+WARPTO(time:seconds + 60*60). // warp 1 hour into the future.
+KUNIVERSE:TIMEWARP:WARPTO(time:seconds + 60*60).
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>CANCELWARP</li>
+  <li>ISSETTLED</li>
+  <li>KUNIVERSE</li>
+  <li>KUNIVERSE:TIMEWARP:MODE</li>
+  <li>KUNIVERSE:TIMEWARP:WARP</li>
+  <li>KUNIVERSE:TIMEWARP:WARPTO</li>
+  <li>PHYSICSDELTAT</li>
+  <li>PHYSICSRATELIST</li>
+  <li>RAILSRATELIST</li>
+  <li>RATELIST</li>
+  <li>TIME:SECONDS</li>
+  <li>TIMEWARP</li>
+  <li>WARPMODE</li>
+</ul>

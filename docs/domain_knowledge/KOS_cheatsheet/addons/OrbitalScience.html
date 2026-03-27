@@ -1,0 +1,37 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/addons/OrbitalScience.html
+source_doc_title: DMagic Orbital Science
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>DMagic Orbital Science</h1>
+<h2>1) Core Intent</h2>
+<p>DMagic Orbital Science is a modification for Squad’s “Kerbal Space Program” (KSP) which adds extra science experiments to the game. Those experiments under the hood work differently
+than stock ones and require dedicated support (see ScienceExperimentModule ).</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>SET P TO SHIP:PARTSTAGGED("")[0].
+SET M TO P:GETMODULE("dmmodulescienceanimate").
+
+PRINT M:RERUNNABLE.
+PRINT M:INOPERABLE.
+M:DEPLOY.
+WAIT UNTIL M:HASDATA.
+M:TRANSMIT.
+</code></pre>
+<pre><code>SET P TO SHIP:PARTSTAGGED("collector")[0].
+SET M TO P:GETMODULE("dmsolarcollector").
+
+M:TOGGLE.
+</code></pre>
+<pre><code>SET P TO SHIP:PARTSTAGGED("bathymetry")[0].
+SET M TO P:GETMODULE("dmbathymetry").
+
+M:LIGHTSON.
+WAIT 3.
+M:LIGHTSOFF.
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>SHIP:PARTSTAGGED</li>
+</ul>

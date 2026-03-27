@@ -1,0 +1,64 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/addons/Trajectories.html
+source_doc_title: Trajectories
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Trajectories</h1>
+<h2>1) Core Intent</h2>
+<p>Trajectories is a mod that displays trajectory predictions, accounting for atmospheric drag, lift, etc.. See the forum thread for more details.</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>if ADDONS:TR:AVAILABLE {
+    if ADDONS:TR:HASIMPACT {
+        PRINT ADDONS:TR:IMPACTPOS.
+    } else {
+        PRINT "Impact position is not available".
+    }
+} else {
+    PRINT "Trajectories is not available.".
+}
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>ADDONS:TR</li>
+  <li>ADDONS:TR:AVAILABLE</li>
+  <li>ADDONS:TR:HASIMPACT</li>
+  <li>ADDONS:TR:IMPACTPOS</li>
+  <li>AVAILABLE</li>
+  <li>CLEARTARGET</li>
+  <li>CORRECTEDVEC</li>
+  <li>CORRECTEDVECT</li>
+  <li>CORRECTEDVECTOR</li>
+  <li>DESCENTANGLES</li>
+  <li>DESCENTGRADES</li>
+  <li>DESCENTMODES</li>
+  <li>GEOCOORDINATES</li>
+  <li>GETTARGET</li>
+  <li>GETVERSION</li>
+  <li>GETVERSIONMAJOR</li>
+  <li>GETVERSIONMINOR</li>
+  <li>GETVERSIONPATCH</li>
+  <li>HASIMPACT</li>
+  <li>HASTARGET</li>
+  <li>IMPACTPOS</li>
+  <li>ISVERTWO</li>
+  <li>ISVERTWOFOUR</li>
+  <li>ISVERTWOTWO</li>
+  <li>PLANNEDVEC</li>
+  <li>PLANNEDVECT</li>
+  <li>PLANNEDVECTOR</li>
+  <li>PROGRADE</li>
+  <li>RESETDESCENTPROFILE</li>
+  <li>RETROGRADE</li>
+  <li>SCALARVALUE</li>
+  <li>SETTARGET</li>
+  <li>TIMETILLIMPACT</li>
+  <li>TRADDON:ISVERTWO</li>
+  <li>TRADDON:ISVERTWOTWO</li>
+  <li>TRADDON:PROGRADE</li>
+  <li>TRADDON:RETROGRADE</li>
+  <li>TRADDONS:DESCENTGRADES</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: Trajectories only predicts the trajectory of the “Active Vessel,” which is the vessel with the camera focused on it. IMPACTPOS , PLANNEDVEC , SETTARGET , and CORRECTEDVEC will throw exceptions if you try to call them from an inactive vessel or if Trajectories has not calculated an impact position. You should always check if HASIMPACT is true before accessing these suffixes.</div>

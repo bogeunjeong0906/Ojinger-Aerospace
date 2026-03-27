@@ -1,0 +1,131 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/commands/flight/systems.html
+source_doc_title: Ship Systems
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Ship Systems</h1>
+<h2>1) Core Intent</h2>
+<p>Get/Set</p>
+<h2>2) Safety Critical Notes</h2>
+<div class="admonition"><strong>⚠ Warning</strong>: Be aware that having KSP’s SAS turned on will conflict
+with using “cooked control” (the lock steering command).  You
+should not use these two modes of steering control at the same time.
+For further information see the warning in lock steering documentation .</div>
+<div class="admonition"><strong>⚠ Warning</strong>: SASMODE does not work with RemoteTech Due to the way that RemoteTech disables flight control input, the built in SAS modes do not function properly when there is no connection to the KSC or a Command Center.  If you are writing scripts for use with RemoteTech, make sure to take this into account.</div>
+<div class="admonition"><strong>⚠ Warning</strong>: SASMODE should not be used with LOCK STEERING Be aware that having KSP’s SAS turned on will conflict
+with using “cooked control” (the lock steering command).  You
+should not use these two modes of steering control at the same time.
+For further information see the warning in lock steering documentation .</div>
+<h2>3) Snippet Pack</h2>
+<pre><code>RCS ON. // same as SET RCS TO TRUE.
+RCS OFF. // same as SET RCS TO FALSE.
+PRINT RCS.  // prints either "True" or "False".
+</code></pre>
+<pre><code>SAS ON. // same as SET SAS TO TRUE.
+SAS OFF. // same as SET SAS TO FALSE.
+PRINT SAS.  // prints either "True" or "False".
+</code></pre>
+<pre><code>SET SASMODE TO value.
+</code></pre>
+<pre><code>SET NAVMODE TO value.
+</code></pre>
+<pre><code>IF RCS PRINT "RCS is on".
+ON ABORT {
+    PRINT "Aborting!".
+}
+</code></pre>
+<pre><code>TOGGLE AG1.
+SET AG1 TO NOT AG1.
+</code></pre>
+<pre><code>SAS ON.
+SET SAS TO TRUE.
+</code></pre>
+<pre><code>SET GEAR TO ALT:RADAR<1000.
+SET LIGHTS TO GEAR.
+SET BRAKES TO NOT BRAKES.
+</code></pre>
+<pre><code>LIGHTS ON.
+</code></pre>
+<pre><code>BRAKES ON.
+</code></pre>
+<pre><code>GEAR ON.
+</code></pre>
+<pre><code>ABORT ON.
+</code></pre>
+<pre><code>AG1 ON.
+AG4 OFF.
+SET AG10 to AG3.
+</code></pre>
+<pre><code>PANELS ON.
+IF BAYS PRINT "Payload/service bays are ajar!".
+SET RADIATORS TO LEGS.
+</code></pre>
+<pre><code>LEGS ON.
+</code></pre>
+<pre><code>CHUTES ON.
+</code></pre>
+<pre><code>CHUTESSAFE ON.
+</code></pre>
+<pre><code>WHEN (NOT CHUTESSAFE) THEN {
+    CHUTESSAFE ON.
+    RETURN (NOT CHUTES).
+}
+</code></pre>
+<pre><code>PANELS ON.
+</code></pre>
+<pre><code>RADIATORS ON.
+</code></pre>
+<pre><code>LADDERS ON.
+</code></pre>
+<pre><code>BAYS ON.
+</code></pre>
+<pre><code>DEPLOYDRILLS ON.
+</code></pre>
+<pre><code>DRILLS ON.
+</code></pre>
+<pre><code>FUELCELLS ON.
+</code></pre>
+<pre><code>ISRU ON.
+</code></pre>
+<pre><code>INTAKES ON.
+</code></pre>
+<pre><code>SET TARGET TO name.
+</code></pre>
+<pre><code>SET TARGET TO "". // de-selects the target, setting it to nothing.
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>ALT:RADAR</li>
+  <li>CHUTESSAFE</li>
+  <li>DEPLOYDRILLS</li>
+  <li>FUELCELLS</li>
+  <li>PART:CONTROLFROM</li>
+  <li>RADIATORS</li>
+  <li>TARGET:THROTTLE</li>
+  <li>VESSEL:CONTROLPART</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: SAS mode is reset to stability assist when toggling SAS on, however it doesn’t happen immediately.
+Therefore, after activating SAS, you’ll have to skip a frame before setting the SAS mode.
+Velocity-related modes also reset back to stability assist when the velocity gets too low.</div>
+<div class="admonition"><strong>ℹ Note</strong>: Pressing an action group’s associated key will toggle it’s value from TRUE TO FALSE or from FALSE to TRUE .  If you are
+attempting to use action groups as user input, make sure to compare it
+to a stored “last value” or use the ON Trigger</div>
+<div class="admonition"><strong>ℹ Note</strong>: Assigned actions only react to changes in action group state, therefore
+calling GEAR ON. when it’s already on will have no effect even on
+undeployed landing gear.  The value will first need to be set to False before setting it back to True .</div>
+<div class="admonition"><strong>ℹ Note</strong>: Some actions react differently to toggling the group on and off,
+other will give the same response to both.  For example, landing gear
+will not deploy if they are currently retracted and you set GEAR OFF. .
+However, if an engine is off and the “Toggle Engine” action is linked
+to AG1 which is currently True , calling AG1 OFF. will turn
+on the engine.</div>
+<div class="admonition"><strong>ℹ Note</strong>: Because these fields return their value based on the actual status of
+the associated parts, it is not guaranteed that the return value will
+match the value you set immediately.  Some parts may not report the
+new state until an animation has finished, or the part may not be able
+to perform the selected action at this time.</div>
+<div class="admonition"><strong>ℹ Note</strong>: Some solar panels can’t be retracted once deployed.  Consult the part’s
+description for details.</div>

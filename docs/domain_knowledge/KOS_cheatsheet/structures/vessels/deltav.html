@@ -1,0 +1,35 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/vessels/deltav.html
+source_doc_title: DeltaV
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>DeltaV</h1>
+<h2>1) Core Intent</h2>
+<p>A DeltaV contains information about the delta-V
+numbers the stock KSP game calculates for you in the
+user interface (in the staging list display).  There are in
+fact two different kinds of DeltaV structures in kOS - one
+that refers to the whole veseel, or one that refers to just
+one stage of the vessel.</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>PRINT "Vessel's total dV number is " + SHIP:DELTAV:CURRENT.
+</code></pre>
+<pre><code>PRINT "The Current Stage dV number is " + SHIP:STAGEDELTAV(SHIP:STAGENUM):CURRENT.
+PRINT "The Next Stage dV number is " + SHIP:STAGEDELTAV(SHIP:STAGENUM-1):CURRENT.
+PRINT "The Next Stage dV number is " + SHIP:STAGEDELTAV(SHIP:STAGENUM-2):CURRENT.
+//
+// etc..  Stages number downward from SHIP:STAGENUM to 0, just like
+//        in the user interface stage list display.
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>DURATION</li>
+  <li>FORCECALC</li>
+  <li>SHIP:DELTAV</li>
+  <li>SHIP:DELTAV:CURRENT</li>
+  <li>SHIP:STAGEDELTAV</li>
+  <li>SHIP:STAGENUM</li>
+  <li>STAGE:DELTAV</li>
+</ul>

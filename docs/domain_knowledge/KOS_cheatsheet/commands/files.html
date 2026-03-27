@@ -1,0 +1,120 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/commands/files.html
+source_doc_title: File I/O
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>File I/O</h1>
+<h2>1) Core Intent</h2>
+<p>For information about where files are kept and how to deal with volumes see the Volumes page in the general topics section of this
+documentation.</p>
+<h2>2) Safety Critical Notes</h2>
+<div class="admonition"><strong>⚠ Warning</strong>: Limitations on file names On case-sensitive filesystems typically found on Linux and Mac, you should
+name entirely with lowercase-only filenames or the system may fail to find
+them when you try to access the path.</div>
+<div class="admonition"><strong>⚠ Warning</strong>: kOS has historically always allowed you to omit quotes for file names in certain
+cases. Although it is still possible (explanation below) we recommend against
+it now. kOS 1.0 has introduced directory support and as a result the number of
+cases in which omitting quotes would be fine is less than before. Paths like ../file make things very confusing to the kOS parser because
+kerboscript uses a dot to denote the end of an expression. If you’re used
+to skipping quotes you might find that now you will often have to add them to make
+the path understandable to kOS. The only case in which you can reliably omit
+quotes is when you want to use simple, relative paths: RUN script. , CD(dir.ext) .</div>
+<div class="admonition"><strong>⚠ Warning</strong>: COPY, RENAME and DELETE are now deprecated Previously you could use the aforementioned commands to manipulate files.
+Currently using them will result in a deprecation message being shown.
+After subdirectories were introduced in kOS 1.0 it was necessary to add
+more flexible commands that could deal with both files and directories.
+The old syntax was not designed with directories in mind. It would also
+make it difficult for the kOS parser to properly handle paths. Please update your scripts to use the new commands: movepath(frompath, topath) , copypath(frompath, topath) and deletepath(path) . runpath(path) .</div>
+<h2>3) Snippet Pack</h2>
+<pre><code>C:\Program Files\Some Directory\SomeFile.exe
+</code></pre>
+<pre><code>/home/user/somefile
+</code></pre>
+<pre><code>0:/lib/launch/base.ks
+</code></pre>
+<pre><code>volumeIdOrName:[/directory/subdirectory/...]/filename
+</code></pre>
+<pre><code>0:flight_data/data.json
+secondcpu: // refers to the root directory of a volume
+1:/boot.ks
+</code></pre>
+<pre><code>0:/directory/subdirectory/../file
+0:/directory/file
+</code></pre>
+<pre><code>0:..
+0:/../..
+0:/directory/../..
+</code></pre>
+<pre><code>PRINT PATH().
+</code></pre>
+<pre><code>CD("0:/scripts").
+DELETEPATH("launch.ks"). // this will remove 0:/scripts/launch.ks
+COPYPATH("../launch.ks", ""). // this will copy 0:/launch.ks to 0:/scripts/launch.ks
+</code></pre>
+<pre><code>CD("0:/scripts").
+COPYPATH("/launch.ks", "launch_scripts"). // will copy 0:/launch.ks to 0:/scripts/launch_scripts
+</code></pre>
+<pre><code>COPYPATH(myfilename, "1:"). // This is an example of a bareword filename.
+COPYPATH("myfilename", "1:"). // This is an example of an EXPRESSION filename.
+COPYPATH(myfilename.ks, "1:"). // This is an example of a bareword filename.
+COPYPATH(myfilename.txt, "1:"). // This is an example of a bareword filename.
+COPYPATH("myfilename.ks", "1:"). // This is an example of an EXPRESSION filename
+SET str TO "myfile" + "name" + ".ks".
+COPYPATH(str, "1:"). // This is an example of an EXPRESSION filename
+COPYPATH("myfile" + "name" + ".ks", "1:"). // This is an example of an EXPRESSION filename
+</code></pre>
+<pre><code>SWITCH TO 0.                          // Switch to volume 0.
+SET VOLUME(1):NAME TO "AwesomeDisk".  // Name volume 1 as AwesomeDisk.
+SWITCH TO "AwesomeDisk".              // Switch to volume 1.
+PRINT VOLUME(1):NAME.                 // Prints "AwesomeDisk".
+</code></pre>
+<pre><code>SET L TO LEXICON().
+SET NESTED TO QUEUE().
+
+L:ADD("key1", "value1").
+L:ADD("key2", NESTED).
+
+NESTED:PUSH("nestedvalue").
+
+WRITEJSON(L, "output.json").
+</code></pre>
+<pre><code>SET L TO READJSON("output.json").
+PRINT L["key1"].
+</code></pre>
+<pre><code>RUNPATH("filename", arg1, arg2).
+RUN filename(arg1, arg2).
+</code></pre>
+<pre><code>LOG "Hello" to mylog.txt.    // logs to "mylog.txt".
+LOG 4+1 to "mylog" .         // logs to "mylog.ks" because .ks is the default extension.
+LOG "4 times 8 is: " + (4*8) to mylog.   // logs to mylog.ks because .ks is the default extension.
+</code></pre>
+<pre><code>EDIT filename.       // edits filename.ks
+EDIT filename.ks.    // edits filename.ks
+EDIT "filename.ks".  // edits filename.ks
+EDIT "filename".     // edits filename.ks
+EDIT "filename.txt". // edits filename.txt
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>COPYPATH</li>
+  <li>FROMPATH</li>
+  <li>NESTED:PUSH</li>
+  <li>VOLUME:CREATE</li>
+  <li>VOLUME:CREATEDIR</li>
+  <li>VOLUME:EXISTS</li>
+  <li>VOLUME:OPEN</li>
+  <li>VOLUMEDIRECTORY</li>
+  <li>VOLUMEFILE</li>
+  <li>WRITEJSON</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: The Edit feature was lost in version 0.11 but is back again after version
+0.12.2 under a new guise. The best way to edit code is still
+to use a text editor external to KSP.  The on-the-fly editor that
+this command invokes is still useful however for exploratory test
+editing and playing around, or for editing a file on a remote probe’s
+local volume (which isn’t stored as a normal file on your hard drive
+like files in the archive are, so it can’t be edited with an external
+text editor program).</div>

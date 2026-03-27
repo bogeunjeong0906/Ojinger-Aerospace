@@ -1,0 +1,94 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/commands/flight/raw.html
+source_doc_title: Raw Control
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Raw Control</h1>
+<h2>1) Core Intent</h2>
+<p>If you wish to have your kOS script manipulate a vessel’s flight controls directly in a raw way, rather than relying on kOS to handle the flying for you, then this is the type of structure you will need to use to do it. This is offered as an alternative to using the combination of LOCK STEERING and LOCK THROTTLE commands. To obtain the CONTROL variable for a vessel, use its :CONTROL suffix: Set between 0 and 1 much like the cooked flying LOCK THROTTLE command.</p>
+<h2>2) Safety Critical Notes</h2>
+<div class="admonition"><strong>⚠ Warning</strong>: KSP imposes a built-in 5% null zone on RCS thrusters that makes it
+impossible for small raw inputs to have any effect in situations
+where RCS thrusters are the only source of control.  However,
+kOS allows you to override KSP’s stock RCS null zone for RCS parts
+with a bit of trickery under the hood, using the RCS:DEADZONE suffix of RCS parts.</div>
+<h2>3) Snippet Pack</h2>
+<pre><code>SET controlStick to SHIP:CONTROL.
+SET controlStick:PITCH to 0.2.
+</code></pre>
+<pre><code>SET SHIP:CONTROL:YAW to 0.2.
+</code></pre>
+<pre><code>print "Gently pushing forward for 3 seconds.".
+SET SHIP:CONTROL:FORE TO 0.2.
+SET now to time:seconds.
+WAIT until time:seconds > now + 3.
+SET SHIP:CONTROL:FORE to 0.0.
+
+print "Gently Pushing leftward for 3 seconds.".
+SET SHIP:CONTROL:STARBOARD TO -0.2.
+SET now to time:seconds.
+WAIT until time:seconds > now + 3.
+SET SHIP:CONTROL:STARBOARD to 0.0.
+
+print "Starting an upward rotation.".
+SET SHIP:CONTROL:PITCH TO 0.2.
+SET now to time:seconds.
+WAIT until time:seconds > now + 0.5.
+SET SHIP:CONTROL:PITCH to 0.0.
+
+print "Giving control back to the player now.".
+SET SHIP:CONTROL:NEUTRALIZE to True.
+</code></pre>
+<pre><code>SET SHIP:CONTROL:NEUTRALIZE to TRUE.
+</code></pre>
+<h2>4) Tuning / Parameters</h2>
+<h2>Breaking Ground DLC</h2>
+<p>Please note that the Breaking Ground DLC parts that can be configured
+to respond to the control axes, such as electric motors and propellor
+pitches, will only respond to the settings described on the pilot controls page and NOT the settings described
+here on this raw control page, nor will it respon...</p>
+<hr/>
+<h2>Unlocking controls</h2>
+<p>Setting any one of SHIP:CONTROL values will prevent player from manipulating that specific control manually.</p>
+<p>SET SHIP : CONTROL : NEUTRALIZE to TRUE .</p>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>CONFIG:SUPPRESSAUTOPILOT</li>
+  <li>MAINTHROTTLE</li>
+  <li>NEUTRALIZE</li>
+  <li>RCS:DEADZONE</li>
+  <li>SHIP:CONTROL</li>
+  <li>SHIP:CONTROL:FORE</li>
+  <li>SHIP:CONTROL:MAINTHROTTLE</li>
+  <li>SHIP:CONTROL:NEUTRAL</li>
+  <li>SHIP:CONTROL:NEUTRALIZE</li>
+  <li>SHIP:CONTROL:PILOTPITCHTRIM</li>
+  <li>SHIP:CONTROL:PILOTROLLTRIM</li>
+  <li>SHIP:CONTROL:PILOTYAWTRIM</li>
+  <li>SHIP:CONTROL:PITCH</li>
+  <li>SHIP:CONTROL:PITCHTRIM</li>
+  <li>SHIP:CONTROL:ROLL</li>
+  <li>SHIP:CONTROL:ROLLTRIM</li>
+  <li>SHIP:CONTROL:ROTATION</li>
+  <li>SHIP:CONTROL:STARBOARD</li>
+  <li>SHIP:CONTROL:TOP</li>
+  <li>SHIP:CONTROL:TRANSLATION</li>
+  <li>SHIP:CONTROL:WHEELSTEER</li>
+  <li>SHIP:CONTROL:WHEELSTEERTRIM</li>
+  <li>SHIP:CONTROL:WHEELTHROTTLE</li>
+  <li>SHIP:CONTROL:WHEELTHROTTLETRIM</li>
+  <li>SHIP:CONTROL:YAW</li>
+  <li>SHIP:CONTROL:YAWTRIM</li>
+  <li>STARBOARD</li>
+  <li>STEERING</li>
+  <li>THROTTLE</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: The MAINTHROTTLE requires active engines and, of course,
+sufficient and appropriate fuel. The rotational controls YAW , PITCH and ROW require one of the following: active reaction
+wheels with sufficient energy, RCS to be ON with properly placed
+thrusters and appropriate fuel, or control surfaces with an atmosphere
+in which to operate. The translational controls FORE , STARBOARD and TOP only work with RCS , and require RCS to be ON with
+properly placed thrusters and appropriate fuel.</div>

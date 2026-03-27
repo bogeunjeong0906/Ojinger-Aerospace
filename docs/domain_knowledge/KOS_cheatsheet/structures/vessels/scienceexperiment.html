@@ -1,0 +1,34 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/vessels/scienceexperiment.html
+source_doc_title: ScienceExperimentModule
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>ScienceExperimentModule</h1>
+<h2>1) Core Intent</h2>
+<p>The type of structures returned by kOS when querying a module that contains a science experiment.</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>SET P TO SHIP:PARTSNAMED("GooExperiment")[1].
+SET M TO P:GETMODULE("ModuleScienceExperiment").
+M:DOEVENT("observe mystery goo").
+</code></pre>
+<pre><code>SET P TO SHIP:PARTSNAMED("GooExperiment")[0].
+SET M TO P:GETMODULE("ModuleScienceExperiment").
+M:DEPLOY.
+WAIT UNTIL M:HASDATA.
+M:TRANSMIT.
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>DEPLOYED</li>
+  <li>INOPERABLE</li>
+  <li>PARTMODULE</li>
+  <li>RERUNNABLE</li>
+  <li>SCIENCEDATA</li>
+  <li>SCIENCEEXPERIMENTMODULE</li>
+  <li>SHIP:PARTSNAMED</li>
+  <li>TRANSMIT</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: A ScienceExperimentModule is a type of PartModule , and therefore can use all the suffixes of PartModule .</div>

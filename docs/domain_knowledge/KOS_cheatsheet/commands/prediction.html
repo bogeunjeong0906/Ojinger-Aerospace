@@ -1,0 +1,67 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/commands/prediction.html
+source_doc_title: Predictions of Flight Path
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Predictions of Flight Path</h1>
+<h2>1) Core Intent</h2>
+<p>The following prediction functions do take into account the future maneuver nodes planned, and operate under the assumption that they will be executed as planned.</p>
+<h2>2) Safety Critical Notes</h2>
+<div class="admonition"><strong>⚠ Warning</strong>: Be aware that a limitation of KSP makes it so that some vessels’
+maneuver node systems cannot be accessed.  KSP appears to limit the
+maneuver node system to only functioning on the current PLAYER
+vessel, under the presumption that its the only vessel that needs
+them, as ever other vessel cannot be maneuvered. kOS can maneuver a
+vessel that is not the player vessel, but it cannot overcome this
+limitation of the base game that unloads the maneuver node system
+for other vessels. Be aware that the effect this has is that when you try to predict
+another vessel’s position, it will sometimes give you answers that
+presume that other vessel will be purely drifting, and not following
+its maneuver nodes.</div>
+<h2>3) Snippet Pack</h2>
+<pre><code>// This example imagines you are on an orbit that is leaving
+// the current body and on the way to transfer to another orbit:
+
+// Later_time is 1 minute into the Mun orbit patch:
+local later_time is time:seconds + ship:obt:NEXTPATCHETA + 60.
+local later_ship_vel is VELOCITYAT(ship, later_time):ORBIT.
+local later_body_vel is VELOCITYAT(ship:obt:NEXTPATCH:body, later_time):ORBIT.
+
+local later_ship_vel_rel_to_later_body is later_ship_vel - later_body_vel.
+
+print "My later velocity relative to this body is: " + later_ship_vel.
+print "My later velocity relative to the body I will be around then is: " +
+  later_ship_vel_rel_to_later_body.
+</code></pre>
+<pre><code>//kOS
+// test the future position and velocity prediction.
+// Draws a position and velocity vector at a future predicted time.
+
+declare parameter item. // thing to predict for, i.e. SHIP.
+declare parameter offset. // how much time into the future to predict.
+declare parameter velScale. // how big to draw the velocity vectors.
+              // If they're far from the camera you should draw them bigger.
+
+
+set predictUT to time + offset.
+set stopProg to false.
+
+set futurePos to positionat( item, predictUT ).
+set futureVel to velocityat( item, predictUT ).
+
+set drawPos to vecdrawargs( v(0,0,0), futurePos, green, "future position", 1, true ).
+set drawVel to vecdrawargs( futurePos, velScale*futureVel:orbit, yellow, "future velocity", 1, true ).
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>CAREER:CANMAKENODES</li>
+  <li>MANEUVERNODES</li>
+  <li>ORBITABLE</li>
+  <li>POSITIONAT</li>
+  <li>TIMESTAMP</li>
+  <li>VELOCITYAT</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: Manipulating the maneuver nodes To alter the maneuver nodes on a vessel’s flight plan, use the ADD and REMOVE commands as described on the maneuver node manipulation page . Using the Add and Remove commands as described on that page, you may alter the flight plan of the CPU_vessel, however kOS does not automatically execute the nodes. You still have to write the code to decide how to successfully execute a planned maneuver node.</div>

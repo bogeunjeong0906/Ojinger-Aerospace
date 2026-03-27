@@ -1,0 +1,112 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/misc/vecdraw.html
+source_doc_title: Drawing Vectors on the Screen
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Drawing Vectors on the Screen</h1>
+<h2>3) Snippet Pack</h2>
+<pre><code>SET anArrow TO VECDRAW(
+      V(0,0,0),
+      V(a,b,c),
+      RGB(1,0,0),
+      "See the arrow?",
+      1.0,
+      TRUE,
+      0.2,
+      TRUE,
+      TRUE
+    ).
+
+SET anArrow TO VECDRAWARGS(
+      V(0,0,0),
+      V(a,b,c),
+      RGB(1,0,0),
+      "See the arrow?",
+      1.0,
+      TRUE,
+      0.2,
+      TRUE,
+      TRUE
+    ).
+</code></pre>
+<pre><code>// Small dynamically moving vecdraw example:
+SET anArrow TO VECDRAW(
+  { return (6-4*cos(100*time:seconds)) * up:vector. },
+  { return (4*sin(100*time:seconds)) * up:vector.  },
+  { return RGBA(1, 1, RANDOM(), 1). },
+  "Jumping arrow!",
+  1.0,
+  TRUE,
+  0.2,
+  TRUE,
+  TRUE
+).
+wait 20. // Give user time to see it in motion.
+set anArrow:show to false. // Make it stop drawing.
+</code></pre>
+<pre><code>Set anArrow TO VECDRAW().
+</code></pre>
+<pre><code>// Makes a red vecdraw at the origin, pointing 5 meters north,
+// with defaults for the un-mentioned
+// paramters LABEL, SCALE, SHOW, and WIDTH.
+SET vd TO VECDRAW(V(0,0,0), 5*north:vector, red).
+</code></pre>
+<pre><code>// This example will bounce the arrow up and down over time for a few seconds,
+// moving the location of the vector's start according to a sine wave over time:
+set vd to vecdraw(v(0,0,0), ship:north:vector*5, green, "bouncing arrow", 1.0, true, 0.2).
+print "Moving the arrow up and down for a few seconds.".
+set vd:startupdater to { return ship:up:vector*3*sin(time:seconds*180). }.
+wait 5.
+print "Stopping the arrow movement.".
+set vd:startupdater to DONOTHING.
+wait 3.
+print "Removing the arrow.".
+set vd to 0.
+</code></pre>
+<pre><code>// This example will spin the arrow around in a circle by leaving the start
+// where it is but moving the tip by trig functions:
+set vd to vecdraw(v(0,0,0), v(5,0,0), green, "spinning arrow", 1.0, true, 0.2).
+print "Moving the arrow in a circle for a few seconds.".
+set vd:vecupdater to {
+   return ship:up:vector*5*sin(time:seconds*180) + ship:north:vector*5*cos(time:seconds*180). }.
+wait 5.
+print "Stopping the arrow movement.".
+set vd:vecupdater to DONOTHING.
+wait 3.
+print "Removing the arrow.".
+set vd to 0.
+</code></pre>
+<pre><code>// This example will change how opaque the arrow is over time by changing
+// the 'alpha' of its color:
+set vd to vecdraw(v(0,0,0), ship:north:vector*5, green, "fading arrow", 1.0, true, 0.2).
+print "Fading the arrow in and out for a few seconds.".
+set vd:colorupdater to { return RGBA(0,1,0,sin(time:seconds*180)). }.
+wait 5.
+print "Stopping the color change.".
+set vd:colorupdater to DONOTHING.
+wait 3.
+print "Removing the arrow.".
+set vd to 0.
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>CLEARVECDRAWS</li>
+  <li>COLORUPDATER</li>
+  <li>COLOURUPDATER</li>
+  <li>DONOTHING</li>
+  <li>KOSDELEGATE</li>
+  <li>STARTUPDATER</li>
+  <li>VECDRAW:COLOR</li>
+  <li>VECDRAW:COLORUPDATER</li>
+  <li>VECDRAW:SHOW</li>
+  <li>VECDRAW:START</li>
+  <li>VECDRAW:STARTUPDATER</li>
+  <li>VECDRAW:VEC</li>
+  <li>VECDRAW:VECUPDATER</li>
+  <li>VECDRAW:WIPING</li>
+  <li>VECDRAWARGS</li>
+  <li>VECTORUPDATER</li>
+  <li>VECUPDATER</li>
+</ul>

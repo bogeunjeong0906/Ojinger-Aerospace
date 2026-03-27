@@ -1,0 +1,153 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/misc/pidloop.html
+source_doc_title: PIDLoop
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>PIDLoop</h1>
+<h2>1) Core Intent</h2>
+<p>A PID loop is a standard control mechanism taught in many control
+theory textbooks.  It’s a simple way to deal with a scenario where
+you want a program to move a control lever of some sort in order
+to cause a measured phenomenon to settle on a target value.  That
+base description actually covers many scenarios:</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>SET MYPID TO PIDLOOP(Kp, Ki, Kd, min_output, max_output, epsilon).
+</code></pre>
+<pre><code>// With zero parameters, the PIDLoop has default parameters:
+// kp = 1, ki = 0, kd = 0
+// maxoutput = maximum number value
+// minoutput = minimum number value
+SET PID TO PIDLOOP().
+
+// Create a PIDLoop with a few stated paremeters:
+SET PID TO PIDLOOP(2.5).
+SET PID TO PIDLOOP(2.0, 0.05, 0.1).
+SET PID TO PIDLOOP(2.0, 0.05, 0.1, -1, 1).
+</code></pre>
+<pre><code>// Throttle up when below target altitude, throttle down when above
+// target altitude, trying to hover:
+local target_alt is 100.
+set HOVERPID to PIDLOOP(
+    50,  // adjust throttle 0.1 per 5m in error from desired altitude.
+    0.1, // adjust throttle 0.1 per second spent at 1m error in altitude.
+    30,  // adjust throttle 0.1 per 3 m/s speed toward desired altitude.
+    0,   // min possible throttle is zero.
+    1    // max possible throttle is one.
+  ).
+set HOVERPID:SETPOINT to target_alt.
+set mythrot to 0.
+lock throttle to mythrot.
+until false {
+  set mythrot to HOVERPID:UPDATE(TIME:SECONDS, alt:radar).
+  wait 0.
+}
+</code></pre>
+<pre><code>// Example PIDLoop usage to hover a rocket at 100 meters off the ground:
+// Please use it with a rocket that has lots of fuel to test it,
+// and a TWR between about 1.75 and 2.0.
+
+lock steering to up.
+
+print "Setting up PID structure:".
+set hoverPID to PIDLoop(0.02, 0.0015, 0.02, 0, 1).
+set hoverPID:SETPOINT to 100.
+
+set wanted_throttle to 0. // for now.
+lock throttle to wanted_throttle.
+
+print "Now starting loop:".
+print "Make sure you stage until the engine is active.".
+print "You will have to kill it with CTRL-C".
+until false {
+  set wanted_throttle to hoverPID:UPDATE(time:seconds, alt:radar).
+  print "Radar Alt " + round(alt:radar,1) + "m, PID wants throttle=" + round(wanted_throttle,3).
+  wait 0.
+}
+</code></pre>
+<pre><code>// assume `wanted` is a variable with the desired target value:
+// when initializing, do:
+set myPid to PIDLOOP(1, 0.2, 0.02, -1, 1).
+
+// later, when updating in a loop, do:
+set ctrl to myPid:UPDATE(time:seconds, measurement - wanted).
+</code></pre>
+<pre><code>// assume `wanted` is a variable with the desired target value:
+// when initializing, do:
+set myPid to PIDLOOP(1, 0.2, 0.02, -1, 1).
+set myPid:SETPOINT to wanted.
+
+// Later, when updating in a loop, do:
+set ctrl to myPid:UPDATE(time:seconds, measurement).
+</code></pre>
+<pre><code>// assume that the terms LastInput, LastSampleTime, ErrorSum, Kp, Ki, Kd, Setpoint, MinOutput, MaxOutput, and Epsilon are previously defined
+declare function Update {
+    declare parameter sampleTime, input.
+    set Error to Setpoint - input.
+    if Error > -Epsilon and Error < Epsilon {
+      set Error to 0. // pretend there is no error.
+      set input to Setpoint. // pretend there is no error.
+    }
+    set PTerm to error * Kp.
+    set ITerm to 0.
+    set DTerm to 0.
+    if (LastSampleTime < sampleTime) {
+        set dt to sampleTime - LastSampleTime.
+        // only calculate integral and derivative if their gain is not 0.
+        if Ki <> 0 {
+            set ITerm to (ErrorSum + Error * dt) * Ki.
+        }
+        set ChangeRate to (input - LastInput) / dt.
+        if Kd <> 0 {
+            set DTerm to -ChangeRate * Kd.
+        }
+    }
+    set Output to pTerm + iTerm + dTerm.
+    // if the output goes beyond the max/min limits, reset it and adjust ITerm.
+    if Output > MaxOutput {
+        set Output to MaxOutput.
+        // adjust the value of ITerm as well to prevent the value
+        // from winding up out of control.
+        if (Ki <> 0) and (LastSampleTime < sampleTime) {
+            set ITerm to Output - min(Pterm + DTerm, MaxOutput).
+        }
+    }
+    else if Output < MinOutput {
+        set Output to MinOutput.
+        // adjust the value of ITerm as well to prevent the value
+        // from winding up out of control.
+        if (Ki <> 0) and (LastSampleTime < sampleTime) {
+            set ITerm to Output - max(Pterm + DTerm, MinOutput).
+        }
+    }
+    set LastSampleTime to sampleTime.
+    set LastInput to input.
+    if Ki <> 0 set ErrorSum to ITerm / Ki.
+    else set ErrorSum to 0.
+    return Output.
+}
+</code></pre>
+<h2>4) Tuning / Parameters</h2>
+<h2>Basic PIDloop Example</h2>
+<p>Here is a simple example that would move a throttle on a hovering
+rocket to get it to settle in at an alt:radar of 100 meters:.</p>
+<p>// Example PIDLoop usage to hover a rocket at 100 meters off the ground: // Please use it with a rocket that has lots of fuel to test it, // and a TWR between about 1.75 and 2.0.</p>
+<hr/>
+<h2>PIDLoop Update Derivation</h2>
+<p>The internal update method of the PIDLoop structure is the equivalent of the following in kerboscript.</p>
+<p>// assume that the terms LastInput, LastSampleTime, ErrorSum, Kp, Ki, Kd, Setpoint, MinOutput, MaxOutput, and Epsilon are previously defined declare function Update { declare parameter sampleTime , input .</p>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>CHANGERATE</li>
+  <li>ERRORSUM</li>
+  <li>HOVERPID:SETPOINT</li>
+  <li>HOVERPID:UPDATE</li>
+  <li>IGNOREERROR</li>
+  <li>LASTSAMPLETIME</li>
+  <li>MAXOUTPUT</li>
+  <li>MINOUTPUT</li>
+  <li>SETPOINT</li>
+  <li>STEERINGMANAGER</li>
+  <li>TIME:SECONDS</li>
+</ul>

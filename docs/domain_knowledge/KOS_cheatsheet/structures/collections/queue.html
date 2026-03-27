@@ -1,0 +1,24 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/collections/queue.html
+source_doc_title: Queue
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Queue</h1>
+<h2>1) Core Intent</h2>
+<p>A Queue is a collection of any type in kOS. Queues work according to First-In first-out principle. It may be useful to contrast Queue with Stack to better understand how both structures work. You can read more about queues on Wikipedia .</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>SET Q TO QUEUE().
+Q:PUSH("alice").
+Q:PUSH("bob").
+
+PRINT Q:POP. // will print 'alice'
+PRINT Q:POP. // will print 'bob'
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>ENUMERABLE</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: This type is serializable.</div>

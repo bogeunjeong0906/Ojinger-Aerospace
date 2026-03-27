@@ -1,0 +1,28 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/gui_widgets/label.html
+source_doc_title: Label
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Label</h1>
+<h2>3) Snippet Pack</h2>
+<pre><code>set thislabel:RICHTEXT to false. // prevent richtext markup in the label
+</code></pre>
+<pre><code>set mylabel:style:richtext to false.
+</code></pre>
+<pre><code>set mylabel1:text to "This is <b>important</b>.". // boldface
+set mylabel2:text to "This is <i>important</i>.". // italic
+set mylabel3:text to "This is <size=30>important</size>.". // enlarged font
+set mylabel4:text to "This is <color=orange>important</color>.". // orange by name
+set mylabel5:text to "This is <color=#ffaa00FF>important</color>.". // orange by hex code, opaque
+set mylabel6:text to "This is <color=#ffaa0080>important</color>.". // orange by hex code, halfway transparent
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>BOX:ADDLABEL</li>
+  <li>GUIWIDGETS:TOOLTIP</li>
+  <li>STYLE:RICHTEXT</li>
+  <li>TEXTFIELD</li>
+  <li>TIPDISPLAY</li>
+</ul>

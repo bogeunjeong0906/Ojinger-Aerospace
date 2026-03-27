@@ -1,0 +1,47 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/addons/RemoteTech.html
+source_doc_title: RemoteTech
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>RemoteTech</h1>
+<h2>1) Core Intent</h2>
+<p>RemoteTech is a modification for Squad’s “Kerbal Space Program” (KSP) which overhauls the unmanned space program. It does this by requiring unmanned vessels have a connection to Kerbal Space Center (KSC) to be able to be controlled. This adds a new layer of difficulty that compensates for the lack of live crew members.</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>addons:available("RT")
+</code></pre>
+<pre><code>set myRemoteTech to addons:RT.
+</code></pre>
+<pre><code>if addons:available("RT") {
+  local myRT is addons:RT.
+  print "The delay from KSC to Myself is:".
+  print myRT:KSCDELAY(ship) + " seconds.".
+}
+</code></pre>
+<pre><code>SET P TO SHIP:PARTSNAMED("mediumDishAntenna")[0].
+SET M to p:GETMODULE("ModuleRTAntenna").
+M:DOEVENT("activate").
+M:SETFIELD("target", "Mission Control").
+M:SETFIELD("target", mun).
+M:SETFIELD("target", somevessel).
+M:SETFIELD("target", "minmus").
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>ANTENNAHASCONNECTION</li>
+  <li>AVAILABLE</li>
+  <li>CONNECTION</li>
+  <li>GROUNDSTATIONS</li>
+  <li>HASCONNECTION</li>
+  <li>HASKSCCONNECTION</li>
+  <li>HASLOCALCONTROL</li>
+  <li>KSCDELAY</li>
+  <li>RTADDON:GROUNDSTATIONS</li>
+  <li>SHIP:PARTSNAMED</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: kOS now supports access to connection informaion from a unified location.
+See Connectivity Managers for more
+information. All of the previous implementation as detailed on this page
+remains supported.</div>

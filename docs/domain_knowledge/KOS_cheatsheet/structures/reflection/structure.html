@@ -1,0 +1,84 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/reflection/structure.html
+source_doc_title: Structure
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Structure</h1>
+<h2>1) Core Intent</h2>
+<p>The root of all kOS data types.</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>print Mun:typename().
+Body   // <--- system prints this
+
+print ("hello"):typename().
+String // <--- system prints this
+
+print (12345.678):typename().
+Scalar // <--- system prints this
+</code></pre>
+<pre><code>print thingy:hassuffix("maxthrust").
+</code></pre>
+<pre><code>set v1 to V(12,41,0.1). // v1 is a vector
+print v1:suffixnames.
+List of 14 items:
+[0] = DIRECTION
+[1] = HASSUFFIX
+[2] = ISSERIALIZABLE
+[3] = ISTYPE
+[4] = MAG
+[5] = NORMALIZED
+[6] = SQRMAGNITUDE
+[7] = SUFFIXNAMES
+[8] = TOSTRING
+[9] = TYPENAME
+[10] = VEC
+[11] = X
+[12] = Y
+[13] = Z
+</code></pre>
+<pre><code>set x to 1.
+print x:typename
+Scalar
+
+set x to 1.1.
+print x:typename
+Scalar
+
+set x to ship:parts[2].
+print x:typename
+Part
+
+set x to Mun.
+print x:typename
+Body
+</code></pre>
+<pre><code>set x to SHIP.
+print x:istype("Vessel").
+True
+print x:istype("Orbitable").
+True
+print x:istype("Structure").
+True.
+print x:istype("Body").
+False
+print x:istype("Vector").
+False
+print x:istype("Some bogus type name that doesn't exist").
+False
+</code></pre>
+<pre><code>set x to SHIP.
+print x:inheritance.
+Vessel derived from Orbitable derived from Structure
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>HASSUFFIX</li>
+  <li>INHERITANCE</li>
+  <li>ISSERIALIZABLE</li>
+  <li>ORBITABLE</li>
+  <li>SUFFIXNAMES</li>
+  <li>TOSTRING</li>
+  <li>TYPENAME</li>
+</ul>

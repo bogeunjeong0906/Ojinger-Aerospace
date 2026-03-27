@@ -1,0 +1,52 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/commands/list.html
+source_doc_title: LISTCommand
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>LISTCommand</h1>
+<h2>1) Core Intent</h2>
+<p>A List is a type of Structure that stores a list of variables in it. The LIST command either prints or crates a List object containing items queried from the game. For more information, see the page about the List structure .</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>LIST FILES.
+</code></pre>
+<pre><code>LIST.  // Prints the list of files (and subdirectories) on current volume.
+LIST FILES.  // Does the same exact thing, but more explicitly.
+LIST VOLUMES. // which volumes can be seen by this CPU?
+LIST FILES IN fileList. // fileList is now a LIST() containing :struct:`VolumeItem` structures.
+</code></pre>
+<pre><code>// Prints the list of all
+// Celestial bodies in the system.
+LIST BODIES.
+
+// Puts the list of bodies into a variable.
+LIST BODIES IN bodList.
+// Iterate over everything in the list:
+SET totMass to 0.
+FOR bod in bodList {
+    SET totMass to totMass + bod:MASS.
+}.
+PRINT "The mass of the whole solar system is " + totMass.
+
+// Adds variable foo that contains a list of
+// resources for my current vessel
+LIST RESOURCES IN foo.
+FOR res IN foo {
+    PRINT res:NAME. // Will print the name of every
+                    // resource in the vessel
+}.
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>AGGREGATERESOURCES</li>
+  <li>CELESTIALBODIES</li>
+  <li>PROCESSORS</li>
+  <li>SKIN:FONT</li>
+  <li>STYLE:FONT</li>
+  <li>VOLUMEFILE</li>
+  <li>VOLUMEITEM</li>
+  <li>VOLUMEITEM:ISFILE</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: LIST FILES. is the default if you give the LIST command no parameters.</div>

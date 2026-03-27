@@ -1,0 +1,27 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/communication/message_queue.html
+source_doc_title: MessageQueue
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>MessageQueue</h1>
+<h2>1) Core Intent</h2>
+<p>Just like ordinary queues message queues work according to First-In first-out principle.
+You can read more about queues on Wikipedia .</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>SET QUEUE TO CORE:MESSAGES.
+PRINT "Number of messages on the queue: " + QUEUE:LENGTH.
+</code></pre>
+<pre><code>SET QUEUE TO SHIP:MESSAGES.
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>CORE:MESSAGES</li>
+  <li>MESSAGE:RECEIVEDAT</li>
+  <li>MESSAGE:SENDER</li>
+  <li>MESSAGE:SENTAT</li>
+  <li>QUEUE:LENGTH</li>
+  <li>SHIP:MESSAGES</li>
+  <li>VESSEL:MESSAGES</li>
+</ul>

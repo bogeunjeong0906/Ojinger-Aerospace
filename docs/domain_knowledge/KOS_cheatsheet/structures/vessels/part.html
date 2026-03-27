@@ -1,0 +1,101 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/vessels/part.html
+source_doc_title: Part
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Part</h1>
+<h2>1) Core Intent</h2>
+<p>These are the generic properties every PART has. You can obtain a list of values of type Part using the LIST PARTS command .</p>
+<h2>2) Safety Critical Notes</h2>
+<div class="admonition"><strong>⚠ Warning</strong>: This suffix is only callable for parts attached to the CPU Vessel</div>
+<h2>3) Snippet Pack</h2>
+<pre><code>LIST PARTS FROM TARGET IN tParts.
+
+PRINT "The target vessel has a".
+PRINT "partcount of " + tParts:LENGTH.
+
+SET totTargetable to 0.
+FOR part in tParts {
+    IF part:TARGETABLE {
+        SET totTargetable TO totTargetable + 1.
+    }
+}
+
+PRINT "...and " + totTargetable.
+PRINT " of them are targetable parts.".
+</code></pre>
+<pre><code>local moduleNames is part:modules.
+for idx in range(0, moduleNames:length) {
+    if moduleNames[idx] = "test module" {
+        local pm is part:getmodulebyindex(idx).
+        DoSomething(pm).
+    }
+}
+</code></pre>
+<pre><code>// Print the symmetry group a part is inside:
+function print_sym {
+  parameter a_part.
+
+  print a_part + " is in a " + a_part:SYMMETRYCOUNT + "x symmetry set.".
+
+  if a_part:SYMMETRAYCOUNT = 1 {
+    return. // no point in printing the list when its not in a group.
+  }
+
+  if a_part:SYMMETRYTYPE = 0 {
+    print "  The symmetry is radial.".
+  } else if a_part:SYMMETRYTYPE = 1 {
+    print "  The symmetry is mirror.".
+  } else {
+    print "  The symmetry is some other weird kind that".
+    print "  didn't exist back when this example was written.".
+  }
+
+  print "    The Symmetry Group is: ".
+  for i in range (0, a_part:SYMMETRYCOUNT) {
+    print "      [" + i + "] " + a_part:SYMMETRYPARTNER(i).
+  }
+}
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>ALLMODULES</li>
+  <li>ALLTAGGEDPARTS</li>
+  <li>CHILDREN</li>
+  <li>CONTROLFROM</li>
+  <li>DECOUPLEDIN</li>
+  <li>DECOUPLER</li>
+  <li>DIRECTION</li>
+  <li>GETMODULE</li>
+  <li>GETMODULEBYINDEX</li>
+  <li>HASMODULE</li>
+  <li>HASPARENT</li>
+  <li>HASPHYSICS</li>
+  <li>MODULESNAMED</li>
+  <li>PART:FACING</li>
+  <li>PART:MODULES</li>
+  <li>PART:UID</li>
+  <li>PARTMODULE</li>
+  <li>PARTMODULES</li>
+  <li>PARTSDUBBED</li>
+  <li>PARTSDUBBEDPATTERN</li>
+  <li>PARTSNAMED</li>
+  <li>PARTSNAMEDPATTERN</li>
+  <li>PARTSTAGGED</li>
+  <li>PARTSTAGGEDPATTERN</li>
+  <li>PARTSTITLED</li>
+  <li>PARTSTITLEDPATTERN</li>
+  <li>POSITION</li>
+  <li>REMOVESYMMETRY</li>
+  <li>RESOURCE</li>
+  <li>RESOURCES</li>
+  <li>ROTATION</li>
+  <li>SEPARATEDIN</li>
+  <li>SEPARATOR</li>
+  <li>SYMMETRYCOUNT</li>
+  <li>SYMMETRYPARTNER</li>
+  <li>SYMMETRYTYPE</li>
+  <li>TARGETABLE</li>
+</ul>

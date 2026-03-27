@@ -1,0 +1,312 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/language/variables.html
+source_doc_title: Variables & Statements
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Variables & Statements</h1>
+<h2>2) Safety Critical Notes</h2>
+<div class="admonition"><strong>⚠ Warning</strong>: ** BREAKING CHANGE: **
+The meaning, and syntax, of this statement changed considerably
+in this update.  Prior to this version, DECLARE always created
+global variables no matter where it appeared in the script.
+See ‘initializer required’ below.</div>
+<div class="admonition"><strong>⚠ Warning</strong>: ** BREAKING CHANGE: **
+Previously the outermost level of a program file was the global
+scope.  Now each file has its own scope and the outermost level
+is still nested “one scope inside” the global scope.  You now only
+get global variables when you explicitly declare a variable as global,
+or when you rely on the lazyglobal system to make them for you.</div>
+<div class="admonition"><strong>⚠ Warning</strong>: ** BREAKING CHANGE: **
+kOS only started enforcing this rule in kOS 1.4.0.0 and up, so old
+scripts you find on the internet might generate errors because of
+this new enforcement.  See Config:CLOBBERBUILTINS or @CLOBBERBUILTINS if you wish to disable
+this check and get the old behavior back.</div>
+<h2>3) Snippet Pack</h2>
+<pre><code>// These all do the exact same thing - make a local variable:
+DECLARE X TO 1. // assumes local when unspecified.
+LOCAL X IS 1.
+DECLARE LOCAL X IS 1.
+
+// These do the exact same thing - make a global variable:
+GLOBAL X IS 1.
+DECLARE GLOBAL X IS 1.
+</code></pre>
+<pre><code>// These all do the exact same thing - make local variables:
+DECLARE A IS 5, B TO 1, C TO "O".
+LOCAL A IS 5, B TO 1, C TO "O".
+DECLARE LOCAL A IS 5, B TO 1, C TO "O".
+
+// These do the exact same thing - make global variables:
+GLOBAL A IS 5, B TO 1, C TO "O".
+DECLARE GLOBAL A IS 5, B TO 1, C TO "O".
+</code></pre>
+<pre><code>DECLARE x. // no initializer like "TO 1."
+</code></pre>
+<pre><code>// This is the contents of program1:
+DECLARE PARAMETER X.
+PARAMETER Y. // omitting the word "DECLARE" - it still means the same thing.
+PRINT "X times Y is " + X*Y.
+</code></pre>
+<pre><code>// This is the contents of program2, which calls program1:
+SET A TO 7.
+RUN PROGRAM1( A, A+1 ).
+</code></pre>
+<pre><code>X times Y is 56.
+</code></pre>
+<pre><code>DECLARE PARAMETER X, Y, CheckFlag.
+
+// Or you could leave "DECLARE" off like so:
+PARAMETER X, Y, CheckFlag.
+</code></pre>
+<pre><code>PARAMETER X.
+PARAMETER Y.
+PARAMETER CheckFlag.
+</code></pre>
+<pre><code>// Imagine this is a file called MYPROG
+
+DECLARE PARAMETER P1, P2, P3 is 0, P4 is "cheese".
+print P1 + ", " + P2 + ", " + P3 + ", " + P4.
+
+
+// Imagine this is a different file that runs it:
+
+run MYPROG(1,2).         // prints "1, 2, 0, cheese".
+run MYPROG(1,2,3).       // prints "1, 2, 3, cheese".
+run MYPROG(1,2,3,"hi").  // prints "1, 2, 3, hi".
+runpath(MYPROG,1,2,3,"hi").  // also prints "1, 2, 3, hi".
+</code></pre>
+<pre><code>DECLARE PARAMETER thisIsOptional is 0,
+                  thisIsOptionalToo is 0.
+                  thisIsMandatory.
+</code></pre>
+<pre><code>SET X TO 1.
+SET X TO y*2 - 1.
+</code></pre>
+<pre><code>SET X TO 1, Y TO 5, S TO "abc".
+</code></pre>
+<pre><code>DEFINED identifier
+</code></pre>
+<pre><code>// This part prints 'doesn't exist":
+if defined var1 {
+  print "var1 exists".
+} else {
+  print "var1 doesn't exist."
+}
+
+local var1 is 0.
+
+// But now it prints that it does exist:
+if defined var1 {
+  print "var1 exists".
+} else {
+  print "var1 doesn't exist."
+}
+</code></pre>
+<pre><code>print defined var1:suffix1.
+</code></pre>
+<pre><code>SET X TO 1.
+DECLARE LOCAL X TO 1.
+DECLARE GLOBAL X TO 1.
+</code></pre>
+<pre><code>SET Y TO 1.
+LOCK X TO Y + 1.
+PRINT X.    // prints "2"
+SET Y TO 2.
+PRINT X.    // prints "3"
+</code></pre>
+<pre><code>print "x's locked value is " + x.
+</code></pre>
+<pre><code>print "x's locked value is " + x().
+</code></pre>
+<pre><code>TOGGLE AG1. // Fires action group 1.
+TOGGLE SAS. // Toggles SAS on or off.
+</code></pre>
+<pre><code>RCS ON.  // Turns on the RCS
+</code></pre>
+<pre><code>RCS OFF.  // Turns off the RCS
+</code></pre>
+<pre><code>set altitude to 10.
+                ^
+Not allowed to SET a name that will clobber or hide the variable called 'ALTITUDE'.
+See kOS documentation for CLOBBERBUILTINS for more information.
+</code></pre>
+<pre><code>@CLOBBERBUILTINS on.
+</code></pre>
+<pre><code>//
+// These are all synonymous with each other:
+//
+DECLARE X IS 1.
+DECLARE X TO 1.
+DECLARE LOCAL X IS 1.
+DECLARE LOCAL X TO 1.
+LOCAL X IS 1. // 'declare' is implied and optional when scoping words are used
+LOCAL X TO 1. // 'declare' is implied and optional when scoping words are used
+//
+// These are all synonymous with each other:
+//
+DECLARE GLOBAL X TO 1.
+GLOBAL X TO 1. // 'declare' is implied and optional when scoping words are used
+GLOBAL X IS 1. // 'declare' is implied and optional when scoping words are used
+</code></pre>
+<pre><code>GLOBAL x IS 10. // X is now a global variable with value 10,
+SET y TO 20. // Y is now a global variable (implicitly) with value 20.
+LOCAL z IS 0.  // Z is now local to this file's outer scope. This is
+               // not *quite* global because it means other program files
+               // can't see it.
+
+SET sum to -1. // sum is now an implicitly made global variable, containing -1.
+
+// This function is declared at the file's outer scope.
+// It can be seen and called by other programs after this program is done.
+FUNCTION calcAverage {
+  PARAMETER inputList.
+
+  LOCAL sum IS 0. // sum is now local to this function's body.
+  FOR val IN inputList {
+    SET sum TO sum + val.
+  }.
+  print "Inside calcAverage, sum is " + sum.
+  RETURN sum / inputList:LENGTH.
+}.
+
+SET testList TO LIST(5,10,15);
+print "average is " + calcAverage(testList).
+print "but out here where it's global, sum is still " + sum.
+</code></pre>
+<pre><code>Inside calcAverage, sum is 30
+average is 10
+but out here where it's global, sum is still -1
+</code></pre>
+<pre><code>FUNCTION future_trigger {
+  parameter delay.
+  print "I will fire the trigger after " + delay + " seconds.".
+
+  local trigger_time is time:seconds + delay.
+
+  // Note that the variable trigger_time is local here,
+  // yet this trigger still works after the function
+  // has completed and returned:
+  when time:seconds > trigger_time then {
+    print "I am now firing the trigger off.".
+  }
+}
+print "Before calling future_trigger(3).".
+future_trigger(3).
+print "After calling future_trigger(3), now waiting 5 seconds.".
+print "You should see the trigger message during this wait.".
+wait 5.
+print "Done waiting.  Program over.".
+</code></pre>
+<pre><code>@LAZYGLOBAL OFF.
+</code></pre>
+<pre><code>function foo {print "foo ". }
+declare x is 1.
+
+print foo() + x.
+</code></pre>
+<pre><code>@LAZYGLOBAL OFF.
+function foo {print "foo ". }
+declare x is 1.
+
+print foo() + x.
+</code></pre>
+<pre><code>@LAZYGLOBAL OFF.
+function foo {print "foo ". }  // This does not need the 'local' keyword added
+declare local x is 1.          // But this does because it is a declare *identifier* statement.
+                               // you could have also just said:
+                               //     local x is 1.
+                               // without the 'declare' keyword.
+
+print foo() + x.
+</code></pre>
+<pre><code>@LAZYGLOBAL off.
+global num TO 1.
+IF TRUE {
+  LOCAL Y IS 2.
+  SET num TO num + Y. // This is fine.  num exists already as a global and
+                      // you're adding the local Y to it.
+  SET nim TO 20. // This typo generates an error.  There is
+                 // no such variable "nim" and @LAZYGLOBAL OFF
+                 // says not to implicitly make it.
+}.
+</code></pre>
+<h2>4) Tuning / Parameters</h2>
+<h2>DECLAREPARAMETER</h2>
+<p>If you put this statement in the main part of your script, it
+declares variables to be used as a parameter that can be passed
+in using the RUN command.</p>
+<p>If you put this statement inside of a Function body ,
+then it declares variables to be used as a parameter that can
+be passed in to that function when calling the function.</p>
+<p>Just as with a declare identifier statement ,
+in a declare parameter statement, the actual keyword declare need not be used.</p>
+<p>Program 1:.</p>
+<p>// This is the contents of program1: DECLARE PARAMETER X .</p>
+<p>Program 2:.</p>
+<p>// This is the contents of program2, which calls program1: SET A TO 7 .</p>
+<p>The above example would give the output:.</p>
+<p>X times Y is 56.</p>
+<p>It is also possible to put more than one parameter into a single DECLARE PARAMETER statement, separated by commas, as shown below:.</p>
+<p>DECLARE PARAMETER X , Y , CheckFlag .</p>
+<p>Either of the above is exactly equivalent to:.</p>
+<p>PARAMETER X .</p>
+<p>Note: Unlike normal variables, Parameter variables are always local to the program.</p>
+<p>Caveat This is only true if the values are primitive singleton values like numbers or booleans.</p>
+<p>Illegal to say DECLARE GLOBAL PARAMETER : Because parameters
+are always local to the location they were declared at, the keyword GLOBAL is illegal to use in a DECLARE PARAMETER statement.</p>
+<p>The DECLARE PARAMETER statements can appear anywhere in a program as long as they are in the file at a point earlier than the point at which the parameter is being used.</p>
+<p>Optional Parameters (defaulted parameters) If you wish, you may make some of the parameters of a program or a user
+function optional by defaulting them to a starting value with the IS keyword, as follows: // Imagine this is a file called MYPROG DECLARE PARAMETER P1 , P2 , P3 is 0 , P4 is "cheese" .</p>
+<hr/>
+<h3>Optional Parameters (defaulted parameters)</h3>
+<p>If you wish, you may make some of the parameters of a program or a user
+function optional by defaulting them to a starting value with the IS keyword, as follows:.</p>
+<p>// Imagine this is a file called MYPROG DECLARE PARAMETER P1 , P2 , P3 is 0 , P4 is "cheese" .</p>
+<p>Whenever arguments are missing, the system always makes up the difference by
+using defaults for the lastmost parameters until the correct number have been
+padded.</p>
+<p>It is illegal to put mandatory (not defaulted) parameters after defaulted ones.</p>
+<p>This will not work:.</p>
+<p>DECLARE PARAMETER thisIsOptional is 0 , thisIsOptionalToo is 0 .</p>
+<p>Because the optional parameters didn’t come at the end.</p>
+<p>Default parameters follow short-circuit logic Remember that if you have an optional parameter with an initializer
+expression, the expression will not get executed if the calling
+function had an argument present in that position.</p>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>CONFIG:CLOBBERBUILTINS</li>
+  <li>FUNCTION</li>
+  <li>LAZYGLOBAL</li>
+  <li>PARAMETER</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: It is implied that the outermost scope of a program file is
+also a local scope, as if the entire program file had been
+wrapped inside an invisible set of curly braces.
+Note that GLOBAL variables are not only shared
+between functions of your script, but also can be seen by
+other programs you run from the current program, and visa
+versa.  But local variables you make at the outermost scope
+of a file won’t be.</div>
+<div class="admonition"><strong>ℹ Note</strong>: Terminology: “declare statement” : Note that the documentation
+will often refer to the phrase “declare statement” even when
+referring to a statement in which the optional keyword “declare”
+was left off.  A statement such as LOCAL X IS 1. Will still
+be referred to as a “declare statement”, even though the word
+“declare” never explicitly appeared in it.</div>
+<div class="admonition"><strong>ℹ Note</strong>: The syntax without the initializer, looking like so: DECLARE x . // no initializer like "TO 1." is no longer legal syntax .</div>
+<div class="admonition"><strong>ℹ Note</strong>: Pass By Value The following paragraph is important for people familiar with other programming languages. If you are new to programming and don’t understand what it is saying, that’s okay you can ignore it. At the moment the only kind of parameter supported is a pass-by-value parameter, and pass-by reference parameters don’t exist. Be aware, however, that due to the way kOS is implemented on top of a reference-using object-oriented language (CSharp), if you pass an argument which is a complex aggregate structure (i.e. a Vector, or a List - anything that isn’t just a single scalar, boolean, or string), then the parameters will behave exactly like being passed by reference because all you’re passing is the handle to the object rather than the object itself. This should be familiar behavior to anyone who has written software in Java or C# before.</div>
+<div class="admonition"><strong>ℹ Note</strong>: In the past, triggers such as WHEN and ON were not
+able to use local variables in their check condintions.
+They had to use only global variables in order to
+be trigger-able after the local scope goes away.  Now
+these triggers preserve their “closure scope” so they
+can use any local variables.</div>
+<div class="admonition"><strong>ℹ Note</strong>: The @LAZYGLOBAL directive does not affect LOCK statements.
+LOCKS are a special case that define new pseudo-functions
+when encountered and don’t quite work the same way as
+SET statements do. Thus even with @LAZYGLOBAL OFF, it’s still
+possible to make a LOCK statement with a typo in the identifier
+name and it will still create the new typo’ed lock that way.</div>

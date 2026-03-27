@@ -1,0 +1,48 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/misc/terminalinput.html
+source_doc_title: Terminal Input
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Terminal Input</h1>
+<h2>1) Core Intent</h2>
+<p>You can read the user’s keyboard input into the kOS terminal
+using this structure.  You obtain this structure by calling Terminal:INPUT .</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>set ch to terminal:input:getchar().
+
+if ch = terminal:input:DOWNCURSORONE {
+  print "You typed the down-arrow key.".
+}
+if ch = terminal:input:UPCURSORONE {
+  print "You typed the up-arrow key.".
+}
+</code></pre>
+<pre><code>// Read a char if it exists, else just keep going:
+if terminal:input:haschar {
+  process_one_char(terminal:input:getchar()).
+}
+</code></pre>
+<h2>4) Tuning / Parameters</h2>
+<h2>Input is blocking</h2>
+<p>If you attempt to read a character of input and there are
+none available (because the user hasn’t typed anything
+yet for you to read), then your program will pause and
+get stuck there until the user presses a key.</p>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>BACKSPACE</li>
+  <li>DELETERIGHT</li>
+  <li>DOWNCURSORONE</li>
+  <li>ENDCURSOR</li>
+  <li>HOMECURSOR</li>
+  <li>LEFTCURSORONE</li>
+  <li>PAGEDOWNCURSOR</li>
+  <li>PAGEUPCURSOR</li>
+  <li>RIGHTCURSORONE</li>
+  <li>TERMINAL:INPUT</li>
+  <li>TERMINALINPUT</li>
+  <li>TERMINALINPUT:CLEAR</li>
+  <li>UPCURSORONE</li>
+</ul>

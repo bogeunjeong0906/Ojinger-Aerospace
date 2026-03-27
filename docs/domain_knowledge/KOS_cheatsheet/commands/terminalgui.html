@@ -1,0 +1,46 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/commands/terminalgui.html
+source_doc_title: Terminal and game environment
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Terminal and game environment</h1>
+<h2>3) Snippet Pack</h2>
+<pre><code>CLEARSCREEN.
+</code></pre>
+<pre><code>PRINT "Hello".
+PRINT 4+1.
+PRINT "4 times 8 is: " + (4*8).
+</code></pre>
+<pre><code>PRINT "Hello" AT(0,10).
+PRINT 4+1 AT(0,10).
+PRINT "4 times 8 is: " + (4*8) AT(0,10).
+</code></pre>
+<pre><code>IF MAPVIEW {
+    PRINT "You are looking at the map.".
+} ELSE {
+    PRINT "You are looking at the flight view.".
+}.
+</code></pre>
+<pre><code>SET MAPVIEW TO TRUE.  // to map view
+SET MAPVIEW TO FALSE. // to flight view
+</code></pre>
+<pre><code>HUDTEXT( string Message,
+         integer delaySeconds,
+         integer style,
+         integer size,
+         RGBA colour,
+         boolean doEcho).
+</code></pre>
+<pre><code>HUDTEXT("Warning: Vertical Speed too High", 5, 2, 15, red, false).
+HUDTEXT("docking mode begun", 8, 1, 12, rgb(1,1,0.5), false).
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>CLEARSCREEN</li>
+  <li>SHUTDOWN</li>
+  <li>TERMINAL:HEIGHT</li>
+  <li>TERMINAL:WIDTH</li>
+  <li>VECDRAWARGS</li>
+</ul>

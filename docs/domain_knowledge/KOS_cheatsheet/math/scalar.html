@@ -1,0 +1,39 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/math/scalar.html
+source_doc_title: Scalar
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Scalar</h1>
+<h2>1) Core Intent</h2>
+<p>A Scalar value is the kind the system gives you whenever you are working
+with a number of some sort which, unlike with a Vector ,
+does not have a pointing orientation in 3D space.</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>// These are all the same number, shown different ways:
+1234567
+1_234_567
+1_2__3456_7
+</code></pre>
+<pre><code>1234
+12.34
+.1234
+0.1234
+0.123_4 // underscore ignored.
+</code></pre>
+<pre><code>123.4e4   // = 1234000
+1.234e+4  // = 12340
+1.234e-14  // = 0.00000000000001234
+123_456.78e-4  // = 12.345678  (note, again, the ignored underscore)
+</code></pre>
+<pre><code>set x to 1.23e5.
+print x.  // prints 123000
+set x to 1.23e-5.
+print x.  // prints 0.0000123
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>STRING:TOSCALAR</li>
+  <li>STRUCTURE</li>
+</ul>

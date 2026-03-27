@@ -1,0 +1,62 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/vessels/rcs.html
+source_doc_title: RCS
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>RCS</h1>
+<h2>1) Core Intent</h2>
+<p>Some of the Parts returned by LIST PARTS will be of type RCS. It is also possible to get just the RCS parts by executing LIST RCS , for example:</p>
+<h2>2) Safety Critical Notes</h2>
+<div class="admonition"><strong>⚠ Warning</strong>: BEWARE if you want to Set this: Although this can be set and changing it works okay in the current
+version of KSP as of this writing (KSP 1.10.1), it is exactly the
+sort of thing that seems could break in future versions of KSP. Be aware of that when deciding to change it. (If you are a programmer,
+you might understand the next sentence and get a clear picture of
+why this warning is here:  The value in the KSP class that this
+affects is marked private and kOS is using “Reflection” to bypass
+that access rule.) If you are tempted to change this value, please first consider
+coming up with a solution where your script pulses the input
+on and off between 0.05 and 0 to simulate inputs less than 0.05.</div>
+<div class="admonition"><strong>⚠ Warning</strong>: BEWARE if you want to Set this: Setting this value too small on your RCS thrusters will cause the
+stock SAS to wastefully spend RCS propellant wiggling the controls
+when it tries to hold position.  (If you ever played KSP back in
+its alpha pre-release days you might remember SAS behaving like
+this in the old days.)</div>
+<h2>3) Snippet Pack</h2>
+<pre><code>LIST RCS IN myVariable.
+FOR rcs IN myVariable {
+    print "An rcs thruster exists with ISP = " + rcs:ISP.
+}.
+</code></pre>
+<pre><code>set ship:control:yaw to 0.049.
+</code></pre>
+<pre><code>set ship:control:yaw to 0.051.
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>AVAILABLETHRUST</li>
+  <li>AVAILABLETHRUSTAT</li>
+  <li>CONSUMEDRESOURCERCS</li>
+  <li>CONSUMEDRESOURCES</li>
+  <li>DEADBAND</li>
+  <li>FLAMEOUT</li>
+  <li>FOREBYTHROTTLE</li>
+  <li>FOREENABLED</li>
+  <li>FULLTHRUST</li>
+  <li>MAXFUELFLOW</li>
+  <li>MAXMASSFLOW</li>
+  <li>MAXTHRUST</li>
+  <li>MAXTHRUSTAT</li>
+  <li>PITCHENABLED</li>
+  <li>ROLLENABLED</li>
+  <li>SEALEVELISP</li>
+  <li>STARBOARDENABLED</li>
+  <li>THRUSTLIMIT</li>
+  <li>THRUSTVECTORS</li>
+  <li>TOPENABLED</li>
+  <li>VACUUMISP</li>
+  <li>YAWENABLED</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: A RCS is a type of Part , and therefore can use all the suffixes of Part .</div>

@@ -1,0 +1,180 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/tutorials/designpatterns.html
+source_doc_title: Design Patterns and Considerations with kOS
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Design Patterns and Considerations with kOS</h1>
+<h2>1) Core Intent</h2>
+<p>There are many ways one can write a control program for a given scenario. The goal of this section is to help a novice kOS programmer, after having finished the Quick Start Tutorial , to develop a sense of elegance and capability when writing his or her own kOS scripts. All of the examples in this tutorial may be tested by the reader using a rocket design similar to the following. Notice it carries an accelerometer and the negative gravioli detector which are used in the second section. Don’t forget the kOS module as well!</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>LOCK STEERING TO HEADING(0,90).
+LOCK THROTTLE TO 1.
+STAGE.
+WAIT UNTIL SHIP:ALTITUDE > 10000.
+LOCK STEERING TO HEADING(0,90) + R(0,-45,0).
+WAIT UNTIL STAGE:LIQUIDFUEL < 0.1.
+STAGE.
+WAIT UNTIL SHIP:ALTITUDE > 20000.
+LOCK THROTTLE TO 0.
+WAIT UNTIL FALSE. // CTRL+C to break out
+</code></pre>
+<pre><code>LOCK STEERING TO R(0,0,-90) + HEADING(90,90).
+LOCK THROTTLE TO 1.
+STAGE.
+UNTIL SHIP:ALTITUDE > 20000 {
+    IF SHIP:ALTITUDE > 10000 {
+        LOCK STEERING TO R(0,0,-90) + HEADING(90,45).
+    }
+    IF STAGE:LIQUIDFUEL < 0.1 {
+        STAGE.
+    }
+}
+LOCK THROTTLE TO 0.
+WAIT UNTIL FALSE.
+</code></pre>
+<pre><code>LOCK STEERING TO R(0,0,-90) + HEADING(90,90).
+LOCK THROTTLE TO 1.
+STAGE.
+WHEN SHIP:ALTITUDE > 10000 THEN {
+    LOCK STEERING TO R(0,0,-90) + HEADING(90,45).
+}
+UNTIL SHIP:ALTITUDE > 20000 {
+    IF STAGE:LIQUIDFUEL < 0.1 {
+        STAGE.
+    }
+}
+LOCK THROTTLE TO 0.
+WAIT UNTIL FALSE.
+</code></pre>
+<pre><code>WHEN STAGE:LIQUIDFUEL < 0.1 THEN {
+    STAGE.
+    PRESERVE.
+}
+LOCK STEERING TO R(0,0,-90) + HEADING(90,90).
+LOCK THROTTLE TO 1.
+STAGE.
+WHEN SHIP:ALTITUDE > 10000 THEN {
+    LOCK STEERING TO R(0,0,-90) + HEADING(90,45).
+}
+WAIT UNTIL SHIP:ALTITUDE > 20000.
+LOCK THROTTLE TO 0.
+WAIT UNTIL FALSE.
+</code></pre>
+<pre><code>SET thrott TO 1.
+LOCK THROTTLE TO thrott.
+LOCK STEERING TO R(0,0,-90) + HEADING(90,90).
+STAGE.
+WHEN SHIP:ALTITUDE > 1000 THEN {
+    SET g TO KERBIN:MU / KERBIN:RADIUS^2.
+    LOCK accvec TO SHIP:SENSORS:ACC - SHIP:SENSORS:GRAV.
+    LOCK gforce TO accvec:MAG / g.
+    LOCK dthrott TO 0.05 * (1.2 - gforce).
+
+    UNTIL SHIP:ALTITUDE > 40000 {
+        WHEN STAGE:LIQUIDFUEL < 0.1 THEN {
+            STAGE.
+            PRESERVE.
+        }
+        SET thrott to thrott + dthrott.
+        WAIT 0.1.
+    }
+}
+</code></pre>
+<pre><code>WHEN STAGE:LIQUIDFUEL < 0.1 THEN {
+    STAGE.
+    PRESERVE.
+}
+SET thrott TO 1.
+SET dthrott TO 0.
+LOCK THROTTLE TO thrott.
+LOCK STEERING TO R(0,0,-90) + HEADING(90,90).
+STAGE.
+WHEN SHIP:ALTITUDE > 1000 THEN {
+    SET g TO KERBIN:MU / KERBIN:RADIUS^2.
+    LOCK accvec TO SHIP:SENSORS:ACC - SHIP:SENSORS:GRAV.
+    LOCK gforce TO accvec:MAG / g.
+    LOCK dthrott TO 0.05 * (1.2 - gforce).
+}
+UNTIL SHIP:ALTITUDE > 40000 {
+    SET thrott to thrott + dthrott.
+    WAIT 0.1.
+}
+</code></pre>
+<pre><code>WHEN STAGE:LIQUIDFUEL < 0.1 THEN {
+    STAGE.
+    PRESERVE.
+}
+SET thrott TO 1.
+SET dthrott TO 0.
+LOCK THROTTLE TO thrott.
+LOCK STEERING TO R(0,0,-90) + HEADING(90,90).
+STAGE.
+WHEN SHIP:ALTITUDE > 1000 THEN {
+    SET g TO KERBIN:MU / KERBIN:RADIUS^2.
+    LOCK accvec TO SHIP:SENSORS:ACC - SHIP:SENSORS:GRAV.
+    LOCK gforce TO accvec:MAG / g.
+    LOCK dthrott TO 0.05 * (1.2 - gforce).
+}
+WHEN SHIP:ALTITUDE > 10000 THEN {
+    LOCK dthrott TO 0.05 * (2.0 - gforce).
+}
+WHEN SHIP:ALTITUDE > 20000 THEN {
+    LOCK dthrott TO 0.05 * (4.0 - gforce).
+}
+WHEN SHIP:ALTITUDE > 30000 THEN {
+    LOCK dthrott TO 0.05 * (5.0 - gforce).
+}
+UNTIL SHIP:ALTITUDE > 40000 {
+    SET thrott to thrott + dthrott.
+    WAIT 0.1.
+}
+</code></pre>
+<pre><code>WHEN STAGE:LIQUIDFUEL < 0.1 THEN {
+    STAGE.
+    PRESERVE.
+}
+SET thrott TO 1.
+SET dthrott TO 0.
+LOCK THROTTLE TO thrott.
+LOCK STEERING TO R(0,0,-90) + HEADING(90,90).
+STAGE.
+WHEN SHIP:ALTITUDE > 1000 THEN {
+    SET g TO KERBIN:MU / KERBIN:RADIUS^2.
+    LOCK accvec TO SHIP:SENSORS:ACC - SHIP:SENSORS:GRAV.
+    LOCK gforce TO accvec:MAG / g.
+    LOCK dthrott TO 0.05 * (1.2 - gforce).
+
+    WHEN SHIP:ALTITUDE > 10000 THEN {
+        LOCK dthrott TO 0.05 * (2.0 - gforce).
+
+        WHEN SHIP:ALTITUDE > 20000 THEN {
+            LOCK dthrott TO 0.05 * (4.0 - gforce).
+
+            WHEN SHIP:ALTITUDE > 30000 THEN {
+                LOCK dthrott TO 0.05 * (5.0 - gforce).
+            }
+        }
+    }
+}
+UNTIL SHIP:ALTITUDE > 40000 {
+    SET thrott to thrott + dthrott.
+    WAIT 0.1.
+}
+</code></pre>
+<h2>4) Tuning / Parameters</h2>
+<h3>2. Loops with Condition Checking</h3>
+<p>Here, we introduce IF/ELSE logic into UNTIL loops:.</p>
+<p>LOCK STEERING TO R ( 0 , 0 , - 90 ) + HEADING ( 90 , 90 ).</p>
+<p>This does the same thing as the previous example, but now it’s checking for a staging condition from the launch pad all the way to 20km.</p>
+<p>One can imagine that these types of UNTIL loops can become very complex with many layers of IF/ELSE blocks.</p>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>KERBIN:MU</li>
+  <li>KERBIN:RADIUS</li>
+  <li>SHIP:ALTITUDE</li>
+  <li>SHIP:SENSORS:ACC</li>
+  <li>SHIP:SENSORS:GRAV</li>
+  <li>STAGE:LIQUIDFUEL</li>
+</ul>

@@ -1,0 +1,42 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/orbits/orbitable.html
+source_doc_title: Orbitable (Vessels and Bodies)
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Orbitable (Vessels and Bodies)</h1>
+<h2>1) Core Intent</h2>
+<p>All objects that can move in orbit around other objects share some similar structure. To help keep things as consistent as possible, that similar structure is defined here. Everything you see here works for both Vessels and Bodies .</p>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>ALTITUDE</li>
+  <li>APOAPSIS</li>
+  <li>DIRECTION</li>
+  <li>DISTANCE</li>
+  <li>GEOCOORDINATES</li>
+  <li>GEOPOSITION</li>
+  <li>HASORBIT</li>
+  <li>LATITUDE</li>
+  <li>LONGITUDE</li>
+  <li>MUN:APOAPSIS</li>
+  <li>MUN:OBT:APOAPSIS</li>
+  <li>MUN:OBT:PERIAPSIS</li>
+  <li>MUN:PERIAPSIS</li>
+  <li>OBT:APOAPSIS</li>
+  <li>OBT:PERIAPSIS</li>
+  <li>ORBITABLEVELOCITY</li>
+  <li>PERIAPSIS</li>
+  <li>POSITION</li>
+  <li>PROGRADE</li>
+  <li>RETROGRADE</li>
+  <li>SHIP:APOAPSIS</li>
+  <li>SHIP:OBT:APOAPSIS</li>
+  <li>SHIP:OBT:PERIAPSIS</li>
+  <li>SHIP:PERIAPSIS</li>
+  <li>SRFPROGRADE</li>
+  <li>SRFRETROGRADE</li>
+  <li>VELOCITY</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: SOI Body Every where you see the term SOI Body in the descriptions below, it refers to the body at the center of the orbit of this object - the body in who’s sphere of influence this object is located. It is important to make the distinction that if this object is itself a Body, the SOI body is the body being orbited, not the body doing the orbiting. I.e. When talking about the Mun, the SOI body means “Kerbin”. When talking about Kerbin, the SOI body means “Sun”.</div>

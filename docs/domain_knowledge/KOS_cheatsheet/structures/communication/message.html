@@ -1,0 +1,37 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/communication/message.html
+source_doc_title: Message
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Message</h1>
+<h2>1) Core Intent</h2>
+<p>Represents a single message stored in a CPU’s or vessel’s MessageQueue .</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>// if there is a message in the ship's message queue
+// we can forward it to a different CPU
+
+// cpu1
+SET CPU2 TO PROCESSOR("cpu2").
+CPU2:CONNECTION:SENDMESSAGE(SHIP:MESSAGES:POP).
+
+// cpu2
+SET RECEIVED TO CORE:MESSAGES:POP.
+PRINT "Original message sent at: " + RECEIVED:CONTENT:SENTAT.
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>CORE:MESSAGES:POP</li>
+  <li>CPU2:CONNECTION:SENDMESSAGE</li>
+  <li>HASSENDER</li>
+  <li>MESSAGE:CONTENT</li>
+  <li>MESSAGEQUEUE</li>
+  <li>RECEIVED:CONTENT:SENTAT</li>
+  <li>RECEIVEDAT</li>
+  <li>SHIP:MESSAGES:POP</li>
+  <li>STRUCTURE</li>
+  <li>TIMESTAMP</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: This type is serializable.</div>

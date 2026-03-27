@@ -1,0 +1,75 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/vessels/stage.html
+source_doc_title: Stage
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Stage</h1>
+<h2>1) Core Intent</h2>
+<p>Contents</p>
+<h2>2) Safety Critical Notes</h2>
+<div class="admonition"><strong>⚠ Warning</strong>: Calling the Stage function on a vessel other than the active
+vessel will throw an exception.</div>
+<h2>3) Snippet Pack</h2>
+<pre><code>LIST ENGINES IN elist.
+
+UNTIL false {
+    PRINT "Stage: " + STAGE:NUMBER AT (0,0).
+    FOR e IN elist {
+        IF e:FLAMEOUT {
+            STAGE.
+            PRINT "STAGING!" AT (0,0).
+
+            UNTIL STAGE:READY {
+                WAIT 0.
+            }
+
+            LIST ENGINES IN elist.
+            CLEARSCREEN.
+            BREAK.
+        }
+    }
+}
+</code></pre>
+<pre><code>STAGE.
+WAIT 0.
+</code></pre>
+<pre><code>STAGE.
+IF stage:nextDecoupler:isType("LaunchClamp")
+    STAGE.
+IF stage:nextDecoupler <> "None" {
+    WHEN availableThrust = 0 or (
+        stage:resourcesLex["LiquidFuel"]:amount = 0 and
+        stage:resourcesLex["SolidFuel"]:amount = 0)
+    THEN {
+        STAGE.
+        return stage:nextDecoupler <> "None".
+    }
+}
+</code></pre>
+<pre><code>// These two lines would do the same thing:
+SET DV TO STAGE:DELTAV.
+SET DV TO SHIP:STAGEDELTAV(SHIP:STAGRENUM).
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>AGGREGATERESOURCE</li>
+  <li>DECOUPLER</li>
+  <li>NEXTDECOUPLER</li>
+  <li>NEXTSEPARATOR</li>
+  <li>RESOURCE</li>
+  <li>RESOURCES</li>
+  <li>RESOURCESLEX</li>
+  <li>SHIP:STAGEDELTAV</li>
+  <li>SHIP:STAGRENUM</li>
+  <li>STAGE:DELTAV</li>
+  <li>STAGE:NUMBER</li>
+  <li>STAGE:READY</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: The stage function will automatically pause execution until the next
+tick.  This is because some of the results of the staging event take
+effect immediately, while others do not update until the next time
+that physics are calculated.  Calling STAGE. is essentially
+equivalent to: STAGE . WAIT 0 .</div>

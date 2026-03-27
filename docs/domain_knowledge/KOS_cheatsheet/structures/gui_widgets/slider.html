@@ -1,0 +1,26 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/gui_widgets/slider.html
+source_doc_title: Slider
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Slider</h1>
+<h2>3) Snippet Pack</h2>
+<pre><code>set mySlider:ONCHANGE to whenMySliderChanges@.
+
+function whenMySliderChanges {
+  parameter newValue.
+
+  print "Value is " +
+         round(100*(newValue-mySlider:min)/(mySlider:max-mySlider:min)) +
+         "percent of the way between min and max.".
+}
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>BOX:ADDHSLIDER</li>
+  <li>BOX:ADDVSLIDER</li>
+  <li>KOSDELEGATE</li>
+  <li>ONCHANGE</li>
+</ul>

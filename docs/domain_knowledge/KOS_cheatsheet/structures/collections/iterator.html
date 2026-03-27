@@ -1,0 +1,41 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/collections/iterator.html
+source_doc_title: Iterator
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Iterator</h1>
+<h2>1) Core Intent</h2>
+<p>An iterator can be obtained from Enumerable:ITERATOR as well as from other places.
+An ITERATOR is a generic computer programming concept .
+In the general case it’s a variable type that allows you to get
+the value at a position in some collection, as well as increment
+to the next item in the collection in order to operate on all
+objects in the collection one at a time. In kOS it operates
+on Lists and most other collection types.</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>// Starting with a list that was built like this
+SET MyList To LIST( "Hello", "Aloha", "Bonjour").
+
+// It could be looped over like this
+SET MyCurrent TO MyList:ITERATOR.
+PRINT "before the first NEXT, position = " + MyCurrent:INDEX.
+UNTIL NOT MyCurrent:NEXT {
+    PRINT "Item at position " + MyCurrent:INDEX + " is [" + MyCurrent:VALUE + "].".
+}
+</code></pre>
+<pre><code>before the first NEXT, position = -1.
+Item at position 0 is [Hello].
+Item at position 1 is [Aloha].
+Item at position 2 is [Bonjour].
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>ENUMERABLE:ITERATOR</li>
+  <li>ITERATOR</li>
+  <li>ITERATOR:INDEX</li>
+  <li>ITERATOR:NEXT</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: If you have just created the ITERATOR, then the value of Iterator:INDEX is -1. It only becomes 0 after the first call to Iterator:NEXT .</div>

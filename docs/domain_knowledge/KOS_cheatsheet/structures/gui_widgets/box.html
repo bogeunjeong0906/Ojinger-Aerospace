@@ -1,0 +1,73 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/gui_widgets/box.html
+source_doc_title: Box
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Box</h1>
+<h2>3) Snippet Pack</h2>
+<pre><code>set mygui to GUI(100).
+// Make a popup menu that lets you choose one of 4 color names:
+set mypopup mygui:addpopupmenu().
+set mypopup:options to LIST("red", "green", "yellow", "white").
+
+mygui:show().
+wait 15. // let you play with it for 15 seconds.
+mygui:dispose(). // ditch the gui before leaving this example.
+</code></pre>
+<pre><code>set mygui to GUI(400).
+set mytitle to mygui:addlabel("This is my Panel").
+set box1 to mygui:ADDHLAYOUT().
+box1:addspacing(50). // 50 pixels indent inside horizontal box 1
+set button1 to box1:addbutton("indented").
+set box2 to mygui:ADDHLAYOUT().
+box2:addspacing(100). // 100 pixels indent inside horizontal box 2
+set button2 to box2:addbutton("indented more").
+myGui:show().
+print "Play with buttons for 15 seconds.".
+wait 15.
+myGui:dispose(). // get rid of the GUI before quitting the program.
+</code></pre>
+<pre><code>function myradiochangehook {
+  parameter whichButton.
+
+  // Do something here.  "whichButton" will be a variable set to
+  // whichever radio button is the one that has just been switched
+  // on.
+}
+set someBox:onradiochange to myradiochange@.
+</code></pre>
+<pre><code>set someBox:onRadioChange to { parameter B.  print "You selected:  " + B:text. }.
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>ADDBUTTON</li>
+  <li>ADDCHECKBOX</li>
+  <li>ADDHLAYOUT</li>
+  <li>ADDHSLIDER</li>
+  <li>ADDLABEL</li>
+  <li>ADDPOPUPMENU</li>
+  <li>ADDRADIOBUTTON</li>
+  <li>ADDSCROLLBOX</li>
+  <li>ADDSPACING</li>
+  <li>ADDSTACK</li>
+  <li>ADDTEXTFIELD</li>
+  <li>ADDVLAYOUT</li>
+  <li>ADDVSLIDER</li>
+  <li>BOX:ADDHBOX</li>
+  <li>BOX:ADDHLAYOUT</li>
+  <li>BOX:ADDSTACK</li>
+  <li>BOX:ADDVBOX</li>
+  <li>BOX:ADDVLAYOUT</li>
+  <li>BOX:RADIOVALUE</li>
+  <li>KOSDELEGATE</li>
+  <li>ONRADIOCHANGE</li>
+  <li>POPUPMENU</li>
+  <li>POPUPMENU:OPTIONS</li>
+  <li>RADIOVALUE</li>
+  <li>SCROLLBOX</li>
+  <li>SHOWONLY</li>
+  <li>TEXTFIELD</li>
+  <li>WIDGET:PARENT</li>
+</ul>

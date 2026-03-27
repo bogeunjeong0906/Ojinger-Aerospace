@@ -1,0 +1,169 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/math/basic.html
+source_doc_title: Basic Math Functions
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Basic Math Functions</h1>
+<h2>1) Core Intent</h2>
+<p>These functions are built-in for performing basic math operations in kOS.</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>PRINT "Gravitational parameter of Kerbin, calculated:".
+PRINT constant:G * Kerbin:Mass.
+PRINT "Gravitational parameter of Kerbin, hardcoded:".
+PRINT Kerbin:Mu.
+PRINT "The above two numbers had *better* agree.".
+PRINT "If they do not, then your solar system is badly configured.".
+</code></pre>
+<pre><code>PRINT "Gravitational parameter of Kerbin is:".
+PRINT constant:G * Kerbin:Mass.
+</code></pre>
+<pre><code>PRINT "e^2 is:".
+PRINT constant:e ^ 2.
+</code></pre>
+<pre><code>SET diameter to 10.
+PRINT "circumference is:".
+PRINT constant:pi * diameter.
+</code></pre>
+<pre><code>SET speed to SHIP:VELOCITY:ORBIT:MAG.
+SET percentOfLight to (speed / constant:c) * 100.
+PRINT "We're going " + percentOfLight + "% of lightspeed!".
+</code></pre>
+<pre><code>PRINT "1 atm is:".
+PRINT 1 * constant:AtmToKPa + " kPa.".
+</code></pre>
+<pre><code>PRINT "100 kPa is:".
+PRINT 100 * constant:KPaToATM + " atmospheres".
+</code></pre>
+<pre><code>PRINT "A right angle is:".
+PRINT 90 * constant:DegToRad + " radians".
+</code></pre>
+<pre><code>PRINT "A radian is:".
+PRINT 1 * constant:RadToDeg + " degrees".
+</code></pre>
+<pre><code>PRINT ABS(-1). // prints 1
+</code></pre>
+<pre><code>PRINT CEILING(1.887). // prints 2
+</code></pre>
+<pre><code>PRINT CEILING(1.887,2). // prints 1.89
+</code></pre>
+<pre><code>PRINT FLOOR(1.887). // prints 1
+</code></pre>
+<pre><code>PRINT CEILING(1.887,2). // prints 1.88
+</code></pre>
+<pre><code>PRINT LN(2). // prints 0.6931471805599453
+</code></pre>
+<pre><code>PRINT LOG10(2). // prints 0.30102999566398114
+</code></pre>
+<pre><code>PRINT MOD(21,6). // prints 3
+PRINT MOD(-21,6). // prints -3
+</code></pre>
+<pre><code>PRINT MIN(0,100). // prints 0
+</code></pre>
+<pre><code>PRINT MAX(0,100). // prints 100
+</code></pre>
+<pre><code>PRINT RANDOM(). //prints a random number
+PRINT "Let's roll a 6-sided die 10 times:".
+FOR n in range(0,10) {
+
+  // To make RANDOM give you an integer in the range [0..n-1], you do this:
+  // floor(n*RANDOM()).
+
+  // So for example : a die giving values from 1 to 6 is like this:
+  print (1 + floor(6*RANDOM())).
+}
+</code></pre>
+<pre><code>// create two different random number sequencers, both starting
+// with seed 12345 so they should have the same exact values.
+RANDOMSEED("sequence1",12345).
+RANDOMSEED("sequence2",12345).
+
+PRINT "5 coin flips from SEQUENCE 1:".
+FOR n in range(0,5) {
+  print choose "heads" if RANDOM("sequence1") < 0.5 else "tails".
+}
+
+PRINT "5 coin flips from SEQUENCE 2, which should be the same:".
+FOR n in range(0,5) {
+  print choose "heads" if RANDOM("sequence2") < 0.5 else "tails".
+}
+
+PRINT "5 more coin flips from SEQUENCE 1:".
+FOR n in range(0,5) {
+  print choose "heads" if RANDOM("sequence1") < 0.5 else "tails".
+}
+
+PRINT "5 more coin flips from SEQUENCE 2, which should be the same:".
+FOR n in range(0,5) {
+  print choose "heads" if RANDOM("sequence2") < 0.5 else "tails".
+}
+</code></pre>
+<pre><code>RANDOMSEED("generator A",1000).
+RANDOMSEED("generator B",1000).
+PRINT "Generators A and B should emit identical ".
+PRINT "sequences because they both started at seed 1000.".
+PRINT "3 numbers from Generator A:".
+PRINT floor(RANDOM("generator A")*100).
+PRINT floor(RANDOM("generator A")*100).
+PRINT floor(RANDOM("generator A")*100).
+PRINT "3 numbers from Generator B - they should ".
+PRINT "be the same as above:".
+PRINT floor(RANDOM("generator B")*100).
+PRINT floor(RANDOM("generator B")*100).
+PRINT floor(RANDOM("generator B")*100).
+
+PRINT "Resetting generator A but not Generator B:".
+RANDOMSEED("generator A",1000).
+
+PRINT "3 more numbers from Generator A which got reset".
+PRINT "so they should match the first ones again:".
+PRINT floor(RANDOM("generator A")*100).
+PRINT floor(RANDOM("generator A")*100).
+PRINT floor(RANDOM("generator A")*100).
+PRINT "3 numbers from Generator B, which didn't get reset:".
+PRINT floor(RANDOM("generator B")*100).
+PRINT floor(RANDOM("generator B")*100).
+PRINT floor(RANDOM("generator B")*100).
+</code></pre>
+<pre><code>PRINT ROUND(1.887). // prints 2
+</code></pre>
+<pre><code>PRINT ROUND(1.887,2). // prints 1.89
+</code></pre>
+<pre><code>PRINT SQRT(7.89). // prints 2.80891438103763
+</code></pre>
+<pre><code>PRINT CHAR(34) + "Apples" + CHAR(34). // prints "Apples"
+</code></pre>
+<pre><code>PRINT UNCHAR("A"). // prints 65
+</code></pre>
+<pre><code>PRINT SIN(6). // prints 0.10452846326
+</code></pre>
+<pre><code>PRINT COS(6). // prints 0.99452189536
+</code></pre>
+<pre><code>PRINT TAN(6). // prints 0.10510423526
+</code></pre>
+<pre><code>PRINT ARCSIN(0.67). // prints 42.0670648
+</code></pre>
+<pre><code>PRINT ARCCOS(0.67). // prints 47.9329352
+</code></pre>
+<pre><code>PRINT ARCTAN(0.67). // prints 33.8220852
+</code></pre>
+<pre><code>PRINT ARCTAN2(0.67, 0.89). // prints 36.9727625
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>ATMTOKPA</li>
+  <li>AVOGADRO</li>
+  <li>BOLTZMANN</li>
+  <li>DEGTORAD</li>
+  <li>IDEALGAS</li>
+  <li>KPATOATM</li>
+  <li>RADTODEG</li>
+  <li>RANDOMSEED</li>
+  <li>SHIP:VELOCITY:ORBIT:MAG</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: In Kerbal Space Program, all physics motion is purely Newtonian.
+You can go faster than the speed of light provided you have enough
+delta-V, and no time dilation effects will occur.  The universe
+will behave entirely linearly even at speeds near c .</div>

@@ -1,0 +1,23 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/math/ref_frame.html
+source_doc_title: Reference Frames
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Reference Frames</h1>
+<h2>1) Core Intent</h2>
+<p>This page describes the \((x,y,z)\) reference frame used for most
+of kOS ’s vectors. kOS inherits its reference frame mostly from the
+base Kerbal Space Program game itself.  The coordinate system of Kerbal
+Space Program does some strange things that don’t make a lot of sense
+at first. The name of the reference frame in which the origin point is CPU Vessel (SHIP) , and the rotation is identical to KSP ’s native raw coordinate grid.</p>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>SHIP:BODY:POSITION</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: Be aware that Kerbal Space program (and in fact many of the games
+based on the Unity game engine) uses a LEFT-handed coordinate
+system.  kOS inherits this behavior from KSP.</div>
+<div class="admonition"><strong>ℹ Note</strong>: It is hoped that this may be expanded in the future, and conversion routines provided to let people pick a reference frame that makes sense depending on what the script is trying to do. At the moment the only reference frames used are SHIP-RAW and SOI-RAW, as they match closely to what KSP is using internally.</div>

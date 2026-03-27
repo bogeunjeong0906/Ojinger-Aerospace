@@ -1,0 +1,50 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/misc/config.html
+source_doc_title: Configuration of kOS
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Configuration of kOS</h1>
+<h2>3) Snippet Pack</h2>
+<pre><code>Tried to push NaN into the stack.
+Tried to push Infinity into the stack.
+</code></pre>
+<pre><code>// Restart telnet server:
+SET CONFIG:TELNET TO FALSE.
+WAIT 0.5. // important to give kOS a moment to notice and kill the old server.
+SET CONFIG:TELNET TO TRUE.
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>AUDIOERR</li>
+  <li>BRIGHTNESS</li>
+  <li>CLOBBERBUILTINS</li>
+  <li>CONFIG:TELNET</li>
+  <li>DEBUGEACHOPCODE</li>
+  <li>DEFAULTFONTSIZE</li>
+  <li>DEFAULTHEIGHT</li>
+  <li>DEFAULTWIDTH</li>
+  <li>IPADDRESS</li>
+  <li>OBEYHIDEUI</li>
+  <li>SUPPRESSAUTOPILOT</li>
+  <li>TERMINAL:BRIGHTNESS</li>
+  <li>TERMINAL:CHARHEIGHT</li>
+  <li>TERMINAL:HEIGHT</li>
+  <li>TERMINAL:WIDTH</li>
+  <li>VELOCITY</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: Prior to this version of kOS, all settings were stored globally in
+a single external file.  KSP version 1.2.0 introduced a new way to
+store settings within the save file itself, and most settings were
+migrated to this system.</div>
+<div class="admonition"><strong>ℹ Note</strong>: If your save file has not yet migrated to the new settings storage
+system and an old config file is present, you will be prompted with a
+dialog box offering to migrate the old settings or use the defaults.
+You may also choose to prevent further attempts to migrate settings.
+If you do so, kOS will set the InstructionsPerUpdate to a
+negative value in the old config file, as a flag to indicate no
+further migrations should happen.  (Note the old config file is
+still actively used for global settings such as the telnet settings,
+even after you’ve done this, so don’t delete it.)</div>

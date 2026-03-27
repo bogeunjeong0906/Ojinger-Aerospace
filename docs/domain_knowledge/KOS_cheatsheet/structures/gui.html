@@ -1,0 +1,103 @@
+<!--
+CHEATSHEET_META
+source_file: docs/domain_knowledge/KOS_DOC/structures/gui.html
+source_doc_title: Creating GUIs
+source_doc_version: kOS 1.4.0.0 documentation
+cheatsheet_type: snippet-first, agent-oriented
+-->
+<h1>Creating GUIs</h1>
+<h2>1) Core Intent</h2>
+<p>You can create an object that represents a GUI drawn on the
+user’s screen (not in the terminal window). It can have buttons,
+labels, and the usual GUI elements. In combination with a boot file ,
+entirely GUI-driven vessel controls can be developed.</p>
+<h2>3) Snippet Pack</h2>
+<pre><code>set thisButton:ONCLICK to myclickFunction@.
+// Program continues on, executing further commands after this.
+</code></pre>
+<pre><code>until thisButton:TAKEPRESS {
+  // button still isn't pressed yet, let's keep waiting.
+  wait 0.
+}
+</code></pre>
+<pre><code>// "Hello World" program for kOS GUI.
+//
+// Create a GUI window
+LOCAL my_gui IS GUI(200).
+// Add widgets to the GUI
+LOCAL label IS my_gui:ADDLABEL("Hello world!").
+SET label:STYLE:ALIGN TO "CENTER".
+SET label:STYLE:HSTRETCH TO True. // Fill horizontally
+LOCAL ok TO my_gui:ADDBUTTON("OK").
+// Show the GUI.
+my_gui:SHOW().
+// Handle GUI widget interactions.
+//
+// This is the technique known as "callbacks" - instead
+// of actively looking again and again to see if a button was
+// pressed, the script just tells kOS that it should call a
+// delegate function when it notices the button has done
+// something, and then the program passively waits for that
+// to happen:
+LOCAL isDone IS FALSE.
+function myClickChecker {
+  SET isDone TO TRUE.
+}
+SET ok:ONCLICK TO myClickChecker@. // This could also be an anonymous function instead.
+wait until isDone.
+
+print "OK pressed.  Now closing demo.".
+// Hide when done (will also hide if power lost).
+my_gui:HIDE().
+</code></pre>
+<pre><code>// "Hello World" program for kOS GUI.
+//
+// Create a GUI window
+LOCAL my_gui IS GUI(200).
+// Add widgets to the GUI
+LOCAL label IS my_gui:ADDLABEL("Hello world!").
+SET label:STYLE:ALIGN TO "CENTER".
+SET label:STYLE:HSTRETCH TO True. // Fill horizontally
+LOCAL ok TO my_gui:ADDBUTTON("OK").
+// Show the GUI.
+my_gui:SHOW().
+// Handle GUI widget interactions.
+//
+// This is the technique known as "polling" - In a loop you
+// continually check to see if something has happened:
+LOCAL isDone IS FALSE.
+UNTIL isDone
+{
+  if (ok:TAKEPRESS)
+    SET isDone TO TRUE.
+  WAIT 0.1. // No need to waste CPU time checking too often.
+}
+print "OK pressed.  Now closing demo.".
+// Hide when done (will also hide if power lost).
+my_gui:HIDE().
+</code></pre>
+<pre><code>SET my_gui TO GUI(200).
+SET button TO my_gui:ADDBUTTON("OK").
+my_gui:SHOW().
+UNTIL button:TAKEPRESS WAIT(0.1).
+my_gui:HIDE().
+</code></pre>
+<h2>5) Suffix and Key Inventory</h2>
+<ul>
+  <li>CLEARGUIS</li>
+  <li>GUI:DISPOSE</li>
+  <li>GUI:EXTRADELAY</li>
+  <li>GUI:HIDE</li>
+  <li>KOSDELEGATE</li>
+  <li>POPUPMENU</li>
+  <li>SCROLLBOX</li>
+  <li>STYLE:ALIGN</li>
+  <li>STYLE:HSTRETCH</li>
+  <li>TEXTFIELD</li>
+  <li>TIPDISPLAY</li>
+</ul>
+<h2>6) Agent Usage Hints</h2>
+<div class="admonition"><strong>ℹ Note</strong>: This built-in function was added mainly so you have a way
+to easily clean up after a program has crashed which left
+behind some GUI windows that are now unresponsive because
+the program isn’t running anymore.</div>
